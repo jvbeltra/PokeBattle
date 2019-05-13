@@ -26,6 +26,7 @@ public class TelaPrincipal {
                 
             }
             case 4: {
+                System.out.println("2tst");
                 System.out.println("Teste bro");
             }
                 
