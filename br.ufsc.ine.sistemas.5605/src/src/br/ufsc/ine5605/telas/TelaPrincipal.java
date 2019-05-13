@@ -25,7 +25,9 @@ public class TelaPrincipal {
             case 3:{
                 
             }
-            case
+            case 4: {
+                System.out.println("Teste bro");
+            }
                 
         }
             System.out.println("Selecione uma tarefa \n: 1: Cadastrar Pokemon \n: 2: Deletar Pokemon"
