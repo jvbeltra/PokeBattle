@@ -6,14 +6,22 @@
 package src.br.ufsc.ine5605.controllers;
 
 import java.util.List;
-import src.br.ufsc.ine5605.controllers.PrincipalController;
 import src.br.ufsc.ine5605.objects.Pokemon;
+import src.br.ufsc.ine5605.telas.TelaPokemon;
 
 /**
  *
  * @author Joao
  */
 public class PokemonController {
+    
+    private TelaPokemon tela = new TelaPokemon();
+
+    public PokemonController() {
+    }
+    
+    
+    
     public void addPokemon(){
         
     }
@@ -31,6 +39,14 @@ public class PokemonController {
     
     public List<Pokemon> listarPokemons(){
         return null;
+    }
+
+    public void listarTarefas() {
+       tela.listarTarefas();
+    }
+
+    public void editarPokemon() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

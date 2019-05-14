@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package src.br.ufsc.ine5605.telas;
+import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
 
 /**
@@ -11,5 +12,30 @@ import src.br.ufsc.ine5605.controllers.BatalhaController;
  * @author Joao
  */
 public class TelaBatalha {
-    
+ public void listarTarefas(){
+     Scanner s = new Scanner(System.in);
+        int input = 0;
+        do {
+            System.out.println(
+                    "Selecione uma tarefa \n"
+                    + " 1: Batalhar \n"
+                    +" 2: Mostrar histórico batalhas \n"
+                    +" 0: Sair \n"
+            );
+            
+                    
+            input = s.nextInt();
+            
+            
+            switch (input){
+                case 1:{
+                    break;
+                }
+                case 2:{
+                    //Chama deleção de pokemon
+                    break;
+                }
+            }
+        } while (input > 0);
+ }   
 }

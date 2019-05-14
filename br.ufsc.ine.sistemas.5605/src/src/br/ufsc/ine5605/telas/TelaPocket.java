@@ -5,6 +5,7 @@
  */
 package src.br.ufsc.ine5605.telas;
 
+import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.PocketController;
 
 /**
@@ -12,5 +13,43 @@ import src.br.ufsc.ine5605.controllers.PocketController;
  * @author Joao
  */
 public class TelaPocket {
-    
+    public void listarTarefas(){
+        Scanner s = new Scanner(System.in);
+        int input = 0;
+        do {
+            System.out.println(
+                    "Selecione uma tarefa \n"
+                    + " 1: Capturar Pokemon"
+                    + " 2: Soltar Pokemon \n"
+                    + " 3: Listar Pocket \n"
+                    + " 4: Detalhes Pocket \n"
+                    +" 0: Sair \n"
+            );
+            
+                    
+            input = s.nextInt();
+            
+            
+            switch (input){
+                case 1:{
+                    break;
+                }
+                case 2:{
+                    //Chama deleção de pokemon
+                    break;
+                }
+                case 3:{
+                    
+                    //Chama edição de pokemon
+                    break;
+                }
+                case 4:{
+                    
+                    //Chama listagem de pokemon
+                    break;
+                    
+                }
+            }
+        } while (input > 0);
+    }
 }

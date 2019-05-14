@@ -5,7 +5,6 @@
  */
 package src.br.ufsc.ine5605.controllers;
 
-import src.br.ufsc.ine5605.controllers.PrincipalController;
 import src.br.ufsc.ine5605.objects.Tipo;
 
 

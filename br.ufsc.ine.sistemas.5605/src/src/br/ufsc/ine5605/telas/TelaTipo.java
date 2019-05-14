@@ -11,6 +11,6 @@ import src.br.ufsc.ine5605.controllers.TipoController;
  *
  * @author Joao
  */
-public abstract class TelaTipo {
+public class TelaTipo {
     
 }

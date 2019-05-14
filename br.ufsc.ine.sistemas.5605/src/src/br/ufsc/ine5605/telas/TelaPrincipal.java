@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package src.br.ufsc.ine5605.telas;
+
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.PrincipalController;
 
@@ -12,29 +13,41 @@ import src.br.ufsc.ine5605.controllers.PrincipalController;
  * @author Joao
  */
 public class TelaPrincipal {
-    public void listarTarefas(){
+    private PrincipalController principalControll = new PrincipalController();
+    
+    public void listarTarefas() {
         Scanner s = new Scanner(System.in);
-        int tarefa = 0;
-        switch(tarefa){
-            case 1: {
-                
-            };
-            case 2:{
-                
-            };
-            case 3:{
-                
-            }
-            case 4: {
-                System.out.println("2tst2222");
-                System.out.println("Teste bro");
-            }
-                
-        }
-            System.out.println("Selecione uma tarefa \n: 1: Cadastrar Pokemon \n: 2: Deletar Pokemon"
-                    + " \n: 2: Iniciar batalha");
+        int input = 0;
+        do {
+            System.out.println(
+                    "Selecione uma tarefa \n"
+                    + " 1: Gerenciar Pokemons \n"
+                    + " 2: Gerenciar Pocket"
+                    + " 3: Gerenciar Batalhas\n"
+                    +" 0: Sair \n"
+            );
+            
+                    
+            input = s.nextInt();
             
             
-        
+            switch (input){
+                case 1:{
+                    principalControll.acessaPokemon();
+                    break;
+                }
+                case 2:{
+                    principalControll.acessaPocket();
+                    break;
+                }
+                case 3:{
+                    
+                    principalControll.acessaCampoBatalha();
+                    break;
+                }
+               
+            }
+        } while (input > 0);
+
     }
 }

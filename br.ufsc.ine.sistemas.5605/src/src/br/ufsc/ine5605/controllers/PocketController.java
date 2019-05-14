@@ -6,8 +6,8 @@
 package src.br.ufsc.ine5605.controllers;
 
 import java.util.List;
-import src.br.ufsc.ine5605.controllers.PrincipalController;
 import src.br.ufsc.ine5605.objects.Pocket;
+import src.br.ufsc.ine5605.telas.TelaPocket;
 
 /**
  *
@@ -28,5 +28,10 @@ public class PocketController {
     
     public void getPokemonByName(String nome){
         
+    }
+
+    public void listarTarefas() {
+        TelaPocket tela = new TelaPocket();
+        tela.listarTarefas();
     }
 }
