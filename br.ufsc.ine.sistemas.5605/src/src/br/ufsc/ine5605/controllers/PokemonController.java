@@ -48,8 +48,10 @@ public class PokemonController {
 
             System.out.println("Insira o valor de vida do novo Pokemon");
             int vida = s.nextInt();
+
             pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida);
             pokemons.add(pokemon);
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -57,28 +59,32 @@ public class PokemonController {
     }
 
     public void delPokemon() {
-        
+
         Scanner s = new Scanner(System.in);
 
         System.out.println("Insira o nome do Pokemon que você deseja excluir");
         String nome = s.nextLine();
-        boolean pokemonEncontrado = false;
-
-        for (Pokemon pokemon : pokemons) {
-            if (pokemon.getNome().equalsIgnoreCase(nome)) {
-                pokemonEncontrado = true;
-                pokemons.remove(pokemon);
-                break;
+        Pokemon pokemonToRemove = this.getPokemonByName(nome);
+        if (pokemonToRemove != null) {
+            try {
+                pokemons.remove(pokemonToRemove);
+                System.out.println("Pokemon deletado com sucesso!");
+            } catch (Exception e) {
+                System.out.println("Algo de errado aconteceu");
             }
         }
-//        if (pokemonEncontrado == false) {
-//            //substituir por exception
-//            System.out.println("Pokemon não encontrado!");
-//        }
+
     }
 
     public Pokemon getPokemonByName(String name) {
+    
+        for (Pokemon pokemon : pokemons) {
+            if (pokemon.getNome().equalsIgnoreCase(name)) {
+                return pokemon;
+            }
+        }
         return null;
+
     }
 
     public int calcularVida(Pokemon pokemon) {
@@ -86,20 +92,43 @@ public class PokemonController {
     }
 
     public void listarPokemons() {
+        
         pokemons.forEach((pokemon) -> {
+        
             System.out.println("-----------" + "\n Pokemon: " + pokemon.getNome() + "\n Descrição: " + pokemon.getDescricao() + "\n Ataque: "
                     + pokemon.getAtaque() + "\n Defesa: " + pokemon.getDefesa() + "\n Vida: " + pokemon.getVida() + "\n Velocidade: "
-                    + pokemon.getVelocidade());
+                    + pokemon.getVelocidade() + "\n ");
+        
         });
+        
     }
 
     public void listarTarefas() {
+    
         tela = new TelaPokemon();
         tela.listarTarefas();
+    
     }
 
     public void editarPokemon() {
-        //edita pokemon 
+        Scanner s = new Scanner(System.in);
+        System.out.println("Qual componente você deseja editar? ");
+        System.out.println("1: Nome ");
+        System.out.println("2: Nick ");
+        System.out.println("3: Descrição ");
+        System.out.println("4: Ataque ");
+        System.out.println("5: Defesa ");
+        System.out.println("6: Vida ");
+        System.out.println("7: Velocidade ");
+        System.out.println("8: Voltar");
+        System.out.println("0: Sair");
+        
+        int toEdit = s.nextInt();
+        switch(toEdit){
+            //@todo implementar cases
+        }
+            
+        
     }
 
 }
