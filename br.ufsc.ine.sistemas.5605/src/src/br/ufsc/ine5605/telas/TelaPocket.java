@@ -23,7 +23,7 @@ public class TelaPocket {
                     + " 2: Soltar Pokemon \n"
                     + " 3: Listar Pocket \n"
                     + " 4: Detalhes Pocket \n"
-                    +" 0: Sair \n"
+                    + " 0: Sair"
             );
             
                     

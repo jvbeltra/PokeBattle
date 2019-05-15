@@ -13,11 +13,12 @@ import src.br.ufsc.ine5605.controllers.PokemonController;
  * @author Joao
  */
 public class TelaPokemon {
-    PokemonController pokemonControll = new PokemonController();
+    PokemonController pokemonControll;
     
     public void listarTarefas(){
+        pokemonControll = new PokemonController();
         Scanner s = new Scanner(System.in);
-        int input = 0;
+        int input;
         do {
             System.out.println(
                     "Selecione uma tarefa \n"

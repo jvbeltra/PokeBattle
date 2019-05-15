@@ -14,6 +14,7 @@ import src.br.ufsc.ine5605.telas.TelaPocket;
  * @author Joao
  */
 public class PocketController {
+    TelaPocket tela;
     public void capturaPokemon(){
         
     }
@@ -31,7 +32,7 @@ public class PocketController {
     }
 
     public void listarTarefas() {
-        TelaPocket tela = new TelaPocket();
+        tela = new TelaPocket();
         tela.listarTarefas();
     }
 }

@@ -18,9 +18,9 @@ public class TelaBatalha {
         do {
             System.out.println(
                     "Selecione uma tarefa \n"
-                    + " 1: Batalhar \n"
+                    +" 1: Batalhar \n"
                     +" 2: Mostrar histórico batalhas \n"
-                    +" 0: Sair \n"
+                    +" 0: Sair"
             );
             
                     

@@ -13,16 +13,17 @@ import src.br.ufsc.ine5605.controllers.PrincipalController;
  * @author Joao
  */
 public class TelaPrincipal {
-    private PrincipalController principalControll = new PrincipalController();
+    private PrincipalController principalControll; 
     
     public void listarTarefas() {
+        principalControll = new PrincipalController();
         Scanner s = new Scanner(System.in);
         int input = 0;
         do {
             System.out.println(
                     "Selecione uma tarefa \n"
                     + " 1: Gerenciar Pokemons \n"
-                    + " 2: Gerenciar Pocket"
+                    + " 2: Gerenciar Pocket \n"
                     + " 3: Gerenciar Batalhas\n"
                     +" 0: Sair \n"
             );
@@ -33,6 +34,7 @@ public class TelaPrincipal {
             
             switch (input){
                 case 1:{
+                    
                     principalControll.acessaPokemon();
                     break;
                 }

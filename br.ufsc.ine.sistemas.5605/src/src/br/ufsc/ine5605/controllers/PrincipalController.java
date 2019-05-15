@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package src.br.ufsc.ine5605.controllers;
+
 /**
  *
  * @author Joao
@@ -11,34 +12,36 @@ package src.br.ufsc.ine5605.controllers;
 
 import src.br.ufsc.ine5605.telas.TelaPrincipal;
 import src.br.ufsc.ine5605.controllers.*;
-import src.br.ufsc.ine5605.controllers.PocketController;
-import src.br.ufsc.ine5605.controllers.PokemonController;
-import src.br.ufsc.ine5605.controllers.TipoController;
 
 public class PrincipalController {
-    PocketController pocketControll = new PocketController();
-    BatalhaController batalhaControll = new BatalhaController();
-    PokemonController pokemonControll = new PokemonController();
-    TipoController tipoControll = new TipoController();
-    
-    public void acessaPocket(){
-       pocketControll.listarTarefas();   
+
+    PocketController pocketControll;
+    BatalhaController batalhaControll;
+    PokemonController pokemonControll;
+    TipoController tipoControll;
+    TelaPrincipal telaPrincipal;
+
+    public void acessaPocket() {
+        pocketControll = new PocketController();
+        pocketControll.listarTarefas();
     }
-    
-    public void acessaPokemon(){
-       pokemonControll.listarTarefas();   
+
+    public void acessaPokemon() {
+        pokemonControll = new PokemonController();
+        pokemonControll.listarTarefas();
     }
-    
-    public void acessaCampoBatalha(){
-       batalhaControll.listarTarefas();    
+
+    public void acessaCampoBatalha() {
+        batalhaControll = new BatalhaController();
+        batalhaControll.listarTarefas();
     }
-    
-    public void acessaTipo(){
+
+    public void acessaTipo() {
         //
-    } 
+    }
 
     public void listarTarefas() {
-        TelaPrincipal telaPrincipal = new TelaPrincipal();
+        telaPrincipal = new TelaPrincipal();
         telaPrincipal.listarTarefas();
     }
 }
