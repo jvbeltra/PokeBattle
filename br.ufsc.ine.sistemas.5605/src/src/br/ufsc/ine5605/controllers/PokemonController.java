@@ -49,9 +49,26 @@ public class PokemonController {
 
             System.out.println("Insira o valor de vida do novo Pokemon");
             int vida = s.nextInt();
-            
-            System.out.println("Escolha o tipo");
-            ETipo tipo = s.;
+            ETipo tipo = ETipo.AGUA;
+            int escolhaTipo = 0;
+            System.out.println("Escolha o tipo\n"
+                    + "1: Tipo Agua\n"
+                    + "2: Tipo Fogo\n"
+                    + "3: Tipo Grama\n"
+            );
+            escolhaTipo = s.nextInt();
+            switch (escolhaTipo) {
+                case 1:
+                    tipo = ETipo.AGUA;
+                    break;
+                case 2:
+                    tipo = ETipo.FOGO;
+                    break;
+                case 3:
+                    tipo = ETipo.GRAMA;
+                    break;
+
+            }
 
             pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida, tipo);
             pokemons.add(pokemon);
@@ -119,7 +136,7 @@ public class PokemonController {
         Scanner s = new Scanner(System.in);
         Pokemon myPokemon = this.getPokemonByName(pokemonName);
         System.out.println("Nome ->" + myPokemon.getNome());
-        
+
         switch (toEdit) {
             case 1: {
                 System.out.println("Insira um novo nome: ");

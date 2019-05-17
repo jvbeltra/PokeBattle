@@ -11,7 +11,7 @@ package src.br.ufsc.ine5605.objects;
  */
 public enum ETipo {
     AGUA,
-    AR,
+    GRAMA,
     FOGO
 
 
