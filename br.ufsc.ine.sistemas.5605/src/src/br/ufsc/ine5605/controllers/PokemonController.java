@@ -77,7 +77,7 @@ public class PokemonController {
     }
 
     public Pokemon getPokemonByName(String name) {
-    
+
         for (Pokemon pokemon : pokemons) {
             if (pokemon.getNome().equalsIgnoreCase(name)) {
                 return pokemon;
@@ -92,43 +92,75 @@ public class PokemonController {
     }
 
     public void listarPokemons() {
-        
+
         pokemons.forEach((pokemon) -> {
-        
-            System.out.println("-----------" + "\n Pokemon: " + pokemon.getNome() + "\n Descrição: " + pokemon.getDescricao() + "\n Ataque: "
+
+            System.out.println("\n Pokemon: " + pokemon.getNome() + "\n Descrição: " + pokemon.getDescricao() + "\n Ataque: "
                     + pokemon.getAtaque() + "\n Defesa: " + pokemon.getDefesa() + "\n Vida: " + pokemon.getVida() + "\n Velocidade: "
-                    + pokemon.getVelocidade() + "\n ");
-        
+                    + pokemon.getVelocidade() + "\n " + "-----------");
+
         });
-        
+
     }
 
     public void listarTarefas() {
-    
+
         tela = new TelaPokemon();
         tela.listarTarefas();
-    
+
     }
 
-    public void editarPokemon() {
+    public void editarPokemon(int toEdit, String pokemonName) {
+
         Scanner s = new Scanner(System.in);
-        System.out.println("Qual componente você deseja editar? ");
-        System.out.println("1: Nome ");
-        System.out.println("2: Nick ");
-        System.out.println("3: Descrição ");
-        System.out.println("4: Ataque ");
-        System.out.println("5: Defesa ");
-        System.out.println("6: Vida ");
-        System.out.println("7: Velocidade ");
-        System.out.println("8: Voltar");
-        System.out.println("0: Sair");
+        Pokemon myPokemon = this.getPokemonByName(pokemonName);
+        System.out.println("Nome ->" + myPokemon.getNome());
         
-        int toEdit = s.nextInt();
-        switch(toEdit){
-            //@todo implementar cases
-        }
-            
-        
-    }
+        switch (toEdit) {
+            case 1: {
+                System.out.println("Insira um novo nome: ");
+                String newNome = s.nextLine();
+                myPokemon.setNome(newNome);
+                break;
+            }
+            case 2: {
+                System.out.println("Insira um novo nick: ");
+                String newNick = s.nextLine();
+                myPokemon.setNick(newNick);
+                break;
+            }
+            case 3: {
+                System.out.println("Insira uma nova descrição: ");
+                String newDescricao = s.nextLine();
+                myPokemon.setDescricao(newDescricao);
+                break;
+            }
+            case 4: {
+                System.out.println("Insira um novo valor de ataque: ");
+                int newAtaque = s.nextInt();
+                myPokemon.setAtaque(newAtaque);
+                break;
+            }
+            case 5: {
+                System.out.println("Insira um novo valor de defesa: ");
+                int newDefesa = s.nextInt();
+                myPokemon.setDefesa(newDefesa);
+                break;
+            }
+            case 6: {
+                System.out.println("Insira uma nova vida: ");
+                int newVida = s.nextInt();
+                myPokemon.setVida(newVida);
+                break;
+            }
+            case 7: {
+                System.out.println("Insira uma nova velocidade: ");
+                int newVelocidade = s.nextInt();
+                myPokemon.setVelocidade(newVelocidade);
 
+                break;
+            }
+        }
+
+    }
 }

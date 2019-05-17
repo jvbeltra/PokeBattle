@@ -8,15 +8,23 @@ package src.br.ufsc.ine5605.controllers;
 import java.util.List;
 import src.br.ufsc.ine5605.objects.Pocket;
 import src.br.ufsc.ine5605.telas.TelaPocket;
+import src.br.ufsc.ine5605.controllers.PrincipalController;
 
 /**
  *
  * @author Joao
  */
 public class PocketController {
-    TelaPocket tela;
-    public void capturaPokemon(){
+    TelaPocket telaPocket;
+    PrincipalController principalControll;
+    
+    public PocketController(){
         
+    }
+    
+    
+    public void capturaPokemon(){
+//     principalControll.acessaPokemon()
     }
     
     public void soltarPokemon(){
@@ -32,7 +40,7 @@ public class PocketController {
     }
 
     public void listarTarefas() {
-        tela = new TelaPocket();
-        tela.listarTarefas();
+        telaPocket = new TelaPocket();
+        telaPocket.listarTarefas();
     }
 }
