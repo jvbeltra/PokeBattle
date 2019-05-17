@@ -7,6 +7,7 @@ package src.br.ufsc.ine5605.controllers;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import src.br.ufsc.ine5605.objects.ETipo;
 import src.br.ufsc.ine5605.objects.Pokemon;
 import src.br.ufsc.ine5605.telas.TelaPokemon;
 
@@ -48,8 +49,11 @@ public class PokemonController {
 
             System.out.println("Insira o valor de vida do novo Pokemon");
             int vida = s.nextInt();
+            
+            System.out.println("Escolha o tipo");
+            ETipo tipo = s.;
 
-            pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida);
+            pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida, tipo);
             pokemons.add(pokemon);
 
         } catch (Exception e) {

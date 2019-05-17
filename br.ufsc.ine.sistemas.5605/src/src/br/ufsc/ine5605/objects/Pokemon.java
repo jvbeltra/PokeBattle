@@ -10,7 +10,7 @@ import src.br.ufsc.ine5605.controllers.PokemonController;
  * @author Joao
  */
     public class Pokemon {
-    
+
         private String nome;
         private String nick;
         private String descricao;
@@ -18,11 +18,11 @@ import src.br.ufsc.ine5605.controllers.PokemonController;
         private int ataque;
         private int defesa;
         private int vida;
-
+        private ETipo tipo;
     public Pokemon() {
     }
 
-    public Pokemon(String nome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida) {
+    public Pokemon(String nome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida, ETipo tipo) {
         this.nome = nome;
         this.nick = nick;
         this.descricao = descricao;
@@ -30,6 +30,7 @@ import src.br.ufsc.ine5605.controllers.PokemonController;
         this.ataque = ataque;
         this.defesa = defesa;
         this.vida = vida;
+        this.tipo = tipo;
     }
 
     public String getNome() {
@@ -87,5 +88,6 @@ import src.br.ufsc.ine5605.controllers.PokemonController;
     public void setVida(int vida) {
         this.vida = vida;
     }
-        
-}
+    
+    }    
+

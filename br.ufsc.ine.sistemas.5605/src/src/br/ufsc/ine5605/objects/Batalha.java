@@ -69,5 +69,18 @@ public class Batalha {
         this.derrotado = derrotado;
     }
     
-    
+    public int ataqueAliado(){
+      if(myPokemon.getAtaque() > wildPokemon.getDefesa()){  
+        return (myPokemon.getAtaque() - wildPokemon.getDefesa()) - wildPokemon.getVida();
+      } else{
+        return wildPokemon.getVida();
+            }
+        }
+    public int ataqueInimigo(){
+    if(wildPokemon.getAtaque() > myPokemon.getDefesa()){  
+        return (wildPokemon.getAtaque() - myPokemon.getDefesa()) - myPokemon.getVida();
+      } else{
+        return myPokemon.getVida();
+            }
+    }
 }

@@ -12,6 +12,8 @@ import src.br.ufsc.ine5605.telas.TelaBatalha;
  * @author Joao
  */
 public class BatalhaController {
+   
+    
     TelaBatalha tela;
     void listarTarefas() {
         tela = new TelaBatalha();
