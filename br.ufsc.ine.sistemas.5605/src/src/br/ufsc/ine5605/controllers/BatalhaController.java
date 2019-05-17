@@ -6,7 +6,7 @@
 package src.br.ufsc.ine5605.controllers;
 
 import src.br.ufsc.ine5605.telas.TelaBatalha;
-
+import src.br.ufsc.ine5605.objects.Batalha;
 /**
  *
  * @author Joao
@@ -19,5 +19,4 @@ public class BatalhaController {
         tela = new TelaBatalha();
         tela.listarTarefas();
     }
-    
 }

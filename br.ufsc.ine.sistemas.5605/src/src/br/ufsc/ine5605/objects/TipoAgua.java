@@ -14,6 +14,6 @@ import static src.br.ufsc.ine5605.objects.ETipo.AGUA;
 public class TipoAgua extends Tipo {
 
     public int calculaBonusAgua() {
-        if(Pokemon.getTipo == AGUA)
+       return 0;
     }
 }
