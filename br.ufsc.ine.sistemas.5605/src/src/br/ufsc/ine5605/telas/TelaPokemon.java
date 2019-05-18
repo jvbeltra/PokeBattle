@@ -16,9 +16,11 @@ import src.br.ufsc.ine5605.objects.Pokemon;
 public class TelaPokemon {
 
     PokemonController pokemonControll;
-
+    
+    public TelaPokemon(PokemonController pokemonControll) {
+        this.pokemonControll = pokemonControll;
+    }
     public void listarTarefas() {
-        pokemonControll = new PokemonController();
         Scanner s = new Scanner(System.in);
         int input;
         do {

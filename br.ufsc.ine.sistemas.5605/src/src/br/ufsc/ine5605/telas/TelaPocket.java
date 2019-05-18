@@ -13,7 +13,13 @@ import src.br.ufsc.ine5605.controllers.PocketController;
  * @author Joao
  */
 public class TelaPocket {
-    public void listarTarefas(){
+    private PocketController pocketControll;
+    
+    public TelaPocket(PocketController pocketControll){
+        this.pocketControll = pocketControll;
+    }
+    
+    public void listarTarefas(){    
         Scanner s = new Scanner(System.in);
         int input = 0;
         do {
@@ -32,8 +38,6 @@ public class TelaPocket {
             
             switch (input){
                 case 1:{
-                    
-                    PocketController pocketControll = new PocketController();
                     pocketControll.capturaPokemon();
                     break;
                 }

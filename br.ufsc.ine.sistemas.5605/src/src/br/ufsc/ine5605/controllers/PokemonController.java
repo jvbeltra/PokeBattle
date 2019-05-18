@@ -20,9 +20,10 @@ public class PokemonController {
     private TelaPokemon tela;
     private Pokemon pokemon;
     private ArrayList<Pokemon> pokemons = new ArrayList<>();
-
-    public PokemonController() {
-
+    private PrincipalController principalControll;
+    
+    public PokemonController(PrincipalController principalControll) {
+        this.principalControll = principalControll;
     }
 
     public void addPokemon() {
@@ -128,7 +129,7 @@ public class PokemonController {
 
     public void listarTarefas() {
 
-        tela = new TelaPokemon();
+        tela = new TelaPokemon(this);
         tela.listarTarefas();
 
     }

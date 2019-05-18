@@ -53,13 +53,14 @@ public class Pocket {
     }
  
     public void addPokemon(Pokemon pokemon){
+        System.out.println("tentou");
+        
         if (pokemon != null){
           //try  
             for (Pokemon auxPokemon : pokemonsCapturados){
                 if (auxPokemon == pokemon){
                     //throw exception
-                    System.out.println("Pokemon já capturado. ");
-                    
+                    System.out.println("Pokemon já capturado. ");     
                     break;
                 }
             }

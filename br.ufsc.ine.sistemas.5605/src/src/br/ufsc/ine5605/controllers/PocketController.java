@@ -16,11 +16,18 @@ import src.br.ufsc.ine5605.controllers.PrincipalController;
  * @author Joao
  */
 public class PocketController {
-    TelaPocket telaPocket;
-    PrincipalController principalControll;
+    private TelaPocket telaPocket;
+    private PrincipalController principalControll;
+    private Pocket pocket;
+
+    public PocketController(TelaPocket telaPocket, PrincipalController principalControll, Pocket pocket) {
+        this.telaPocket = telaPocket;
+        this.principalControll = principalControll;
+        this.pocket = pocket;
+    }
     
-    public PocketController(){
-        
+    public PocketController(PrincipalController principalControll){
+        this.principalControll = principalControll;
     }
     
     
@@ -28,12 +35,14 @@ public class PocketController {
         Scanner s = new Scanner(System.in);
         System.out.println("Insira o nome do Pokemon que você deseja capturar: ");
         String nome = s.nextLine();
-        principalControll.acessaPokemon().getPokemonByName(nome);
-        principalControll.acessaPocket().listarPokemons();
+        System.out.println(principalControll.acessaPokemon().getPokemonByName(nome));
     }
     
     public void soltarPokemon(){
-        
+        Scanner s = new Scanner(System.in);
+        System.out.println("Insira o nome do Pokemon que você deseja soltar: ");
+        String nome = s.nextLine();
+       
     }
     
     public List<Pocket> listarPokemons(){
@@ -45,7 +54,7 @@ public class PocketController {
     }
 
     public void listarTarefas() {
-        telaPocket = new TelaPocket();
+        telaPocket = new TelaPocket(this);
         telaPocket.listarTarefas();
     }
 }
