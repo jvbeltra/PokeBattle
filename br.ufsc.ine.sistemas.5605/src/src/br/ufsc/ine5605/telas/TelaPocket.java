@@ -32,6 +32,9 @@ public class TelaPocket {
             
             switch (input){
                 case 1:{
+                    
+                    PocketController pocketControll = new PocketController();
+                    pocketControll.capturaPokemon();
                     break;
                 }
                 case 2:{

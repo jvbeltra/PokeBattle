@@ -6,6 +6,7 @@
 package src.br.ufsc.ine5605.controllers;
 
 import java.util.List;
+import java.util.Scanner;
 import src.br.ufsc.ine5605.objects.Pocket;
 import src.br.ufsc.ine5605.telas.TelaPocket;
 import src.br.ufsc.ine5605.controllers.PrincipalController;
@@ -24,7 +25,11 @@ public class PocketController {
     
     
     public void capturaPokemon(){
-//     principalControll.acessaPokemon()
+        Scanner s = new Scanner(System.in);
+        System.out.println("Insira o nome do Pokemon que você deseja capturar: ");
+        String nome = s.nextLine();
+        principalControll.acessaPokemon().getPokemonByName(nome);
+        principalControll.acessaPocket().listarPokemons();
     }
     
     public void soltarPokemon(){

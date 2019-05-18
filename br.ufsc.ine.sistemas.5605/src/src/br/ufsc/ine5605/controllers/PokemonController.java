@@ -49,9 +49,27 @@ public class PokemonController {
 
             System.out.println("Insira o valor de vida do novo Pokemon");
             int vida = s.nextInt();
-            
-            System.out.println("Escolha o tipo");
-            ETipo tipo = s.;
+            ETipo tipo = ETipo.AGUA;
+            int escolhaTipo = 0;
+            System.out.println("Escolha o tipo\n"
+                    + "1: Tipo Agua\n"
+                    + "2: Tipo Fogo\n"
+                    + "3: Tipo Grama\n"
+            );
+            escolhaTipo = s.nextInt();
+            switch (escolhaTipo) {
+                case 1:
+                    
+                    tipo = ETipo.AGUA;
+                    break;
+                case 2:
+                    tipo = ETipo.FOGO;
+                    break;
+                case 3:
+                    tipo = ETipo.GRAMA;
+                    break;
+
+            }
 
             pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida, tipo);
             pokemons.add(pokemon);
@@ -98,9 +116,10 @@ public class PokemonController {
     public void listarPokemons() {
 
         pokemons.forEach((pokemon) -> {
-
-            System.out.println("\n Pokemon: " + pokemon.getNome() + "\n Descrição: " + pokemon.getDescricao() + "\n Ataque: "
-                    + pokemon.getAtaque() + "\n Defesa: " + pokemon.getDefesa() + "\n Vida: " + pokemon.getVida() + "\n Velocidade: "
+            ETipo tipo = pokemon.getTipo();
+            String tipoString = tipo.tipo();
+            System.out.println("\n Pokemon: " + pokemon.getNome() + "\n Descrição: " + pokemon.getDescricao() +
+                    "\n Tipo: " + tipoString + "\n Ataque: " + pokemon.getAtaque() + "\n Defesa: " + pokemon.getDefesa() + "\n Vida: " + pokemon.getVida() + "\n Velocidade: "
                     + pokemon.getVelocidade() + "\n " + "-----------");
 
         });
@@ -119,7 +138,7 @@ public class PokemonController {
         Scanner s = new Scanner(System.in);
         Pokemon myPokemon = this.getPokemonByName(pokemonName);
         System.out.println("Nome ->" + myPokemon.getNome());
-        
+
         switch (toEdit) {
             case 1: {
                 System.out.println("Insira um novo nome: ");

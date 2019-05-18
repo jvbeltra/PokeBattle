@@ -5,8 +5,11 @@
  */
 package src.br.ufsc.ine5605.objects;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.PocketController;
+import src.br.ufsc.ine5605.objects.Pokemon;
 /**
  *
  * @author Joao
@@ -50,10 +53,36 @@ public class Pocket {
     }
  
     public void addPokemon(Pokemon pokemon){
-        
+        if (pokemon != null){
+          //try  
+            for (Pokemon auxPokemon : pokemonsCapturados){
+                if (auxPokemon == pokemon){
+                    //throw exception
+                    System.out.println("Pokemon já capturado. ");
+                    
+                    break;
+                }
+            }
+            pokemonsCapturados.add(pokemon);
+            
+            
+        }
     }
     
     public void delPokemon(Pokemon pokemon){
-        
+        if (pokemon != null) {
+            for (Pokemon pokemonInside : pokemonsCapturados) {
+                if (pokemonInside == pokemon){
+                    System.out.println("Pokemon já existe");
+                    //throw exception
+                }
+            }
+            try {
+                pokemonsCapturados.remove(pokemon);
+                System.out.println("Pokemon deletado com sucesso!");
+            } catch (Exception e) {
+                System.out.println("Algo de errado aconteceu");
+            }
+        }
     }
 };

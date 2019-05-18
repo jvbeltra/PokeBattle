@@ -26,7 +26,7 @@ public class TelaPrincipal {
                     + " 2: Gerenciar Pocket \n"
                     + " 3: Gerenciar Batalhas\n"
                     +" 0: Sair \n"
-            );
+            ); 
             
                     
             input = s.nextInt();

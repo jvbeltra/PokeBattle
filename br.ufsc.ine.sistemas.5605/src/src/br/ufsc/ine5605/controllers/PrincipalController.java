@@ -16,24 +16,23 @@ import src.br.ufsc.ine5605.controllers.*;
 public class PrincipalController {
 
     PocketController pocketControll;
-    BatalhaController batalhaControll;
+    BatalhaController batalhaControll = new BatalhaController();
     PokemonController pokemonControll;
     TipoController tipoControll;
     TelaPrincipal telaPrincipal;
 
-    public void acessaPocket() {
-        pocketControll = new PocketController();
-        pocketControll.listarTarefas();
+    public PocketController acessaPocket() {
+        return pocketControll = new PocketController();
+        
     }
 
-    public void acessaPokemon() {
-        pokemonControll = new PokemonController();
-        pokemonControll.listarTarefas();
+    public PokemonController acessaPokemon() {
+        return pokemonControll = new PokemonController();
     }
 
-    public void acessaCampoBatalha() {
-        batalhaControll = new BatalhaController();
-        batalhaControll.listarTarefas();
+    public BatalhaController acessaCampoBatalha() {
+        return batalhaControll;
+        
     }
 
     public void acessaTipo() {
@@ -41,7 +40,7 @@ public class PrincipalController {
     }
 
     public void listarTarefas() {
-        telaPrincipal = new TelaPrincipal();
+        telaPrincipal = new TelaPrincipal(this);
         telaPrincipal.listarTarefas();
     }
 }
