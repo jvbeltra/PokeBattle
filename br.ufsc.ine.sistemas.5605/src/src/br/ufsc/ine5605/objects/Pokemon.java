@@ -4,21 +4,25 @@
  * and open the template in the editor.
  */
 package src.br.ufsc.ine5605.objects;
+
 import src.br.ufsc.ine5605.controllers.PokemonController;
+import src.br.ufsc.ine5605.objects.Tipo;
+
 /**
  *
  * @author Joao
  */
-    public class Pokemon {
+public class Pokemon {
 
-        private String nome;
-        private String nick;
-        private String descricao;
-        private int velocidade;
-        private int ataque;
-        private int defesa;
-        private int vida;
-        private ETipo tipo;
+    private String nome;
+    private String nick;
+    private String descricao;
+    private int velocidade;
+    private int ataque;
+    private int defesa;
+    private int vida;
+    private ETipo tipo;
+
     public Pokemon() {
     }
 
@@ -27,7 +31,7 @@ import src.br.ufsc.ine5605.controllers.PokemonController;
         this.nick = nick;
         this.descricao = descricao;
         this.velocidade = velocidade;
-        this.ataque = ataque;   
+        this.ataque = ataque;
         this.defesa = defesa;
         this.vida = vida;
         this.tipo = tipo;
@@ -92,6 +96,5 @@ import src.br.ufsc.ine5605.controllers.PokemonController;
     public ETipo getTipo() {
         return tipo;
     }
-    
-    } 
 
+}

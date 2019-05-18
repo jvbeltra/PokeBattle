@@ -58,5 +58,15 @@ public abstract class Tipo {
         this.descricao = descricao;
     }
     
+//      if (myPokemon.getTipo() == AGUA && wildPokemon.getTipo() == FOGO){
+//      myPokemon.setAtaque(0);
+//      }
+//      if (myPokemon.getTipo() == FOGO && wildPokemon.getTipo() == GRAMA){
+//      
+//      } 
+//      
+//      if (myPokemon.getTipo() == GRAMA && wildPokemon.getTipo() == AGUA){
+//      myPokemon.setAtaque(0);
+ //     }
     
 }
