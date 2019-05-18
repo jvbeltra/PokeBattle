@@ -10,11 +10,17 @@ package src.br.ufsc.ine5605.objects;
  * @author Joao
  */
 public enum ETipo {
-    AGUA,
-    GRAMA,
-    FOGO
+    AGUA("agua"),
+    GRAMA("grama"),
+    FOGO("fogo");
 
+    private String tipo;
 
+    ETipo(String tipo) {
+        this.tipo = tipo;
+    }
 
+    public String tipo() {
+        return tipo;
+    }
 }
-
