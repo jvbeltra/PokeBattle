@@ -27,7 +27,7 @@ import src.br.ufsc.ine5605.controllers.PokemonController;
         this.nick = nick;
         this.descricao = descricao;
         this.velocidade = velocidade;
-        this.ataque = ataque;
+        this.ataque = ataque;   
         this.defesa = defesa;
         this.vida = vida;
         this.tipo = tipo;
@@ -88,6 +88,10 @@ import src.br.ufsc.ine5605.controllers.PokemonController;
     public void setVida(int vida) {
         this.vida = vida;
     }
+
+    public ETipo getTipo() {
+        return tipo;
+    }
     
-    }    
+    } 
 

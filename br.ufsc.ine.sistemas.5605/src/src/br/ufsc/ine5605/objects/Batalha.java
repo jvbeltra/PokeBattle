@@ -7,6 +7,9 @@ package src.br.ufsc.ine5605.objects;
 
 import java.util.Date;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
+import static src.br.ufsc.ine5605.objects.ETipo.AGUA;
+import static src.br.ufsc.ine5605.objects.ETipo.FOGO;
+import static src.br.ufsc.ine5605.objects.ETipo.GRAMA;
 /**
  *
  * @author Joao
@@ -70,6 +73,17 @@ public class Batalha {
     }
     
     public int ataqueAliado(){
+      if (myPokemon.getTipo() == AGUA && wildPokemon.getTipo() == FOGO){
+      myPokemon.setAtaque(0);
+      }
+      if (myPokemon.getTipo() == FOGO && wildPokemon.getTipo() == GRAMA){
+      myPokemon.setAtaque(0);
+      } 
+      
+      if (myPokemon.getTipo() == GRAMA && wildPokemon.getTipo() == AGUA){
+      myPokemon.setAtaque(0);
+      }
+      
       if(myPokemon.getAtaque() > wildPokemon.getDefesa()){  
         return (myPokemon.getAtaque() - wildPokemon.getDefesa()) - wildPokemon.getVida();
       } else{
