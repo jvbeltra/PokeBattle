@@ -27,7 +27,7 @@ public class BatalhaController {
     TelaBatalha tela;
 
 
-    void listarTarefas() {
+    public void listarTarefas() {
         tela = new TelaBatalha();
         tela.listarTarefas();
     }

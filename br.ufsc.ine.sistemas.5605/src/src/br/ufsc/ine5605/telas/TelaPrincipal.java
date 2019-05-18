@@ -14,9 +14,15 @@ import src.br.ufsc.ine5605.controllers.PrincipalController;
  */
 public class TelaPrincipal {
     private PrincipalController principalControll; 
+
+    public TelaPrincipal(PrincipalController principalControll) {
+        this.principalControll = principalControll;
+    }
+    
+    
     
     public void listarTarefas() {
-        principalControll = new PrincipalController();
+        
         Scanner s = new Scanner(System.in);
         int input = 0;
         do {
@@ -26,7 +32,7 @@ public class TelaPrincipal {
                     + " 2: Gerenciar Pocket \n"
                     + " 3: Gerenciar Batalhas\n"
                     +" 0: Sair \n"
-            ); 
+            );
             
                     
             input = s.nextInt();
@@ -34,17 +40,16 @@ public class TelaPrincipal {
             
             switch (input){
                 case 1:{
-                    
-                    principalControll.acessaPokemon();
+                    principalControll.acessaPokemon().listarTarefas();
                     break;
                 }
                 case 2:{
-                    principalControll.acessaPocket();
+                    principalControll.acessaPocket().listarTarefas();
                     break;
                 }
                 case 3:{
                     
-                    principalControll.acessaCampoBatalha();
+                    principalControll.acessaCampoBatalha().listarTarefas();
                     break;
                 }
                

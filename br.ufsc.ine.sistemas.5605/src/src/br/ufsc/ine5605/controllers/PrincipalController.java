@@ -15,11 +15,19 @@ import src.br.ufsc.ine5605.controllers.*;
 
 public class PrincipalController {
 
-    PocketController pocketControll;
-    BatalhaController batalhaControll = new BatalhaController();
+    private PocketController pocketControll;
+    BatalhaController batalhaControll;
     PokemonController pokemonControll;
     TipoController tipoControll;
     TelaPrincipal telaPrincipal;
+    
+    public PrincipalController(PocketController pocketControll, BatalhaController batalhaControll, PokemonController pokemonControll, TipoController tipoControll, TelaPrincipal telaPrincipal) {
+        this.pocketControll = pocketControll;
+        this.batalhaControll = batalhaControll;
+        this.pokemonControll = pokemonControll;
+        this.tipoControll = tipoControll;
+        this.telaPrincipal = telaPrincipal;
+    }
 
     public PocketController acessaPocket() {
         return pocketControll = new PocketController();
