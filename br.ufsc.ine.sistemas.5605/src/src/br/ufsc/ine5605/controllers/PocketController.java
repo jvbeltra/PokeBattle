@@ -26,8 +26,9 @@ public class PocketController {
         this.pocket = pocket;
     }
     
-    public PocketController(PrincipalController principalControll){
+    public PocketController(PrincipalController principalControll, Pocket pocket){
         this.principalControll = principalControll;
+        this.pocket = pocket;
     }
     
     
@@ -35,7 +36,7 @@ public class PocketController {
         Scanner s = new Scanner(System.in);
         System.out.println("Insira o nome do Pokemon que você deseja capturar: ");
         String nome = s.nextLine();
-        System.out.println(principalControll.acessaPokemon().getPokemonByName(nome));
+        pocket.addPokemon(principalControll.acessaPokemon().getPokemonByName(nome));
     }
     
     public void soltarPokemon(){
@@ -45,8 +46,8 @@ public class PocketController {
        
     }
     
-    public List<Pocket> listarPokemons(){
-        return null;
+    public void listarPokemons(){
+        pocket.getPokemonsCapturados();
     }
     
     public void getPokemonByName(String nome){

@@ -12,10 +12,11 @@ package src.br.ufsc.ine5605.controllers;
 
 import src.br.ufsc.ine5605.telas.TelaPrincipal;
 import src.br.ufsc.ine5605.controllers.*;
+import src.br.ufsc.ine5605.objects.Pocket;
 
 public class PrincipalController {
-
-    private PocketController pocketControll = new PocketController(this);
+    private Pocket pocket = new Pocket();
+    private PocketController pocketControll = new PocketController(this, pocket);
     private PokemonController pokemonControll= new PokemonController(this);
     private BatalhaController batalhaControll = new BatalhaController();
     TipoController tipoControll;
@@ -27,6 +28,7 @@ public class PrincipalController {
         this.pokemonControll = pokemonControll;
         this.tipoControll = tipoControll;
         this.telaPrincipal = telaPrincipal;
+        
     }
     public PrincipalController(){
         
@@ -46,12 +48,7 @@ public class PrincipalController {
         
     }
 
-    public void acessaTipo() {
-        //
-    }
-
     public void listarTarefas() {
-        
         //fazer o mesmo para pokemonController e telapokemon
         telaPrincipal = new TelaPrincipal(this);
         telaPrincipal.listarTarefas();

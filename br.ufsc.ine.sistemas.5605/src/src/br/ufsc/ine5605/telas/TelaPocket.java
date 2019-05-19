@@ -46,8 +46,7 @@ public class TelaPocket {
                     break;
                 }
                 case 3:{
-                    
-                    //Chama edição de pokemon
+                    pocketControll.listarPokemons()
                     break;
                 }
                 case 4:{
