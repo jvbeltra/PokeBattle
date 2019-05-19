@@ -27,6 +27,7 @@ public class BatalhaController {
     TelaBatalha tela;
     private Pokemon wildPokemon;
     private Pokemon myPokemon;
+    private Pokemon pokemonVencedor;
 
     public void listarTarefas() {
         tela = new TelaBatalha();
@@ -80,7 +81,7 @@ public class BatalhaController {
     }
 
     public int ataqueInimigo() {
-        
+
         if (wildPokemon.getTipo() == AGUA && myPokemon.getTipo() == FOGO) {
             myPokemon.setAtaque(myPokemon.getAtaque() * 2);
         }
@@ -106,6 +107,33 @@ public class BatalhaController {
             return myPokemon.getVida();
         }
     }
-    
-    
+
+    public String lutar() {
+    int i = 0;
+        while (myPokemon.getVida() != 0 && wildPokemon.getVida() != 0) {
+            i++;
+            if (myPokemon.getVelocidade() > wildPokemon.getVelocidade()) {
+              this.ataqueAliado();
+              this.ataqueInimigo();
+            } else {
+                this.ataqueInimigo();
+                this.ataqueAliado();
+            }
+           System.out.println("Turno: " + i);
+           System.out.println("Aliado Tirou de Dano: " + myPokemon.getAtaque());
+           System.out.println("Inimigo Tirou de Dano: " + wildPokemon.getAtaque());
+           System.out.println("Vida Atual do Meu Pokemon: " + myPokemon.getVida());
+           System.out.println("Vida Atual do Pokemon Inimigo: " + wildPokemon.getVida());
+        }
+        if (myPokemon.getVida() == 0) {
+                pokemonVencedor = wildPokemon;
+
+            } else {
+                pokemonVencedor = myPokemon;
+
+            }
+        
+        return pokemonVencedor.getNome();
+
+    }
 }
