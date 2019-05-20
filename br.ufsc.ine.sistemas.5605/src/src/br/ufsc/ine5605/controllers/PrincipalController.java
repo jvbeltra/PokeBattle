@@ -18,7 +18,7 @@ public class PrincipalController {
     private Pocket pocket = new Pocket();
     private PocketController pocketControll = new PocketController(this, pocket);
     private PokemonController pokemonControll= new PokemonController(this);
-    private BatalhaController batalhaControll = new BatalhaController();
+    private BatalhaController batalhaControll = new BatalhaController(pokemonControll, pocketControll);
     TipoController tipoControll;
     TelaPrincipal telaPrincipal;
     
