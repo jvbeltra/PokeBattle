@@ -76,7 +76,6 @@ public void delPokemon() {
     }
 
     public Pokemon getPokemonByName(String name) {
-
         for (Pokemon pokemon : pokemons) {
             if (pokemon.getNome().equalsIgnoreCase(name)) {
                 return pokemon;

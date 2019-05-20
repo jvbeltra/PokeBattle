@@ -17,6 +17,7 @@ import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
  * @author Joao
  */
 public class PocketController {
+
     private TelaPocket telaPocket;
     private PrincipalController principalControll;
     private Pocket pocket;
@@ -26,46 +27,45 @@ public class PocketController {
         this.principalControll = principalControll;
         this.pocket = pocket;
     }
-    
-    public PocketController(PrincipalController principalControll, Pocket pocket){
+
+    public PocketController(PrincipalController principalControll, Pocket pocket) {
         this.principalControll = principalControll;
         this.pocket = pocket;
     }
-    
-    
-    public void capturaPokemon() throws PokemonNaoExisteException{
+
+    public void capturaPokemon() throws PokemonNaoExisteException {
         Scanner s = new Scanner(System.in);
         System.out.println("Insira o nome do Pokemon que você deseja capturar: ");
         String nome = s.nextLine();
         try {
-            if (principalControll.acessaPokemon().getPokemonByName(nome)!= null){
+            if (principalControll.acessaPokemon().getPokemonByName(nome) != null) {
                 pocket.addPokemon(principalControll.acessaPokemon().getPokemonByName(nome));
             } else {
                 throw new PokemonNaoExisteException();
             }
-            
-        } catch (PokemonNaoExisteException e){
+
+        } catch (PokemonNaoExisteException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    public void soltarPokemon() throws PokemonNaoExisteException{
+
+    public void soltarPokemon() throws PokemonNaoExisteException {
         Scanner s = new Scanner(System.in);
         System.out.println("Insira o nome do Pokemon que você deseja soltar: ");
         String nome = s.nextLine();
         try {
-            if (principalControll.acessaPokemon().getPokemonByName(nome)!= null){
+            if (principalControll.acessaPokemon().getPokemonByName(nome) != null) {
                 pocket.delPokemon(principalControll.acessaPokemon().getPokemonByName(nome));
             } else {
                 throw new PokemonNaoExisteException();
             }
-            
-        } catch (PokemonNaoExisteException e){
+
+        } catch (PokemonNaoExisteException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    public void listarPokemons(){
+
+    public void listarPokemons() {
         pocket.getPokemonsCapturados();
     }
 
@@ -73,4 +73,5 @@ public class PocketController {
         telaPocket = new TelaPocket(this);
         telaPocket.listarTarefas();
     }
+
 }
