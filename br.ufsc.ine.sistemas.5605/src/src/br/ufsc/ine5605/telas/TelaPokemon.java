@@ -148,7 +148,7 @@ public class TelaPokemon {
             pokemonControll.editarPokemon(toEdit, pokemonName);
         }
 
-        if (toEdit == 8 || pokemonName.equals("0")) {
+        if (toEdit == 8) {
             this.listarTarefas();
         }
 
