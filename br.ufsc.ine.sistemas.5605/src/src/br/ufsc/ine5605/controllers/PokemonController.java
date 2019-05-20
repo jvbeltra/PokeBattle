@@ -25,8 +25,8 @@ public class PokemonController {
 
     public PokemonController(PrincipalController principalControll) {
         this.principalControll = principalControll;
-        Pokemon pokemon1 = new Pokemon("Pikachu", "Pikachu", "Pikachu", 5, 5, 5, 5, ETipo.FOGO);
-        Pokemon pokemon2 = new Pokemon("Bulba", "Bulba", "Bulba", 5, 5, 5, 5, ETipo.FOGO);
+        Pokemon pokemon1 = new Pokemon("Pikachu", "Pikachu", "Pikachu", 8, 10, 8, 100, ETipo.FOGO);
+        Pokemon pokemon2 = new Pokemon("Bulba", "Bulba", "Bulba", 5, 8, 12, 100, ETipo.FOGO);
         pokemons.add(pokemon1);
         pokemons.add(pokemon2);
     }
