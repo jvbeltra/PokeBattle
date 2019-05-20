@@ -25,9 +25,9 @@ public class BatalhaController {
     private Pokemon wildPokemon;
     private Pokemon myPokemon;
     private Pokemon pokemonVencedor;
-    private Pokemon pokemonDerrotado ;
+    private Pokemon pokemonDerrotado;
     private TelaBatalha tela;
-    
+
     public BatalhaController(PokemonController pokemonControll) {
         this.pokemonControll = pokemonControll;
     }
@@ -54,9 +54,7 @@ public class BatalhaController {
     }
 
     ;
-    
-    public int ataqueAliado() {
-
+    public int calculaVantagemAliada() {
         if (myPokemon.getTipo() == AGUA && wildPokemon.getTipo() == FOGO) {
             myPokemon.setAtaque(myPokemon.getAtaque() * 2);
         }
@@ -75,15 +73,28 @@ public class BatalhaController {
         if (myPokemon.getTipo() == GRAMA && wildPokemon.getTipo() == FOGO) {
             myPokemon.setAtaque((myPokemon.getAtaque() / 2));
         }
+        return myPokemon.getAtaque();
+    }
+
+    public int ataqueAliado() {
+
         if (myPokemon.getAtaque() > wildPokemon.getDefesa()) {
             wildPokemon.setVida(myPokemon.getAtaque() - wildPokemon.getDefesa() - wildPokemon.getVida());
+            if (myPokemon.getVida() < 0) {
+                myPokemon.setVida(0);
+                
+            }
             return wildPokemon.getVida();
         } else {
+             if (myPokemon.getVida() < 0) {
+                    myPokemon.setVida(0);
+                }
             return wildPokemon.getVida();
+
         }
     }
 
-    public int ataqueInimigo() {
+    public int calculaVantagemAdversaria() {
 
         if (wildPokemon.getTipo() == AGUA && myPokemon.getTipo() == FOGO) {
             myPokemon.setAtaque(myPokemon.getAtaque() * 2);
@@ -103,17 +114,33 @@ public class BatalhaController {
         if (wildPokemon.getTipo() == GRAMA && myPokemon.getTipo() == FOGO) {
             myPokemon.setAtaque((myPokemon.getAtaque() / 2));
         }
+        return wildPokemon.getAtaque();
+    }
+
+    public int ataqueInimigo() {
+
         if (wildPokemon.getAtaque() > myPokemon.getDefesa()) {
             myPokemon.setVida(wildPokemon.getAtaque() - myPokemon.getDefesa() - myPokemon.getVida());
-            return wildPokemon.getVida();
-        } else {
-            return myPokemon.getVida();
-        }
-    }
+            if (myPokemon.getVida() < 0) {
+                myPokemon.setVida(0);
+            }
+                return myPokemon.getVida();
+            } 
+            
+            else {
+                if (myPokemon.getVida() < 0) {
+                    myPokemon.setVida(0);
+                }
+
+            }
+        return myPokemon.getVida();
+
+        
+            }
 
     public String lutar() {
         int i = 0;
-        while (myPokemon.getVida() != 0 && wildPokemon.getVida() != 0) {
+        while (myPokemon.getVida() != 0 || wildPokemon.getVida() != 0) {
             i++;
             if (myPokemon.getVelocidade() > wildPokemon.getVelocidade()) {
                 this.ataqueAliado();
@@ -153,7 +180,8 @@ public class BatalhaController {
         String nomeSelvagem = s.nextLine();
         //try
         wildPokemon = pokemonControll.getPokemonByName(nomeSelvagem);
-        
+        this.calculaVantagemAliada();
+        this.calculaVantagemAdversaria();
         this.lutar();
         Batalha resultadoBatalha = new Batalha(data, pokemonVencedor, pokemonDerrotado);
         System.out.println("Pokemon Vencedor" + pokemonVencedor.getNome());
