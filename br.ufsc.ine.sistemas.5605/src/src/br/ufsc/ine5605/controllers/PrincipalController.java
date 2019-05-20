@@ -49,7 +49,6 @@ public class PrincipalController {
     }
 
     public void listarTarefas() {
-        //fazer o mesmo para pokemonController e telapokemon
         telaPrincipal = new TelaPrincipal(this);
         telaPrincipal.listarTarefas();
     }

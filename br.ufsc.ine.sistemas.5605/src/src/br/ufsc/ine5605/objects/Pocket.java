@@ -82,19 +82,18 @@ public class Pocket {
 
     public String delPokemon(Pokemon pokemon) throws PokemonNaoCapturadoException {
         try {
-        for (Pokemon pokemonCap : pokemonsCapturados) {
-            if (pokemonCap.getNome().equals(pokemon.getNome())) {
-                System.out.println("\n" + pokemon.getNome() + " foi solto!");
-                pokemonsCapturados.remove(pokemonCap);
-                return pokemon.getNome();
+            for (Pokemon pokemonCap : pokemonsCapturados) {
+                if (pokemonCap.getNome().equals(pokemon.getNome())) {
+                    System.out.println("\n" + pokemon.getNome() + " foi solto!");
+                    pokemonsCapturados.remove(pokemonCap);
+                    return pokemon.getNome();
+                }
             }
-        }
-        throw new PokemonNaoCapturadoException();
-        } catch(PokemonNaoCapturadoException e){
+            throw new PokemonNaoCapturadoException();
+        } catch (PokemonNaoCapturadoException e) {
             System.out.println(e.getMessage());
             return pokemon.getNome();
         }
-       
-        
+
     }
 };
