@@ -22,7 +22,6 @@ public class Batalha {
         this.horaBatalha = horaBatalha;
         this.myPokemon = myPokemon;
         this.wildPokemon = wildPokemon;
-       
     }
 
     public Batalha() {

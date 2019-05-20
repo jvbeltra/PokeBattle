@@ -6,12 +6,14 @@
 package src.br.ufsc.ine5605.telas;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
-
+import java.util.Date;
 /**
  *
  * @author Joao
  */
 public class TelaBatalha {
+    BatalhaController batalhaControll;
+    
  public void listarTarefas(){
      Scanner s = new Scanner(System.in);
         int input = 0;
@@ -29,6 +31,7 @@ public class TelaBatalha {
             
             switch (input){
                 case 1:{
+                    batalhaControll.batalhar();
                     break;
                 }
                 case 2:{

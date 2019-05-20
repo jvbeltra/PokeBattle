@@ -13,6 +13,7 @@ import src.br.ufsc.ine5605.objects.Pokemon;
 import static src.br.ufsc.ine5605.objects.ETipo.AGUA;
 import static src.br.ufsc.ine5605.objects.ETipo.FOGO;
 import static src.br.ufsc.ine5605.objects.ETipo.GRAMA;
+import java.util.Date;
 
 /**
  *
@@ -20,14 +21,19 @@ import static src.br.ufsc.ine5605.objects.ETipo.GRAMA;
  */
 public class BatalhaController {
 
-    private PokemonController wildPokemonControll;
+    private PokemonController PokemonControll;
 //    PocketController myPocketControll = new PocketController();
-    private PocketController myPocketControll;
+    private PokemonController myPocketControll;
 
+    public BatalhaController(PokemonController wildPokemonControll, PocketController myPokemonControll) {
+        this.PokemonControll = PokemonControll;
+        this.myPocketControll = myPocketControll;
+    }
     TelaBatalha tela;
     private Pokemon wildPokemon;
     private Pokemon myPokemon;
     private Pokemon pokemonVencedor;
+    private Pokemon pokemonDerrotado ;
 
     public void listarTarefas() {
         tela = new TelaBatalha();
@@ -47,7 +53,7 @@ public class BatalhaController {
         String nomeSelvagem = s.nextLine();
 
         //try
-        wildPokemonControll.getPokemonByName(nomeSelvagem);
+        PokemonControll.getPokemonByName(nomeSelvagem);
     }
 
     ;
@@ -109,31 +115,51 @@ public class BatalhaController {
     }
 
     public String lutar() {
-    int i = 0;
+        int i = 0;
         while (myPokemon.getVida() != 0 && wildPokemon.getVida() != 0) {
             i++;
             if (myPokemon.getVelocidade() > wildPokemon.getVelocidade()) {
-              this.ataqueAliado();
-              this.ataqueInimigo();
+                this.ataqueAliado();
+                this.ataqueInimigo();
             } else {
                 this.ataqueInimigo();
                 this.ataqueAliado();
             }
-           System.out.println("Turno: " + i);
-           System.out.println("Aliado Tirou de Dano: " + myPokemon.getAtaque());
-           System.out.println("Inimigo Tirou de Dano: " + wildPokemon.getAtaque());
-           System.out.println("Vida Atual do Meu Pokemon: " + myPokemon.getVida());
-           System.out.println("Vida Atual do Pokemon Inimigo: " + wildPokemon.getVida());
+            System.out.println("Turno: " + i);
+            System.out.println("Aliado Tirou de Dano: " + myPokemon.getAtaque());
+            System.out.println("Inimigo Tirou de Dano: " + wildPokemon.getAtaque());
+            System.out.println("Vida Atual do Meu Pokemon: " + myPokemon.getVida());
+            System.out.println("Vida Atual do Pokemon Inimigo: " + wildPokemon.getVida());
         }
         if (myPokemon.getVida() == 0) {
-                pokemonVencedor = wildPokemon;
+            pokemonVencedor = wildPokemon;
+            pokemonDerrotado = myPokemon;
+        } else {
+            pokemonVencedor = myPokemon;
+            pokemonDerrotado = wildPokemon;
+        }
 
-            } else {
-                pokemonVencedor = myPokemon;
-
-            }
-        
         return pokemonVencedor.getNome();
 
+    }
+
+    public Batalha batalhar() {
+        Date data = new Date();
+        Scanner s = new Scanner(System.in);
+
+        System.out.println("Insira o nome do Pokemon que você utilizará: ");
+        String nomeMyPokemon = s.nextLine();
+        //try
+        myPokemon = myPocketControll.getPokemonByName(nomeMyPokemon);
+
+        System.out.println("Insira o nome do Pokemon selvagem: ");
+        String nomeSelvagem = s.nextLine();
+        //try
+        wildPokemon = PokemonControll.getPokemonByName(nomeSelvagem);
+        this.lutar();
+        Batalha resultadoBatalha = new Batalha(data, pokemonVencedor, pokemonDerrotado);
+        System.out.println("Pokemon Vencedor" + pokemonVencedor.getNome());
+        System.out.println("Pokemon Perdedor" + pokemonDerrotado.getNome());
+        return resultadoBatalha;
     }
 }
