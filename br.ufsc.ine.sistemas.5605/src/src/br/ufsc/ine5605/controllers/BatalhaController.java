@@ -21,22 +21,19 @@ import java.util.Date;
  */
 public class BatalhaController {
 
-    private PokemonController PokemonControll;
-//    PocketController myPocketControll = new PocketController();
-    private PokemonController myPocketControll;
-
-    public BatalhaController(PokemonController wildPokemonControll, PocketController myPokemonControll) {
-        this.PokemonControll = PokemonControll;
-        this.myPocketControll = myPocketControll;
-    }
-    TelaBatalha tela;
+    private PokemonController pokemonControll;
     private Pokemon wildPokemon;
     private Pokemon myPokemon;
     private Pokemon pokemonVencedor;
     private Pokemon pokemonDerrotado ;
+    private TelaBatalha tela;
+    
+    public BatalhaController(PokemonController pokemonControll) {
+        this.pokemonControll = pokemonControll;
+    }
 
     public void listarTarefas() {
-        tela = new TelaBatalha();
+        tela = new TelaBatalha(this);
         tela.listarTarefas();
     }
 
@@ -150,12 +147,13 @@ public class BatalhaController {
         System.out.println("Insira o nome do Pokemon que você utilizará: ");
         String nomeMyPokemon = s.nextLine();
         //try
-        myPokemon = myPocketControll.getPokemonByName(nomeMyPokemon);
+        myPokemon = pokemonControll.getPokemonByName(nomeMyPokemon);
 
         System.out.println("Insira o nome do Pokemon selvagem: ");
         String nomeSelvagem = s.nextLine();
         //try
-        wildPokemon = PokemonControll.getPokemonByName(nomeSelvagem);
+        wildPokemon = pokemonControll.getPokemonByName(nomeSelvagem);
+        
         this.lutar();
         Batalha resultadoBatalha = new Batalha(data, pokemonVencedor, pokemonDerrotado);
         System.out.println("Pokemon Vencedor" + pokemonVencedor.getNome());

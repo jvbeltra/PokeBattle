@@ -13,6 +13,10 @@ import java.util.Date;
  */
 public class TelaBatalha {
     BatalhaController batalhaControll;
+
+    public TelaBatalha(BatalhaController batalhaControll) {
+        this.batalhaControll = batalhaControll;
+    }
     
  public void listarTarefas(){
      Scanner s = new Scanner(System.in);
