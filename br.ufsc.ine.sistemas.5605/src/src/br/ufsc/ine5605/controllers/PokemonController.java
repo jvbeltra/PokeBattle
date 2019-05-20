@@ -123,9 +123,10 @@ public class PokemonController {
         pokemons.forEach((pokemon) -> {
             ETipo tipo = pokemon.getTipo();
             String tipoString = tipo.tipo();
+            System.out.println("-----------");
             System.out.println("\n Pokemon: " + pokemon.getNome() + "\n Descrição: " + pokemon.getDescricao() +
                     "\n Tipo: " + tipoString + "\n Ataque: " + pokemon.getAtaque() + "\n Defesa: " + pokemon.getDefesa() + "\n Vida: " + pokemon.getVida() + "\n Velocidade: "
-                    + pokemon.getVelocidade() + "\n " + "-----------");
+                    + pokemon.getVelocidade() + "-----------");
 
         });
 

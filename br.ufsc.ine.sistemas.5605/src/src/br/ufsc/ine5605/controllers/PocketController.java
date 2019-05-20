@@ -10,6 +10,7 @@ import java.util.Scanner;
 import src.br.ufsc.ine5605.objects.Pocket;
 import src.br.ufsc.ine5605.telas.TelaPocket;
 import src.br.ufsc.ine5605.controllers.PrincipalController;
+import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
 
 /**
  *
@@ -32,26 +33,40 @@ public class PocketController {
     }
     
     
-    public void capturaPokemon(){
+    public void capturaPokemon() throws PokemonNaoExisteException{
         Scanner s = new Scanner(System.in);
         System.out.println("Insira o nome do Pokemon que você deseja capturar: ");
         String nome = s.nextLine();
-        pocket.addPokemon(principalControll.acessaPokemon().getPokemonByName(nome));
+        try {
+            if (principalControll.acessaPokemon().getPokemonByName(nome)!= null){
+                pocket.addPokemon(principalControll.acessaPokemon().getPokemonByName(nome));
+            } else {
+                throw new PokemonNaoExisteException();
+            }
+            
+        } catch (PokemonNaoExisteException e){
+            System.out.println(e.getMessage());
+        }
     }
     
-    public void soltarPokemon(){
+    public void soltarPokemon() throws PokemonNaoExisteException{
         Scanner s = new Scanner(System.in);
         System.out.println("Insira o nome do Pokemon que você deseja soltar: ");
         String nome = s.nextLine();
-       
+        try {
+            if (principalControll.acessaPokemon().getPokemonByName(nome)!= null){
+                pocket.delPokemon(principalControll.acessaPokemon().getPokemonByName(nome));
+            } else {
+                throw new PokemonNaoExisteException();
+            }
+            
+        } catch (PokemonNaoExisteException e){
+            System.out.println(e.getMessage());
+        }
     }
     
     public void listarPokemons(){
         pocket.getPokemonsCapturados();
-    }
-    
-    public void getPokemonByName(String nome){
-        
     }
 
     public void listarTarefas() {

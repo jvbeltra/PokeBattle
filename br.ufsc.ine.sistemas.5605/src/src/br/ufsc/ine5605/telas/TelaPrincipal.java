@@ -27,7 +27,7 @@ public class TelaPrincipal {
         int input = 0;
         do {
             System.out.println(
-                    "Selecione uma tarefa \n"
+                    "\n --- Selecione uma tarefa ---\n"
                     + " 1: Gerenciar Pokemons \n"
                     + " 2: Gerenciar Pocket \n"
                     + " 3: Gerenciar Batalhas\n"

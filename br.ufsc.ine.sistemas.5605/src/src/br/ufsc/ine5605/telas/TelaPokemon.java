@@ -25,7 +25,7 @@ public class TelaPokemon {
         int input;
         do {
             System.out.println(
-                    "Selecione uma tarefa \n"
+                    "\n --- Selecione uma tarefa --- \n"
                     + " 1: Cadastrar Pokemon \n"
                     + " 2: Deletar Pokemon \n"
                     + " 3: Editar Pokemon \n"

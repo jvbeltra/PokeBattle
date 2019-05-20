@@ -20,7 +20,7 @@ import static src.br.ufsc.ine5605.objects.ETipo.GRAMA;
  */
 public class BatalhaController {
 
-    private PokemonController wildPokemonControll = new PokemonController();
+    private PokemonController wildPokemonControll;
 //    PocketController myPocketControll = new PocketController();
     private PocketController myPocketControll;
 

@@ -24,8 +24,8 @@ public class TelaPocket {
         int input = 0;
         do {
             System.out.println(
-                    "Selecione uma tarefa \n"
-                    + " 1: Capturar Pokemon"
+                    "\n --- Selecione uma tarefa --- \n"
+                    + " 1: Capturar Pokemon \n"
                     + " 2: Soltar Pokemon \n"
                     + " 3: Listar Pocket \n"
                     + " 4: Detalhes Pocket \n"
@@ -42,11 +42,11 @@ public class TelaPocket {
                     break;
                 }
                 case 2:{
-                    //Chama deleção de pokemon
+                    pocketControll.soltarPokemon();
                     break;
                 }
                 case 3:{
-                    pocketControll.listarPokemons()
+                    pocketControll.listarPokemons();
                     break;
                 }
                 case 4:{
