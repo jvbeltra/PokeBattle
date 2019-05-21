@@ -14,6 +14,7 @@ import src.br.ufsc.ine5605.controllers.PrincipalController;
  */
 public class TelaPrincipal {
     private PrincipalController principalControll; 
+    private Scanner teclado = new Scanner(System.in);
 
     public TelaPrincipal(PrincipalController principalControll) {
         this.principalControll = principalControll;
@@ -23,7 +24,6 @@ public class TelaPrincipal {
     
     public void listarTarefas() {
         
-        Scanner s = new Scanner(System.in);
         int input = 0;
         do {
             System.out.println(
@@ -35,7 +35,7 @@ public class TelaPrincipal {
             );
             
                     
-            input = s.nextInt();
+            input = teclado.nextInt();
             
             
             switch (input){

@@ -19,14 +19,12 @@ public class PrincipalController {
     private PocketController pocketControll = new PocketController(this, pocket);
     private PokemonController pokemonControll= new PokemonController(this);
     private BatalhaController batalhaControll = new BatalhaController(pokemonControll);
-    TipoController tipoControll;
     TelaPrincipal telaPrincipal;
     
-    public PrincipalController(PocketController pocketControll, BatalhaController batalhaControll, PokemonController pokemonControll, TipoController tipoControll, TelaPrincipal telaPrincipal) {
+    public PrincipalController(PocketController pocketControll, BatalhaController batalhaControll, PokemonController pokemonControll, TelaPrincipal telaPrincipal) {
         this.pocketControll = pocketControll;
         this.batalhaControll = batalhaControll;
         this.pokemonControll = pokemonControll;
-        this.tipoControll = tipoControll;
         this.telaPrincipal = telaPrincipal;
         
     }

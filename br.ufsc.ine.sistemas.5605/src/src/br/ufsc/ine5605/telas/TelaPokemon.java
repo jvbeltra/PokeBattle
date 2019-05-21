@@ -8,7 +8,9 @@ package src.br.ufsc.ine5605.telas;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.PokemonController;
 import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
+import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
 import src.br.ufsc.ine5605.exceptions.TipoNaoExisteException;
+import src.br.ufsc.ine5605.exceptions.ValorEhZeroException;
 import src.br.ufsc.ine5605.objects.Pokemon;
 
 /**
@@ -17,7 +19,8 @@ import src.br.ufsc.ine5605.objects.Pokemon;
  */
 public class TelaPokemon {
 
-    PokemonController pokemonControll;
+    private PokemonController pokemonControll;
+    private Scanner teclado = new Scanner(System.in);
 
     public TelaPokemon(PokemonController pokemonControll) {
         this.pokemonControll = pokemonControll;
@@ -38,7 +41,7 @@ public class TelaPokemon {
                         + " 0: Sair \n"
                 );
 
-                input = s.nextInt();
+                input = teclado.nextInt();
 
                 switch (input) {
                     case 1: {
@@ -74,12 +77,11 @@ public class TelaPokemon {
     }
 
     public void listarAdicao() {
-
         Scanner s = new Scanner(System.in);
-
         try {
             System.out.println("Insira o nome do novo Pokemon: ");
             String nome = s.nextLine();
+
             if (pokemonControll.getPokemonByName(nome) != null) {
                 throw new PokemonJahExisteException();
             }
@@ -92,15 +94,30 @@ public class TelaPokemon {
 
             System.out.println("Insira a velocidade do novo Pokemon: ");
             int velocidade = s.nextInt();
+            if (velocidade <= 0) {
+                throw new ValorEhZeroException();
+            }
 
             System.out.println("Insira o ataque do novo Pokemon");
             int ataque = s.nextInt();
 
+            if (ataque <= 0) {
+                throw new ValorEhZeroException();
+            }
+
             System.out.println("Insira a defesa do novo Pokemon");
             int defesa = s.nextInt();
 
+            if (defesa <= 0) {
+                throw new ValorEhZeroException();
+            }
+
             System.out.println("Insira o valor de vida do novo Pokemon");
             int vida = s.nextInt();
+            if (vida <= 0) {
+                throw new ValorEhZeroException();
+            }
+
             int escolhaTipo = 0;
 
             System.out.println("Escolha o tipo\n"
@@ -110,10 +127,12 @@ public class TelaPokemon {
             );
 
             escolhaTipo = s.nextInt();
+
             if (escolhaTipo < 1 || escolhaTipo > 3) {
                 throw new TipoNaoExisteException();
             }
             pokemonControll.addPokemon(nome, nick, descricao, velocidade, ataque, defesa, vida, escolhaTipo);
+
         } catch (Exception e) {
             if (e.toString().equals("java.util.InputMismatchException")) {
                 System.out.println("Tipo de atributo não permitido.");
@@ -124,33 +143,36 @@ public class TelaPokemon {
     }
 
     public void listarEdicao() {
-
         Scanner s = new Scanner(System.in);
         int toEdit;
+        try {
+            System.out.println("Insira o nome do Pokemon que você deseja editar.");
+            String pokemonName = s.nextLine();
+            if (pokemonControll.getPokemonByName(pokemonName) == null) {
+                throw new PokemonNaoExisteException();
+            }
 
-        System.out.println("Insira o nome do Pokemon que você deseja editar. Para cancelar, digite 0:  ");
-        String pokemonName = s.nextLine();
+            System.out.println("Qual componente você deseja editar? ");
+            System.out.println("1: Nome ");
+            System.out.println("2: Nick ");
+            System.out.println("3: Descrição ");
+            System.out.println("4: Ataque ");
+            System.out.println("5: Defesa ");
+            System.out.println("6: Vida ");
+            System.out.println("7: Velocidade ");
+            System.out.println("8: Voltar");
+            System.out.println("0: Sair");
 
-        System.out.println("Qual componente você deseja editar? ");
-        System.out.println("1: Nome ");
-        System.out.println("2: Nick ");
-        System.out.println("3: Descrição ");
-        System.out.println("4: Ataque ");
-        System.out.println("5: Defesa ");
-        System.out.println("6: Vida ");
-        System.out.println("7: Velocidade ");
-        System.out.println("8: Voltar");
-        System.out.println("0: Sair");
+            toEdit = s.nextInt();
 
-        toEdit = s.nextInt();
+            if (toEdit > 0 && toEdit < 8) {
+                pokemonControll.editarPokemon(toEdit, pokemonName);
+            } else {
+                this.listarTarefas();
+            }
 
-        if (toEdit > 0 && toEdit < 8) {
-            pokemonControll.editarPokemon(toEdit, pokemonName);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
-        if (toEdit == 8) {
-            this.listarTarefas();
-        }
-
     }
 }

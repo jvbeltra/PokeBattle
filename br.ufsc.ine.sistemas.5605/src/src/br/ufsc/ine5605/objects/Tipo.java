@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package src.br.ufsc.ine5605.objects;
-import src.br.ufsc.ine5605.controllers.TipoController;
 /**
  *
  * @author Joao

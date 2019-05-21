@@ -14,13 +14,13 @@ import src.br.ufsc.ine5605.controllers.PocketController;
  */
 public class TelaPocket {
     private PocketController pocketControll;
-    
+    private Scanner teclado = new Scanner(System.in);
+
     public TelaPocket(PocketController pocketControll){
         this.pocketControll = pocketControll;
     }
     
     public void listarTarefas(){    
-        Scanner s = new Scanner(System.in);
         int input = 0;
         do {
             System.out.println(
@@ -28,12 +28,11 @@ public class TelaPocket {
                     + " 1: Capturar Pokemon \n"
                     + " 2: Soltar Pokemon \n"
                     + " 3: Listar Pocket \n"
-                    + " 4: Detalhes Pocket \n"
                     + " 0: Sair"
             );
             
                     
-            input = s.nextInt();
+            input = teclado.nextInt();
             
             
             switch (input){
@@ -49,13 +48,8 @@ public class TelaPocket {
                     pocketControll.listarPokemons();
                     break;
                 }
-                case 4:{
-                    
-                    //Chama listagem de pokemon
-                    break;
-                    
-                }
+                
             }
-        } while (input > 0);
+        } while (input > 0 && input<4);
     }
 }

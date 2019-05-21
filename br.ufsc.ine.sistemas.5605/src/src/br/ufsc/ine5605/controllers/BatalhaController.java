@@ -5,6 +5,7 @@
  */
 package src.br.ufsc.ine5605.controllers;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.telas.TelaBatalha;
 import src.br.ufsc.ine5605.objects.Batalha;
@@ -13,7 +14,9 @@ import src.br.ufsc.ine5605.objects.Pokemon;
 import static src.br.ufsc.ine5605.objects.ETipo.AGUA;
 import static src.br.ufsc.ine5605.objects.ETipo.FOGO;
 import static src.br.ufsc.ine5605.objects.ETipo.GRAMA;
-import java.util.Date;
+import java.util.Random;
+import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
+import src.br.ufsc.ine5605.exceptions.ValorEhZeroException;
 
 /**
  *
@@ -27,6 +30,7 @@ public class BatalhaController {
     private Pokemon pokemonVencedor;
     private Pokemon pokemonDerrotado;
     private TelaBatalha tela;
+    private ArrayList<Batalha> batalhas = new ArrayList<>();
 
     public BatalhaController(PokemonController pokemonControll) {
         this.pokemonControll = pokemonControll;
@@ -38,22 +42,16 @@ public class BatalhaController {
     }
 
     public void selecionarLutadores() {
-
         Scanner s = new Scanner(System.in);
 
         System.out.println("Insira o nome do Pokemon que você utilizará: ");
         String nomeMyPokemon = s.nextLine();
-        //try
-        myPocketControll.getPokemonByName(nomeMyPokemon);
+        myPokemon = pokemonControll.getPokemonByName(nomeMyPokemon);
 
         System.out.println("Insira o nome do Pokemon selvagem: ");
         String nomeSelvagem = s.nextLine();
-
-        //try
-        PokemonControll.getPokemonByName(nomeSelvagem);
     }
 
-    ;
     public int calculaVantagemAliada() {
         if (myPokemon.getTipo() == AGUA && wildPokemon.getTipo() == FOGO) {
             myPokemon.setAtaque(myPokemon.getAtaque() * 2);
@@ -77,21 +75,68 @@ public class BatalhaController {
     }
 
     public int ataqueAliado() {
+        int newVida = wildPokemon.getVida();
+        int danoCausado = 0;
 
         if (myPokemon.getAtaque() > wildPokemon.getDefesa()) {
-            wildPokemon.setVida(myPokemon.getAtaque() - wildPokemon.getDefesa() - wildPokemon.getVida());
-            if (myPokemon.getVida() < 0) {
-                myPokemon.setVida(0);
-                
+            danoCausado = myPokemon.getAtaque() - wildPokemon.getDefesa();
+
+        } else if (myPokemon.getAtaque() < wildPokemon.getDefesa()) {
+            danoCausado = (myPokemon.getAtaque() - wildPokemon.getDefesa() / 2);
+        }
+
+        if (danoCausado <= 0) {
+            if (this.ataqueSorte()) {
+                danoCausado = myPokemon.getAtaque();
+            } else {
+                danoCausado = myPokemon.getAtaque() / 2;
             }
-            return wildPokemon.getVida();
-        } else {
-             if (myPokemon.getVida() < 0) {
-                    myPokemon.setVida(0);
-                }
-            return wildPokemon.getVida();
 
         }
+
+        newVida = wildPokemon.getVida() - danoCausado;
+
+        if (newVida < 0) {
+            newVida = 0;
+        }
+
+        wildPokemon.setVida(newVida);
+
+        System.out.println(" Aliado causou dano: " + danoCausado);
+        return wildPokemon.getVida();
+
+    }
+
+    public int ataqueInimigo() {
+        int newVida = myPokemon.getVida();
+        int danoCausado = 0;
+
+        if (wildPokemon.getAtaque() > myPokemon.getDefesa()) {
+            danoCausado = wildPokemon.getAtaque() - myPokemon.getDefesa();
+        } else if (wildPokemon.getAtaque() < myPokemon.getDefesa()) {
+            danoCausado = (wildPokemon.getAtaque() - myPokemon.getDefesa() / 2);
+        }
+
+        if (danoCausado <= 0) {
+            if (this.ataqueSorte()) {
+                System.out.println(" *-*-* ATAQUE DE SORTE! *-*-*");
+                danoCausado = wildPokemon.getAtaque();
+            } else {
+                danoCausado = wildPokemon.getAtaque() / 2;
+            }
+        }
+
+        newVida = myPokemon.getVida() - danoCausado;
+
+        if (newVida < 0) {
+            newVida = 0;
+        }
+
+        myPokemon.setVida(newVida);
+
+        System.out.println(" Inimigo causou de Dano: " + danoCausado);
+        return myPokemon.getVida();
+
     }
 
     public int calculaVantagemAdversaria() {
@@ -117,44 +162,36 @@ public class BatalhaController {
         return wildPokemon.getAtaque();
     }
 
-    public int ataqueInimigo() {
-
-        if (wildPokemon.getAtaque() > myPokemon.getDefesa()) {
-            myPokemon.setVida(wildPokemon.getAtaque() - myPokemon.getDefesa() - myPokemon.getVida());
-            if (myPokemon.getVida() < 0) {
-                myPokemon.setVida(0);
-            }
-                return myPokemon.getVida();
-            } 
-            
-            else {
-                if (myPokemon.getVida() < 0) {
-                    myPokemon.setVida(0);
-                }
-
-            }
-        return myPokemon.getVida();
-
-        
-            }
-
-    public String lutar() {
+    public String lutar(Pokemon myPokemon, Pokemon wildPokemon) {
         int i = 0;
-        while (myPokemon.getVida() != 0 || wildPokemon.getVida() != 0) {
-            i++;
-            if (myPokemon.getVelocidade() > wildPokemon.getVelocidade()) {
+        int ordem = 0;
+
+        if (myPokemon.getVelocidade() < wildPokemon.getVelocidade()) {
+            ordem = 0;
+            this.ataqueInimigo();
+            this.ataqueAliado();
+        } else {
+            ordem = 1;
+            this.ataqueAliado();
+            this.ataqueInimigo();
+        }
+
+        do {
+            if (ordem == 1) {
                 this.ataqueAliado();
                 this.ataqueInimigo();
             } else {
                 this.ataqueInimigo();
                 this.ataqueAliado();
             }
-            System.out.println("Turno: " + i);
-            System.out.println("Aliado Tirou de Dano: " + myPokemon.getAtaque());
-            System.out.println("Inimigo Tirou de Dano: " + wildPokemon.getAtaque());
-            System.out.println("Vida Atual do Meu Pokemon: " + myPokemon.getVida());
-            System.out.println("Vida Atual do Pokemon Inimigo: " + wildPokemon.getVida());
-        }
+
+            System.out.println("\n --- Turno --- : " + (i + 1));
+            System.out.println(" Vida do meu Pokemon: " + myPokemon.getVida());
+            System.out.println(" Vida do Pokemon inimigo: " + wildPokemon.getVida());
+            i++;
+
+        } while ((myPokemon.getVida() > 0 && wildPokemon.getVida() > 0));
+
         if (myPokemon.getVida() == 0) {
             pokemonVencedor = wildPokemon;
             pokemonDerrotado = myPokemon;
@@ -167,25 +204,60 @@ public class BatalhaController {
 
     }
 
-    public Batalha batalhar() {
-        Date data = new Date();
-        Scanner s = new Scanner(System.in);
+    public Boolean ataqueSorte() {
+        Random sorte = new Random();
+        return sorte.nextInt(10) % 2 == 0;
+    }
 
-        System.out.println("Insira o nome do Pokemon que você utilizará: ");
-        String nomeMyPokemon = s.nextLine();
-        //try
-        myPokemon = pokemonControll.getPokemonByName(nomeMyPokemon);
+    public Batalha batalhar(String myPokemonName, String wildPokemonName) {
+        Batalha resultadoBatalha = null;
+        try {
+            myPokemon = pokemonControll.getPokemonByName(myPokemonName);
+            wildPokemon = pokemonControll.getPokemonByName(wildPokemonName);
+            if (myPokemon == null || wildPokemon == null) {
+                throw new PokemonNaoExisteException();
+            }
+            
+            
 
-        System.out.println("Insira o nome do Pokemon selvagem: ");
-        String nomeSelvagem = s.nextLine();
-        //try
-        wildPokemon = pokemonControll.getPokemonByName(nomeSelvagem);
-        this.calculaVantagemAliada();
-        this.calculaVantagemAdversaria();
-        this.lutar();
-        Batalha resultadoBatalha = new Batalha(data, pokemonVencedor, pokemonDerrotado);
-        System.out.println("Pokemon Vencedor" + pokemonVencedor.getNome());
-        System.out.println("Pokemon Perdedor" + pokemonDerrotado.getNome());
+            if (myPokemon.getVida() <= 0 || wildPokemon.getVida() <= 0) {
+                throw new ValorEhZeroException();
+            }
+
+            int myPokemonResetaVida = myPokemon.getVida();
+            int wildPokemonResetaVida = wildPokemon.getVida();
+
+            this.calculaVantagemAliada();
+            this.calculaVantagemAdversaria();
+
+            this.lutar(myPokemon, wildPokemon);
+
+            resultadoBatalha = new Batalha(pokemonVencedor, pokemonDerrotado);
+            resultadoBatalha.setVitorioso(pokemonVencedor);
+            resultadoBatalha.setDerrotado(pokemonDerrotado);
+            System.out.println("Pokemon vencedor: " + pokemonVencedor.getNome());
+            System.out.println("Pokemon derrotado: " + pokemonDerrotado.getNome() + "\n");
+            
+            
+            
+            myPokemon.setVida(myPokemonResetaVida);
+            wildPokemon.setVida(wildPokemonResetaVida);
+
+            batalhas.add(resultadoBatalha);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return resultadoBatalha;
+    }
+
+    public void listarBatalhas() {
+        int i = 1;
+        for (Batalha batalha : batalhas) {
+            System.out.println(
+                    "\n --- Batalha: " + i + " ---"
+                    + "\n Vencedor: " + batalha.getVitorioso().getNome()
+                    + "\n Derrotado: " + batalha.getDerrotado().getNome());
+            i++;
+        }
     }
 }

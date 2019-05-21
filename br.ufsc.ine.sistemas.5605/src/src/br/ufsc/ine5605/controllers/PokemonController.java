@@ -8,6 +8,7 @@ package src.br.ufsc.ine5605.controllers;
 import java.util.ArrayList;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
+import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
 import src.br.ufsc.ine5605.objects.ETipo;
 import src.br.ufsc.ine5605.objects.Pokemon;
 import src.br.ufsc.ine5605.telas.TelaPokemon;
@@ -25,10 +26,12 @@ public class PokemonController {
 
     public PokemonController(PrincipalController principalControll) {
         this.principalControll = principalControll;
-        Pokemon pokemon1 = new Pokemon("Pikachu", "Pikachu", "Pikachu", 8, 10, 8, 100, ETipo.FOGO);
-        Pokemon pokemon2 = new Pokemon("Bulba", "Bulba", "Bulba", 5, 8, 12, 100, ETipo.FOGO);
+        Pokemon pokemon1 = new Pokemon("Pikachu", "Principal", "Gosta de eletricidade", 8, 10, 8, 50, ETipo.GRAMA);
+        Pokemon pokemon2 = new Pokemon("Bulbassauro", "Secundario", "Gosta de agua", 5, 8, 8, 50, ETipo.AGUA);
+        Pokemon pokemon3 = new Pokemon("Charizard", "Terciario", "Gosta de fogo", 7, 9, 8, 50, ETipo.FOGO);
         pokemons.add(pokemon1);
         pokemons.add(pokemon2);
+        pokemons.add(pokemon3);
     }
 
     public void addPokemon(String nome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida, int escolhaTipo) throws PokemonJahExisteException {
@@ -53,24 +56,30 @@ public class PokemonController {
             pokemons.add(pokemon);
         }
     }
-   
 
-
-
-public void delPokemon() {
+    public void delPokemon() {
 
         Scanner s = new Scanner(System.in);
 
-        System.out.println("Insira o nome do Pokemon que você deseja excluir");
-        String nome = s.nextLine();
-        Pokemon pokemonToRemove = this.getPokemonByName(nome);
-        if (pokemonToRemove != null) {
-            try {
-                pokemons.remove(pokemonToRemove);
-                System.out.println("Pokemon deletado com sucesso!");
-            } catch (Exception e) {
-                System.out.println("Algo de errado aconteceu");
+        try {
+            System.out.println("Insira o nome do Pokemon que você deseja excluir");
+            String nome = s.nextLine();
+            if (this.getPokemonByName(nome) == null) {
+                throw new PokemonNaoExisteException();
             }
+
+            Pokemon pokemonToRemove = this.getPokemonByName(nome);
+
+            if (pokemonToRemove != null) {
+                try {
+                    pokemons.remove(pokemonToRemove);
+                    System.out.println("Pokemon deletado com sucesso!");
+                } catch (Exception e) {
+                    System.out.println("Algo de errado aconteceu");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
     }
@@ -83,10 +92,6 @@ public void delPokemon() {
         }
         return null;
 
-    }
-
-    public int calcularVida(Pokemon pokemon) {
-        return 0;
     }
 
     public void listarPokemons() {
@@ -104,7 +109,6 @@ public void delPokemon() {
     }
 
     public void listarTarefas() {
-
         tela = new TelaPokemon(this);
         tela.listarTarefas();
 

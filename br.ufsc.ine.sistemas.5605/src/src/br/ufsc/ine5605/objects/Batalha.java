@@ -12,27 +12,18 @@ import src.br.ufsc.ine5605.controllers.BatalhaController;
  * @author Joao
  */
 public class Batalha {
-    private Date horaBatalha;
     private Pokemon myPokemon;
     private Pokemon wildPokemon;
     private Pokemon vitorioso;
     private Pokemon derrotado;
 
-    public Batalha(Date horaBatalha, Pokemon myPokemon, Pokemon wildPokemon) {
-        this.horaBatalha = horaBatalha;
+    public Batalha(Pokemon myPokemon, Pokemon wildPokemon) {
+        
         this.myPokemon = myPokemon;
         this.wildPokemon = wildPokemon;
     }
 
     public Batalha() {
-    }
-
-    public Date getHoraBatalha() {
-        return horaBatalha;
-    }
-
-    public void setHoraBatalha(Date horaBatalha) {
-        this.horaBatalha = horaBatalha;
     }
 
     public Pokemon getMyPokemon() {
