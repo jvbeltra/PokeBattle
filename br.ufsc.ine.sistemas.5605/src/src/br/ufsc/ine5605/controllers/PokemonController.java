@@ -11,6 +11,7 @@ import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
 import src.br.ufsc.ine5605.objects.ETipo;
 import src.br.ufsc.ine5605.objects.Pokemon;
+import src.br.ufsc.ine5605.persistencia.PokemonDAO;
 import src.br.ufsc.ine5605.telas.TelaPokemon;
 
 /**
@@ -21,7 +22,7 @@ public class PokemonController {
 
     private TelaPokemon tela;
     private Pokemon pokemon;
-    private ArrayList<Pokemon> pokemons = new ArrayList<>();
+
     private PrincipalController principalControll;
 
     public PokemonController(PrincipalController principalControll) {
@@ -29,9 +30,9 @@ public class PokemonController {
         Pokemon pokemon1 = new Pokemon("Pikachu", "Principal", "Gosta de eletricidade", 8, 10, 8, 50, ETipo.GRAMA);
         Pokemon pokemon2 = new Pokemon("Bulbassauro", "Secundario", "Gosta de agua", 5, 8, 8, 50, ETipo.AGUA);
         Pokemon pokemon3 = new Pokemon("Charizard", "Terciario", "Gosta de fogo", 7, 9, 8, 50, ETipo.FOGO);
-        pokemons.add(pokemon1);
-        pokemons.add(pokemon2);
-        pokemons.add(pokemon3);
+//        pokemons.add(pokemon1);
+//        pokemons.add(pokemon2);
+//        pokemons.add(pokemon3);
     }
 
     public void addPokemon(String nome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida, int escolhaTipo) throws PokemonJahExisteException {
@@ -53,7 +54,7 @@ public class PokemonController {
             throw new PokemonJahExisteException();
         } else {
             pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida, tipo);
-            pokemons.add(pokemon);
+            PokemonDAO.getInstancia().put(pokemon);
         }
     }
 
@@ -72,7 +73,7 @@ public class PokemonController {
 
             if (pokemonToRemove != null) {
                 try {
-                    pokemons.remove(pokemonToRemove);
+                    PokemonDAO.getInstancia().remove(pokemonToRemove);
                     System.out.println("Pokemon deletado com sucesso!");
                 } catch (Exception e) {
                     System.out.println("Algo de errado aconteceu");
@@ -85,26 +86,22 @@ public class PokemonController {
     }
 
     public Pokemon getPokemonByName(String name) {
-        for (Pokemon pokemon : pokemons) {
-            if (pokemon.getNome().equalsIgnoreCase(name)) {
-                return pokemon;
-            }
-        }
-        return null;
+
+        return PokemonDAO.getInstancia().getPokemon(name);
 
     }
 
     public void listarPokemons() {
         System.out.println(" -----------");
-        pokemons.forEach((pokemon) -> {
-            ETipo tipo = pokemon.getTipo();
-            String tipoString = tipo.tipo();
-
-            System.out.println(" Pokemon: " + pokemon.getNome() + "\n Descrição: " + pokemon.getDescricao()
-                    + "\n Tipo: " + tipoString + "\n Ataque: " + pokemon.getAtaque() + "\n Defesa: " + pokemon.getDefesa() + "\n Vida: " + pokemon.getVida() + "\n Velocidade: "
-                    + pokemon.getVelocidade() + "\n -----------");
-
-        });
+//        pokemon.forEach((pokemon) -> {
+//            ETipo tipo = pokemon.getTipo();
+//            String tipoString = tipo.tipo();
+//
+//            System.out.println(" Pokemon: " + pokemon.getNome() + "\n Descrição: " + pokemon.getDescricao()
+//                    + "\n Tipo: " + tipoString + "\n Ataque: " + pokemon.getAtaque() + "\n Defesa: " + pokemon.getDefesa() + "\n Vida: " + pokemon.getVida() + "\n Velocidade: "
+//                    + pokemon.getVelocidade() + "\n -----------");
+//
+//        });
 
     }
 
@@ -123,10 +120,8 @@ public class PokemonController {
                 case 1: {
                     System.out.println("Insira um novo nome: ");
                     String newNome = s.nextLine();
-                    for (Pokemon pokemon : pokemons) {
-                        if (pokemon.getNome().equalsIgnoreCase(newNome)) {
-                            throw new PokemonJahExisteException();
-                        }
+                    if (PokemonDAO.getInstancia().getPokemon(newNome) != null) {
+                        throw new PokemonJahExisteException();
                     }
                     myPokemon.setNome(newNome);
                     break;
