@@ -21,6 +21,7 @@ public class PrincipalController {
     private PocketController pocketControll = PocketController.getInstancia();
     private PokemonController pokemonControll=  PokemonController.getInstancia();
     private BatalhaController batalhaControll = new BatalhaController(pokemonControll);
+    
     TelaPrincipal telaPrincipal;
 
    

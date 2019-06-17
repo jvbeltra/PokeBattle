@@ -32,9 +32,9 @@ public class PokemonController {
         Pokemon pokemon1 = new Pokemon("Pikachu", "Principal", "Gosta de eletricidade", 8, 10, 8, 50, ETipo.GRAMA);
         Pokemon pokemon2 = new Pokemon("Bulbassauro", "Secundario", "Gosta de agua", 5, 8, 8, 50, ETipo.AGUA);
         Pokemon pokemon3 = new Pokemon("Charizard", "Terciario", "Gosta de fogo", 7, 9, 8, 50, ETipo.FOGO);
-//        pokemons.add(pokemon1);
-//        pokemons.add(pokemon2);
-//        pokemons.add(pokemon3);
+        PokemonDAO.getInstancia().put(pokemon1);
+        PokemonDAO.getInstancia().put(pokemon2);
+        PokemonDAO.getInstancia().put(pokemon3);
     }
 
     static PokemonController getInstancia() {
