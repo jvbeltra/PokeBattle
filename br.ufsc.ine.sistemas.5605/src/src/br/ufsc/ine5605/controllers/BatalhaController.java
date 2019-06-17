@@ -31,9 +31,16 @@ public class BatalhaController {
     private Pokemon pokemonDerrotado;
     private TelaBatalha tela;
     private ArrayList<Batalha> batalhas = new ArrayList<>();
-
-    public BatalhaController(PokemonController pokemonControll) {
+    private static BatalhaController instancia;
+    
+    public BatalhaController() {
         this.pokemonControll = pokemonControll;
+    }
+    public static BatalhaController getInstancia() {
+        if (instancia == null) {
+            instancia = new BatalhaController();
+        }
+        return instancia;
     }
 
     public void listarTarefas() {
