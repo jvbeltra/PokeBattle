@@ -20,12 +20,14 @@ import src.br.ufsc.ine5605.telas.TelaPokemon;
  */
 public class PokemonController {
 
+    private ArrayList<Pokemon> pokemons = new ArrayList<>();
     private TelaPokemon tela;
     private Pokemon pokemon;
-
     private PrincipalController principalControll;
 
-    public PokemonController(PrincipalController principalControll) {
+    private static PokemonController instancia;
+
+    public PokemonController() {
         this.principalControll = principalControll;
         Pokemon pokemon1 = new Pokemon("Pikachu", "Principal", "Gosta de eletricidade", 8, 10, 8, 50, ETipo.GRAMA);
         Pokemon pokemon2 = new Pokemon("Bulbassauro", "Secundario", "Gosta de agua", 5, 8, 8, 50, ETipo.AGUA);
@@ -33,6 +35,13 @@ public class PokemonController {
 //        pokemons.add(pokemon1);
 //        pokemons.add(pokemon2);
 //        pokemons.add(pokemon3);
+    }
+
+    static PokemonController getInstancia() {
+        if (instancia == null) {
+            instancia = new PokemonController();
+        }
+        return instancia;
     }
 
     public void addPokemon(String nome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida, int escolhaTipo) throws PokemonJahExisteException {
@@ -59,10 +68,10 @@ public class PokemonController {
     }
 
     public void delPokemon() {
-
         Scanner s = new Scanner(System.in);
 
         try {
+            
             System.out.println("Insira o nome do Pokemon que você deseja excluir");
             String nome = s.nextLine();
             if (this.getPokemonByName(nome) == null) {
@@ -72,23 +81,17 @@ public class PokemonController {
             Pokemon pokemonToRemove = this.getPokemonByName(nome);
 
             if (pokemonToRemove != null) {
-                try {
-                    PokemonDAO.getInstancia().remove(pokemonToRemove);
-                    System.out.println("Pokemon deletado com sucesso!");
-                } catch (Exception e) {
-                    System.out.println("Algo de errado aconteceu");
-                }
+                PokemonDAO.getInstancia().remove(pokemonToRemove);
+                System.out.println("Pokemon deletado com sucesso!");
             }
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     public Pokemon getPokemonByName(String name) {
-
         return PokemonDAO.getInstancia().getPokemon(name);
-
     }
 
     public void listarPokemons() {
@@ -106,8 +109,8 @@ public class PokemonController {
     }
 
     public void listarTarefas() {
-        tela = new TelaPokemon(this);
-        tela.listarTarefas();
+        tela = new TelaPokemon();
+        tela.setVisible(true);
 
     }
 

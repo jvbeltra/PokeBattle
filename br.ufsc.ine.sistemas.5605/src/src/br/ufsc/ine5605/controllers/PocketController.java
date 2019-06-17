@@ -19,27 +19,32 @@ import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
 public class PocketController {
 
     private TelaPocket telaPocket;
-    private PrincipalController principalControll;
+    private static TelaPocket sTelaPocket;
+    private static Pocket sPocket;
     private Pocket pocket;
+    private static PocketController instancia;
 
-    public PocketController(TelaPocket telaPocket, PrincipalController principalControll, Pocket pocket) {
-        this.telaPocket = telaPocket;
-        this.principalControll = principalControll;
-        this.pocket = pocket;
+    
+    public PocketController() {;
+        this.telaPocket = new TelaPocket(this);
+        this.pocket = new Pocket();
     }
-
-    public PocketController(PrincipalController principalControll, Pocket pocket) {
-        this.principalControll = principalControll;
-        this.pocket = pocket;
+    
+    public static PocketController getInstancia(){
+        if (instancia == null){
+            instancia = new PocketController();
+        }
+        return instancia;
     }
+    
 
     public void capturaPokemon() throws PokemonNaoExisteException {
         Scanner s = new Scanner(System.in);
         System.out.println("Insira o nome do Pokemon que você deseja capturar: ");
         String nome = s.nextLine();
         try {
-            if (principalControll.acessaPokemon().getPokemonByName(nome) != null) {
-                pocket.addPokemon(principalControll.acessaPokemon().getPokemonByName(nome));
+            if (PrincipalController.getInstancia().acessaPokemon().getPokemonByName(nome) != null) {
+                pocket.addPokemon(PrincipalController.getInstancia().acessaPokemon().getPokemonByName(nome));
             } else {
                 throw new PokemonNaoExisteException();
             }
@@ -48,14 +53,14 @@ public class PocketController {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public void soltarPokemon() throws PokemonNaoExisteException {
         Scanner s = new Scanner(System.in);
-        System.out.println("Insira o nome do Pokemon que você deseja soltar: ");
+        System.out.println("Insira o nome do Pokemon que vocÃª deseja soltar: ");
         String nome = s.nextLine();
         try {
-            if (principalControll.acessaPokemon().getPokemonByName(nome) != null) {
-                pocket.delPokemon(principalControll.acessaPokemon().getPokemonByName(nome));
+            if (PrincipalController.getInstancia().acessaPokemon().getPokemonByName(nome) != null) {
+                pocket.delPokemon(PrincipalController.getInstancia().acessaPokemon().getPokemonByName(nome));
             } else {
                 throw new PokemonNaoExisteException();
             }

@@ -15,19 +15,15 @@ import src.br.ufsc.ine5605.controllers.*;
 import src.br.ufsc.ine5605.objects.Pocket;
 
 public class PrincipalController {
+    
     private Pocket pocket = new Pocket();
-    private PocketController pocketControll = new PocketController(this, pocket);
-    private PokemonController pokemonControll= new PokemonController(this);
+    private static PrincipalController instancia;
+    private PocketController pocketControll = PocketController.getInstancia();
+    private PokemonController pokemonControll=  PokemonController.getInstancia();
     private BatalhaController batalhaControll = new BatalhaController(pokemonControll);
     TelaPrincipal telaPrincipal;
-    
-    public PrincipalController(PocketController pocketControll, BatalhaController batalhaControll, PokemonController pokemonControll, TelaPrincipal telaPrincipal) {
-        this.pocketControll = pocketControll;
-        this.batalhaControll = batalhaControll;
-        this.pokemonControll = pokemonControll;
-        this.telaPrincipal = telaPrincipal;
-        
-    }
+
+   
     public PrincipalController(){
         
     }
@@ -48,6 +44,14 @@ public class PrincipalController {
 
     public void listarTarefas() {
         telaPrincipal = new TelaPrincipal(this);
-        telaPrincipal.listarTarefas();
+        telaPrincipal.setVisible(true);
     }
+    
+    public static PrincipalController getInstancia(){
+        if (instancia == null){
+            instancia = new PrincipalController();
+        }
+        return instancia;
+    }
+
 }
