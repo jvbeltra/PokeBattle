@@ -7,6 +7,7 @@ package src.br.ufsc.ine5605.telas;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -43,7 +44,6 @@ public class TelaPokemon extends JFrame {
     private JLabel nickLabel;
     private JLabel tipoLabel;
     private JLabel vidaLabel;
-    private JLabel bemvindo;
 
     private JTextField velocidadeField;
     private JTextField descricaoField;
@@ -63,13 +63,13 @@ public class TelaPokemon extends JFrame {
     public TelaPokemon() {
         super("Pokemon");
         JPanel panel = new JPanel(new GridBagLayout());
+        this.getContentPane().setLayout(new GridBagLayout());
         this.getContentPane().add(panel);
         GridBagConstraints gbc = new GridBagConstraints();
 
         JTable t = new JTable(null);
         JPanel tableButtonPanel = new JPanel();
 
-        bemvindo = new JLabel();
         cadastrarBtn = new JButton();
         editarBtn = new JButton();
         removerBtn = new JButton();
@@ -86,26 +86,69 @@ public class TelaPokemon extends JFrame {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(cancelarBtn);
-        JPanel detailsPanel = this.pokemonDetalhes();
+        JPanel detalhesPanel = this.pokemonDetalhes();
+        detalhesPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        gbc.anchor = GridBagConstraints.WEST;
+        String[] columnNames = {
+            "Nome",
+            "Nick",
+            "Descricao",
+            "Tipo",
+            "Ataque",
+            "Defesa",
+            "Vida",
+            "Velocidade"
+        };
+
+        //passar por cada pokemon do banco, dar push no array de data
+        Object[][] data = {
+            {
+                "Pikachu", "Walrus", "Gosta de raiosss", "GRAMA", new Integer(5), new Integer(5), new Integer(5), new Integer(5), new Integer(5)
+            },
+            {
+                "Bulbassauro", "Bulba", "Gosta de grama", "GRAMA", new Integer(5), new Integer(5), new Integer(5), new Integer(5), new Integer(5)
+            },
+            {
+                "Charmander", "Charmandar", "Gosta de fogos", "FOGO", new Integer(5), new Integer(5), new Integer(5), new Integer(5), new Integer(5)
+            },
+            {
+                "Squirtle", "Aguinha", "Gosta de agua", "AGUA", new Integer(5), new Integer(5), new Integer(5), new Integer(5), new Integer(5)
+            },};
+
+        JTable table = new JTable(data, columnNames);
+        JScrollPane tableScrollPane = new JScrollPane(table);
+        Dimension dimension = new Dimension(200, 50);
+        tableScrollPane.setPreferredSize(dimension);
+
+        JLabel label = new JLabel("Pokemons cadastrados ");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
 
-        panel.add(this.bemvindo, gbc);
+        panel.add(label, gbc);
 
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(new JScrollPane(t), gbc);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
 
+        panel.add(new JScrollPane(table), gbc);
+
+        gbc.fill = GridBagConstraints.NONE;
         gbc.gridx = 0;
         gbc.gridy = 2;
+        gbc.weightx = 0;
+        gbc.weighty = 0;
+
         panel.add(tableButtonPanel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
+
         panel.add(buttonPanel, gbc);
 
         gbc.gridx = 1;
@@ -114,7 +157,7 @@ public class TelaPokemon extends JFrame {
         gbc.gridheight = 2;
         gbc.anchor = GridBagConstraints.NORTH;
 
-        panel.add(detailsPanel, gbc);
+        panel.add(detalhesPanel, gbc);
 
         this.pack();
 
@@ -135,7 +178,7 @@ public class TelaPokemon extends JFrame {
         JLabel tipoLabel = new JLabel("Tipo");
         JLabel vidaLabel = new JLabel("Vida");
 
-        JTextField velocidadeField = new JTextField("Insira a velocidade");
+        JTextField velocidadeField = new JTextField("");
         JTextField vidaField = new JTextField("Insira a velocidade");
         JTextField ataqueField = new JTextField("Insira o ataque");
         JTextField defesaField = new JTextField("Insira a defesa");
@@ -147,7 +190,6 @@ public class TelaPokemon extends JFrame {
         panel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-
         gbc.insets = new Insets(2, 2, 2, 2);
         gbc.anchor = GridBagConstraints.NORTHEAST;
 
