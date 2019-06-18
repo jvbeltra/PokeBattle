@@ -8,14 +8,18 @@ package src.br.ufsc.ine5605.telas;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
 import java.util.Date;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /**
  *
  * @author Joao
  */
-public class TelaBatalha extends JFrame{
+public class TelaBatalha extends JFrame {
 
+    private JButton selecionarLutadoresBtn;
+    private JButton batalharBtn;
     private BatalhaController batalhaControll;
     private Scanner teclado = new Scanner(System.in);
 
@@ -49,11 +53,10 @@ public class TelaBatalha extends JFrame{
                 }
             } while (input > 0);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    
 
     public void selecionarLutadores() {
         Scanner s = new Scanner(System.in);
