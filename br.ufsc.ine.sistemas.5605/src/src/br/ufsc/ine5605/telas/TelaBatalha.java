@@ -8,12 +8,13 @@ package src.br.ufsc.ine5605.telas;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
 import java.util.Date;
+import javax.swing.JFrame;
 
 /**
  *
  * @author Joao
  */
-public class TelaBatalha {
+public class TelaBatalha extends JFrame{
 
     private BatalhaController batalhaControll;
     private Scanner teclado = new Scanner(System.in);

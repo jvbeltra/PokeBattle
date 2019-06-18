@@ -37,7 +37,7 @@ public class PokemonController {
         PokemonDAO.getInstancia().put(pokemon3);
     }
 
-    static PokemonController getInstancia() {
+    public static PokemonController getInstancia() {
         if (instancia == null) {
             instancia = new PokemonController();
         }

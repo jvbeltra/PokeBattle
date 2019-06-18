@@ -20,7 +20,7 @@ public class PrincipalController {
     private static PrincipalController instancia;
     private PocketController pocketControll = PocketController.getInstancia();
     private PokemonController pokemonControll=  PokemonController.getInstancia();
-    private BatalhaController batalhaControll = new BatalhaController(pokemonControll);
+    private BatalhaController batalhaControll = BatalhaController.getInstancia();
     
     TelaPrincipal telaPrincipal;
 
