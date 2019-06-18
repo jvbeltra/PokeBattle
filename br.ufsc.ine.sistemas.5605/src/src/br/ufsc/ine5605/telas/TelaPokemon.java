@@ -22,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import src.br.ufsc.ine5605.controllers.PokemonController;
 import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
@@ -29,6 +31,7 @@ import src.br.ufsc.ine5605.exceptions.TipoNaoExisteException;
 import src.br.ufsc.ine5605.exceptions.ValorEhZeroException;
 import src.br.ufsc.ine5605.objects.ETipo;
 import src.br.ufsc.ine5605.objects.Pokemon;
+import src.br.ufsc.ine5605.persistencia.PokemonDAO;
 
 /**
  *
@@ -119,6 +122,11 @@ public class TelaPokemon extends JFrame {
         JScrollPane tableScrollPane = new JScrollPane(table);
         Dimension dimension = new Dimension(200, 50);
         tableScrollPane.setPreferredSize(dimension);
+        rowSelectionManager rowClickSelection = new rowSelectionManager(table, this);
+        table.getSelectionModel().addListSelectionListener(rowClickSelection);
+        
+        
+        
 
         JLabel label = new JLabel("Pokemons cadastrados ");
 
@@ -179,11 +187,11 @@ public class TelaPokemon extends JFrame {
         JLabel vidaLabel = new JLabel("Vida");
 
         JTextField velocidadeField = new JTextField("");
-        JTextField vidaField = new JTextField("Insira a velocidade");
-        JTextField ataqueField = new JTextField("Insira o ataque");
-        JTextField defesaField = new JTextField("Insira a defesa");
-        JTextField nomeField = new JTextField("Insira o nome");
-        JTextField nickField = new JTextField("Insira o nick");
+        JTextField vidaField = new JTextField("");
+        JTextField ataqueField = new JTextField("");
+        JTextField defesaField = new JTextField("");
+        JTextField nomeField = new JTextField("");
+        JTextField nickField = new JTextField("");
         JTextArea descricaoField = new JTextArea(5, 10);
         JComboBox tipoField = new JComboBox();
 
@@ -299,28 +307,7 @@ public class TelaPokemon extends JFrame {
         return panel;
     }
 
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//        gbc.gridx = 1;
-//        gbc.gridy = 5;
-//        container.add(bemvindo, gbc);
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//
-//        gbc.gridx = 1;
-//        gbc.gridy = 10;
-//        container.add(cadastrarBtn, gbc);
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//        gbc.gridx = 1;
-//        gbc.gridy = 15;
-//        container.add(editarBtn, gbc);
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//        gbc.gridy = 20;
-//        gbc.gridx = 1;
-//        container.add(removerBtn, gbc);
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//
-//        setSize(390, 170);
-//        setLocationRelativeTo(null);
-//        setVisible(true);
+
 //    private PokemonController pokemonControll;
 //    private Scanner teclado = new Scanner(System.in);
 //
@@ -476,4 +463,36 @@ public class TelaPokemon extends JFrame {
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //        }
+
+    private static class rowSelectionManager implements ListSelectionListener {
+        
+        JTable table;
+        TelaPokemon context;
+        Object record;
+        Pokemon pokemon;
+        public rowSelectionManager(JTable table, TelaPokemon context){
+            this.table = table;
+            this.context = context;
+        }
+        
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            Object record  = this.table.getValueAt(table.getSelectedRow(), 0);     
+            this.setRecord(record);
+            Pokemon pokemon = PokemonDAO.getInstancia().getPokemon(record.toString());
+            
+        }
+        
+        public void setRecord(Object record){
+            this.record = record;
+        }
+        
+        public Object getRecord(){
+            return record;
+        }
+        
+        
+
+        
+    }
 }
