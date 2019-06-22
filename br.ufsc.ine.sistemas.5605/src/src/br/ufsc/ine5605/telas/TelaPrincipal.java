@@ -37,8 +37,7 @@ public class TelaPrincipal extends JFrame {
         Container container = getContentPane();
         container.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        
-        
+
         gbc.gridwidth = 10;
         gbc.gridy = 15;
 
@@ -46,7 +45,7 @@ public class TelaPrincipal extends JFrame {
         pokemonBtn = new JButton();
         pocketBtn = new JButton();
         batalhaBtn = new JButton();
-        
+
         bemvindo.setText("Seja bem-vindo ao pokebattle!");
         pokemonBtn.setText("Gerenciar Pokemons");
         pocketBtn.setText("Gerenciar pocket");
@@ -57,18 +56,18 @@ public class TelaPrincipal extends JFrame {
         gbc.gridy = 5;
         container.add(bemvindo, gbc);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-            
+
         gbc.gridx = 1;
         gbc.gridy = 10;
-        container.add(pokemonBtn,gbc);
+        container.add(pokemonBtn, gbc);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 15;
-        container.add(pocketBtn,gbc);
+        container.add(pocketBtn, gbc);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridy = 20;
         gbc.gridx = 1;
-        container.add(batalhaBtn,gbc);
+        container.add(batalhaBtn, gbc);
 
         setSize(390, 170);
         setLocationRelativeTo(null);
@@ -82,26 +81,26 @@ public class TelaPrincipal extends JFrame {
         batalhaBtn.addActionListener(btManager);
         batalhaBtn.setActionCommand("3");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-    
-    
+
     }
 
-    private static class GerenciadorBotao implements ActionListener{
+    private static class GerenciadorBotao implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            switch(e.getActionCommand()){
+            switch (e.getActionCommand()) {
                 case "1": {
                     new TelaPokemon().setVisible(true);
+                }
+                case "3": {
+                    new TelaBatalha().setVisible(true);
                 }
             }
         }
     }
-
-    
-
 }
+
+
 
 //            
 //                    principalControll.acessaPokemon().listarTarefas();

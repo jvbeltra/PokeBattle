@@ -43,10 +43,10 @@ public class BatalhaController {
         return instancia;
     }
 
-    public void listarTarefas() {
-        tela = new TelaBatalha(this);
-        tela.listarTarefas();
-    }
+//    public void listarTarefas() {
+//        tela = new TelaBatalha(this);
+//        tela.listarTarefas();
+//    }
 
     public void selecionarLutadores() {
         Scanner s = new Scanner(System.in);
