@@ -7,18 +7,21 @@ package src.br.ufsc.ine5605.objects;
 
 import java.util.Date;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
+
 /**
  *
  * @author Joao
  */
 public class Batalha {
+
+    private String titulo;
     private Pokemon myPokemon;
     private Pokemon wildPokemon;
     private Pokemon vitorioso;
     private Pokemon derrotado;
 
     public Batalha(Pokemon myPokemon, Pokemon wildPokemon) {
-        
+
         this.myPokemon = myPokemon;
         this.wildPokemon = wildPokemon;
     }
@@ -57,9 +60,13 @@ public class Batalha {
     public void setDerrotado(Pokemon derrotado) {
         this.derrotado = derrotado;
     }
-    
-    
-    
-    
-    
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
 }

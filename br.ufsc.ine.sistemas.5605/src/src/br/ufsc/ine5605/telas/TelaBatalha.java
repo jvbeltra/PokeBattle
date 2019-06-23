@@ -5,6 +5,7 @@
  */
 package src.br.ufsc.ine5605.telas;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
@@ -12,6 +13,8 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -23,13 +26,27 @@ public class TelaBatalha extends JFrame {
     private JButton batalharBtn;
     private BatalhaController batalhaControll;
     private Scanner teclado = new Scanner(System.in);
+    private JTable fundo;
 
     public TelaBatalha() {
         super("Batalha");
         setLayout(new FlowLayout());
-
+        String[] columnNames = {"Titulo", "Pokemon Vencedor", "Pokemon Derrotado"};
+        Object[][] data = {
+            {"Batalha 01", "Pikacu", "bulbassalto"},
+            {"Batalha 02", "Crackzard", "lsdevee"}
+        };
+        fundo = new JTable(data, columnNames);
+        fundo.setPreferredScrollableViewportSize(new Dimension(500, 50));
+        fundo.setFillsViewportHeight(true);
+        
+        JScrollPane scrollPane = new JScrollPane(fundo);
+        add(scrollPane);
+                
+                
         selecionarLutadoresBtn = new JButton();
         selecionarLutadoresBtn.setText("Selecione os Lutadores");
+        selecionarLutadoresBtn.setToolTipText("Selecione os Pokemons para a batalha");
         add(selecionarLutadoresBtn);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
