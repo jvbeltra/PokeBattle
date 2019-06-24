@@ -91,9 +91,11 @@ public class TelaPrincipal extends JFrame {
             switch (e.getActionCommand()) {
                 case "1": {
                     new TelaPokemon().setVisible(true);
+                    break;
                 }
                 case "3": {
                     new TelaBatalha().setVisible(true);
+                break;
                 }
             }
         }
