@@ -5,10 +5,12 @@
  */
 package src.br.ufsc.ine5605.telas;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
 import java.util.Date;
@@ -30,6 +32,7 @@ public class TelaBatalha extends JFrame {
     private JButton batalharBtn;
     private JButton apagarBatalhaBtn;
     private JButton cancelarBtn;
+    private JButton aleatorioBtn;
 
     private JLabel aliadoLabel;
     private JLabel adversarioLabel;
@@ -43,9 +46,9 @@ public class TelaBatalha extends JFrame {
 
     public TelaBatalha() {
         super("Batalha");
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panelPrincipal = new JPanel(new GridBagLayout());
         this.getContentPane().setLayout(new GridBagLayout());
-        this.getContentPane().add(panel);
+        this.getContentPane().add(panelPrincipal);
         GridBagConstraints gbc = new GridBagConstraints();
 
         String[] columnNames = {"Titulo", "Pokemon Vencedor", "Pokemon Derrotado"};
@@ -56,34 +59,82 @@ public class TelaBatalha extends JFrame {
         tabela = new JTable(data, columnNames);
         tabela.setPreferredScrollableViewportSize(new Dimension(500, 50));
         tabela.setFillsViewportHeight(true);
+        //Panel 0 Tabela Panel
+        JLabel label = new JLabel("Batalhas Anteriores ");
 
-        JScrollPane scrollPane = new JScrollPane(tabela);
-        add(scrollPane);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        panelPrincipal.add(label, gbc);
+
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+
+        panelPrincipal.add(new JScrollPane(tabela), gbc);
+
+        //Panel 1 Botoes Panel
+        JPanel tableButtonPanel = new JPanel();
 
         selecionarLutadoresBtn = new JButton();
         selecionarLutadoresBtn.setText("Selecione os Lutadores");
         selecionarLutadoresBtn.setToolTipText("Selecione os Pokemons para a batalha");
-        add(selecionarLutadoresBtn);
+        tableButtonPanel.add(selecionarLutadoresBtn);
         //------------------------------------------------------------------------------------------------//
         apagarBatalhaBtn = new JButton();
         apagarBatalhaBtn.setText("Apagar Batalha");
         apagarBatalhaBtn.setToolTipText("Apague uma Batalha Selecionada");
-        add(apagarBatalhaBtn);
+        tableButtonPanel.add(apagarBatalhaBtn);
         //-----------------------------------------------------------------------------------------------//
         cancelarBtn = new JButton();
         cancelarBtn.setText("Cancelar");
         cancelarBtn.setToolTipText("Cancelar ação em andamento");
-        add(cancelarBtn);
+        tableButtonPanel.add(cancelarBtn);
         //-----------------------------------------------------------------------------------------------//
+        aleatorioBtn = new JButton();
+        aleatorioBtn.setText("Aleatorio");
+        aleatorioBtn.setToolTipText("Selecione um inimigo aleatorio");
+        tableButtonPanel.add(aleatorioBtn);
+
+        //-------------------------------------------------------------------------------------------------------//
+        panelPrincipal.add(tableButtonPanel, gbc);
+
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 0;
+        gbc.weighty = 0;
+        this.pack();
+
+        setLocationRelativeTo(null);
+        this.setVisible(true);
+        //-------------------------------------------------------------------------------------------------------//
+        //Panel 2: selecionar Panel
+        JPanel selecionarPanel = new JPanel();
+
         aliadoLabel = new JLabel();
         aliadoLabel.setText("Aliado:");
         aliadoLabel.setToolTipText("Selecione o seu Pokemon para a batalha");
-        add(aliadoLabel);
-        //------------------------------------------------------------------------------------------------//
+        selecionarPanel.add(aliadoLabel);
+        //-------------------------------------------------------------------------------------------------------//
         adversarioLabel = new JLabel();
         adversarioLabel.setText("Aliado:");
         adversarioLabel.setToolTipText("Selecione o Pokemon adversário para a batalha, ou clique em aleatorio");
-        add(adversarioLabel);
+        selecionarPanel.add(adversarioLabel);
+        //-------------------------------------------------------------------------------------------------------//
+        aliadoField = new JTextField();
+        aliadoField.setText("Seu Pokemon");
+        selecionarPanel.add(aliadoField);
+        //-------------------------------------------------------------------------------------------------------//
+        adversarioField = new JTextField();
+        adversarioField.setText("Pokemon Adversario");
+        selecionarPanel.add(adversarioField);
+
+        selecionarPanel.add(selecionarPanel, gbc);
 
     }
 
