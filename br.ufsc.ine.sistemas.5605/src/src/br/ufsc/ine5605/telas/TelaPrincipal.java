@@ -93,21 +93,15 @@ public class TelaPrincipal extends JFrame {
                     new TelaPokemon().setVisible(true);
                     break;
                 }
+                case "2": {
+                    new TelaPocket().setVisible(true);
+                    break;
+                }
                 case "3": {
                     new TelaBatalha().setVisible(true);
-                break;
+                    break;
                 }
             }
         }
     }
 }
-
-
-
-//            
-//                    principalControll.acessaPokemon().listarTarefas();
-//                    principalControll.acessaPocket().listarTarefas();
-//                    principalControll.acessaCampoBatalha().listarTarefas();
-//               
-//    
-

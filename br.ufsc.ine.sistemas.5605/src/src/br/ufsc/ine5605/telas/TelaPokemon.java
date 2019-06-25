@@ -31,6 +31,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.w3c.dom.events.MouseEvent;
+import src.br.ufsc.ine5605.controllers.PocketController;
 import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
 import src.br.ufsc.ine5605.exceptions.TipoNaoExisteException;
@@ -72,6 +73,7 @@ public class TelaPokemon extends JFrame {
     private JButton limparBtn;
     private JButton removerBtn;
     private JButton editarBtn;
+    private JButton capturarBtn;
 
     private String record;
 
@@ -122,13 +124,14 @@ public class TelaPokemon extends JFrame {
         cadastrarBtn = new JButton();
         editarBtn = new JButton();
         removerBtn = new JButton();
-
+        capturarBtn = new JButton();
         limparBtn = new JButton();
 
         cadastrarBtn.setText("Cadastrar Pokemon");
         editarBtn.setText("Editar Pokemon");
         removerBtn.setText("Remover");
         limparBtn.setText("Limpar campos");
+        capturarBtn.setText("Capturar Pokemon");
 
         GerenciadorBotao btManager = new GerenciadorBotao();
         GerenciadorMouse mouseManager = new GerenciadorMouse();
@@ -144,11 +147,15 @@ public class TelaPokemon extends JFrame {
 
         limparBtn.addActionListener(btManager);
         limparBtn.setActionCommand("4");
+        
+        capturarBtn.addActionListener(btManager);
+        capturarBtn.setActionCommand("5");
 
         tableButtonPanel.add(cadastrarBtn);
         tableButtonPanel.add(editarBtn);
         tableButtonPanel.add(removerBtn);
         tableButtonPanel.add(limparBtn);
+        tableButtonPanel.add(capturarBtn);
 
         JPanel buttonPanel = new JPanel();
 
@@ -486,29 +493,19 @@ public class TelaPokemon extends JFrame {
                 }
                 case "4": {
                     limparCampos();
+                    break;
+                }
+                case "5":{
+                    try {
+                        PocketController.getInstancia().capturaPokemon(table.getValueAt(table.getSelectedRow(), 0).toString());
+                    } catch (Exception exc1) { 
+                         if (!exc1.getMessage().equals("-1")) {
+                            JOptionPane.showMessageDialog(null, exc1.getMessage());
+                        }
+                    }
                 }
             }
         }
     }
 
 }
-
-//            if (velocidade <= 0) {
-//                throw new ValorEhZeroException();
-//            }
-//
-//
-//            if (ataque <= 0) {
-//                throw new ValorEhZeroException();
-//            }
-//
-//
-//            if (defesa <= 0) {
-//                throw new ValorEhZeroException();
-//            }
-//
-//        
-//            if (vida <= 0) {
-//                throw new ValorEhZeroException();
-//            }
-//
