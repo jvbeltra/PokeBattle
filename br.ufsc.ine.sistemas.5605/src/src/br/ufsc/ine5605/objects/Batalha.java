@@ -5,6 +5,7 @@
  */
 package src.br.ufsc.ine5605.objects;
 
+import java.io.Serializable;
 import java.util.Date;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
 
@@ -12,7 +13,7 @@ import src.br.ufsc.ine5605.controllers.BatalhaController;
  *
  * @author Joao
  */
-public class Batalha {
+public class Batalha implements Serializable  {
 
     private String titulo;
     private Pokemon myPokemon;

@@ -5,6 +5,7 @@
  */
 package src.br.ufsc.ine5605.objects;
 
+import java.io.Serializable;
 import src.br.ufsc.ine5605.controllers.PokemonController;
 import src.br.ufsc.ine5605.objects.Tipo;
 
@@ -12,7 +13,7 @@ import src.br.ufsc.ine5605.objects.Tipo;
  *
  * @author Joao
  */
-public class Pokemon {
+public class Pokemon implements Serializable  {
 
     private String nome;
     private String nick;

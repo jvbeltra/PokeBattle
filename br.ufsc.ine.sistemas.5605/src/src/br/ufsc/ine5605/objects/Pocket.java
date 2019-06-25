@@ -5,6 +5,7 @@
  */
 package src.br.ufsc.ine5605.objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import src.br.ufsc.ine5605.controllers.PocketController;
 import src.br.ufsc.ine5605.exceptions.PocketVaziaException;
@@ -16,7 +17,7 @@ import src.br.ufsc.ine5605.exceptions.PokemonNaoCapturadoException;
  *
  * @author Joao
  */
-public class Pocket {
+public class Pocket implements Serializable  {
 
     private ArrayList<Pokemon> pokemonsCapturados = new ArrayList<>();
     private int vitoriasPocket;

@@ -139,12 +139,13 @@ public class TelaPokemon extends JFrame {
         detalhesPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JScrollPane tableScrollPane = new JScrollPane(table);
-        this.initTable();
-        this.table = new JTable(tableModel) {
+        table = new JTable() {
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
         };
+
+        this.initTable();
 
         Dimension dimension = new Dimension(200, 50);
         tableScrollPane.setPreferredSize(dimension);
@@ -327,7 +328,7 @@ public class TelaPokemon extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = i;
 
-        panel.add(velocidadeField, gbc);
+        panel.add(vidaField, gbc);
 
         i++;
         
@@ -342,7 +343,7 @@ public class TelaPokemon extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = i;
 
-        panel.add(vidaField, gbc);
+        panel.add(velocidadeField, gbc);
 
         
         
@@ -532,6 +533,7 @@ public class TelaPokemon extends JFrame {
                     ataqueField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
                     defesaField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
                     vidaField.setText(table.getValueAt(table.getSelectedRow(), 6).toString());
+                    velocidadeField.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
 
                     break;
                 }
