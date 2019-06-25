@@ -25,11 +25,10 @@ public class PokemonDAO {
 
     private static PokemonDAO instancia;
     private HashMap<String, Pokemon> cachePokemons;
-    private final String fileName;
+    private final String fileName = "pokemons.dat";
 
     private PokemonDAO() {
         cachePokemons = new HashMap<>();
-        fileName = "pokemons.dat";
         this.load();
     }
 

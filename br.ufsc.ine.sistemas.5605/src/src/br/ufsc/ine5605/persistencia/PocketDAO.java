@@ -25,11 +25,10 @@ public class PocketDAO {
    
     private static PocketDAO instancia;
     private HashMap<String, Pokemon> cachePokemons;
-    private final String fileName;
+    private final String  fileName = "pocket.dat";
 
     private PocketDAO() {
         cachePokemons = new HashMap<>();
-        fileName = "pocket.dat";
         this.load();
     }
 

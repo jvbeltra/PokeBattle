@@ -7,13 +7,11 @@ package src.br.ufsc.ine5605.telas;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
-import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -84,6 +82,7 @@ public class TelaBatalha extends JFrame {
         batalharBtn = new JButton();
         batalharBtn.setText("Batlhar!!");
         batalharBtn.setToolTipText("Faça uma batalha Pokemon");
+        gbc.gridx = 1;
         tableButtonPanel.add(batalharBtn);
         //------------------------------------------------------------------------------------------------//
         apagarBatalhaBtn = new JButton();
@@ -91,15 +90,16 @@ public class TelaBatalha extends JFrame {
         apagarBatalhaBtn.setToolTipText("Apague uma Batalha Selecionada");
         tableButtonPanel.add(apagarBatalhaBtn);
         //-----------------------------------------------------------------------------------------------//
-        cancelarBtn = new JButton();
-        cancelarBtn.setText("Cancelar");
-        cancelarBtn.setToolTipText("Cancelar ação em andamento");
-        tableButtonPanel.add(cancelarBtn);
-        //-----------------------------------------------------------------------------------------------//
         aleatorioBtn = new JButton();
         aleatorioBtn.setText("Aleatorio");
         aleatorioBtn.setToolTipText("Selecione um inimigo aleatorio");
         tableButtonPanel.add(aleatorioBtn);
+        
+        //-----------------------------------------------------------------------------------------------//
+        cancelarBtn = new JButton();
+        cancelarBtn.setText("Cancelar");
+        cancelarBtn.setToolTipText("Cancelar ação em andamento");
+        tableButtonPanel.add(cancelarBtn);
 
         //------------------------------------------------------------------------------------------------//
         this.getContentPane().add(tableButtonPanel, gbc);
@@ -107,8 +107,9 @@ public class TelaBatalha extends JFrame {
         gbc.fill = GridBagConstraints.NONE;
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.weightx = 2;
-        gbc.weighty = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        
         this.pack();
 
         setLocationRelativeTo(null);
@@ -123,8 +124,8 @@ public class TelaBatalha extends JFrame {
         selecionarPanel.add(aliadoLabel);
         //-------------------------------------------------------------------------------------------------------//
         adversarioLabel = new JLabel();
-        adversarioLabel.setText("Aliado:");
-        adversarioLabel.setToolTipText("Selecione o Pokemon adversário para a batalha, ou clique em aleatorio");
+        adversarioLabel.setText("Adversario:");
+        adversarioLabel.setToolTipText("Selecione o Pokemon adversario para a batalha, ou clique em aleatorio");
         selecionarPanel.add(adversarioLabel);
         //-------------------------------------------------------------------------------------------------------//
         aliadoField = new JTextField();
@@ -139,15 +140,15 @@ public class TelaBatalha extends JFrame {
 
     }
 
-    public void selecionarLutadores() {
-        Scanner s = new Scanner(System.in);
-        System.out.println("Insira o nome do Pokemon que você utilizará: ");
-        String nomeMyPokemon = s.nextLine();
-        System.out.println("Insira o nome do Pokemon selvagem: ");
-        String nomeSelvagem = s.nextLine();
-
-        BatalhaController.getInstancia().batalhar(nomeMyPokemon, nomeSelvagem);
-    }
+//    public void selecionarLutadores() {
+//        Scanner s = new Scanner(System.in);
+//        System.out.println("Insira o nome do Pokemon que você utilizará: ");
+//        String nomeMyPokemon = s.nextLine();
+//        System.out.println("Insira o nome do Pokemon selvagem: ");
+//        String nomeSelvagem = s.nextLine();
+//
+//        BatalhaController.getInstancia().batalhar(nomeMyPokemon, nomeSelvagem);
+//    }
 }
 // public void listarTarefas() {
 //
@@ -179,3 +180,4 @@ public class TelaBatalha extends JFrame {
 //            System.out.println(e.getMessage());
 //        }
 //    }
+

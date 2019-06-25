@@ -25,11 +25,11 @@ public class BatalhaDAO {
 
     private static BatalhaDAO instancia;
     private HashMap<String, Batalha> cacheBatalhas;
-    private final String fileName;
+    private final String fileName = "batalhas.dat";
 
     private BatalhaDAO() {
         cacheBatalhas = new HashMap<>();
-        fileName = "batalhas.dat";
+        
         this.load();
     }
 
