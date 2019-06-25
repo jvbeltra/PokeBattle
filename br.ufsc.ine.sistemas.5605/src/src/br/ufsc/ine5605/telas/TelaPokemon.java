@@ -122,7 +122,7 @@ public class TelaPokemon extends JFrame {
         cadastrarBtn = new JButton();
         editarBtn = new JButton();
         removerBtn = new JButton();
-        
+
         limparBtn = new JButton();
 
         cadastrarBtn.setText("Cadastrar Pokemon");
@@ -141,7 +141,7 @@ public class TelaPokemon extends JFrame {
 
         removerBtn.addActionListener(btManager);
         removerBtn.setActionCommand("3");
-        
+
         limparBtn.addActionListener(btManager);
         limparBtn.setActionCommand("4");
 
@@ -480,7 +480,8 @@ public class TelaPokemon extends JFrame {
                     } catch (Exception exc) {
                         if (!exc.getMessage().equals("-1")) {
                             JOptionPane.showMessageDialog(null, exc.getMessage());
-                        }                    }
+                        }
+                    }
                     break;
                 }
                 case "4": {

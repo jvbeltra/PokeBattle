@@ -48,29 +48,29 @@ public class PokemonController {
     public void addPokemon(String nome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida, int escolhaTipo) throws PokemonJahExisteException {
         Scanner s = new Scanner(System.in);
         ETipo tipo = null;
-        
-        
+
+        System.out.println(escolhaTipo);
         switch (escolhaTipo) {
             case 0:
                 tipo = ETipo.AGUA;
                 break;
             case 1:
-                tipo = ETipo.FOGO;
+                tipo = ETipo.GRAMA;
                 break;
             case 2:
-                tipo = ETipo.GRAMA;
+                tipo = ETipo.FOGO;
                 break;
 
         }
         if (this.getPokemonByName(nome) != null) {
             throw new PokemonJahExisteException();
-        } 
-        if (velocidade<=0 || ataque<=0 || defesa<=0 || vida<=0){
+        }
+        if (velocidade <= 0 || ataque <= 0 || defesa <= 0 || vida <= 0) {
             throw new ValorEhZeroException();
         }
-            pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida, tipo);
-            PokemonDAO.getInstancia().put(pokemon);
-        
+        pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida, tipo);
+        PokemonDAO.getInstancia().put(pokemon);
+
     }
 
     public void delPokemon(Pokemon pokemon) {
@@ -80,7 +80,7 @@ public class PokemonController {
             } else {
                 PokemonDAO.getInstancia().remove(pokemon);
             }
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
