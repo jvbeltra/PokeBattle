@@ -83,6 +83,7 @@ public class PokemonDAO {
 
     public ArrayList<Pokemon> getList() {
         return new ArrayList(cachePokemons.values());
+        
     }
 
     public static PokemonDAO getInstancia() {

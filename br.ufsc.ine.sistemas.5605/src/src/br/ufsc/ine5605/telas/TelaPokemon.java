@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,6 +26,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import src.br.ufsc.ine5605.controllers.PokemonController;
 import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
@@ -39,6 +42,9 @@ import src.br.ufsc.ine5605.persistencia.PokemonDAO;
  */
 public class TelaPokemon extends JFrame {
 
+    private JTable table;
+    private DefaultTableModel tableModel;
+
     private JLabel velocidadeLabel;
     private JLabel descricaoLabel;
     private JLabel ataqueLabel;
@@ -49,7 +55,7 @@ public class TelaPokemon extends JFrame {
     private JLabel vidaLabel;
 
     private JTextField velocidadeField;
-    private JTextField descricaoField;
+    private JTextArea descricaoField;
     private JTextField defesaField;
     private JTextField ataqueField;
     private JTextField nomeField;
@@ -63,34 +69,7 @@ public class TelaPokemon extends JFrame {
     private JButton removerBtn;
     private JButton editarBtn;
 
-    public TelaPokemon() {
-        super("Pokemon");
-        JPanel panel = new JPanel(new GridBagLayout());
-        this.getContentPane().setLayout(new GridBagLayout());
-        this.getContentPane().add(panel);
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        JTable t = new JTable(null);
-        JPanel tableButtonPanel = new JPanel();
-
-        cadastrarBtn = new JButton();
-        editarBtn = new JButton();
-        removerBtn = new JButton();
-        cancelarBtn = new JButton();
-
-        cadastrarBtn.setText("Cadastrar Pokemon");
-        editarBtn.setText("Editar Pokemon");
-        removerBtn.setText("Remover");
-        cancelarBtn.setText("Cancelar");
-
-        tableButtonPanel.add(cadastrarBtn);
-        tableButtonPanel.add(editarBtn);
-        tableButtonPanel.add(removerBtn);
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(cancelarBtn);
-        JPanel detalhesPanel = this.pokemonDetalhes();
-        detalhesPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    private void initTable() {
 
         String[] columnNames = {
             "Nome",
@@ -103,31 +82,75 @@ public class TelaPokemon extends JFrame {
             "Velocidade"
         };
 
-        //passar por cada pokemon do banco, dar push no array de data
-        Object[][] data = {
-            {
-                "Pikachu", "Walrus", "Gosta de raiosss", "GRAMA", new Integer(5), new Integer(5), new Integer(5), new Integer(5), new Integer(5)
-            },
-            {
-                "Bulbassauro", "Bulba", "Gosta de grama", "GRAMA", new Integer(5), new Integer(5), new Integer(5), new Integer(5), new Integer(5)
-            },
-            {
-                "Charmander", "Charmandar", "Gosta de fogos", "FOGO", new Integer(5), new Integer(5), new Integer(5), new Integer(5), new Integer(5)
-            },
-            {
-                "Squirtle", "Aguinha", "Gosta de agua", "AGUA", new Integer(5), new Integer(5), new Integer(5), new Integer(5), new Integer(5)
-            },};
+        tableModel = new DefaultTableModel(columnNames, 0);
 
-        JTable table = new JTable(data, columnNames);
+        for (Pokemon pokemon : PokemonDAO.getInstancia().getList()) {
+            tableModel.addRow(new Object[]{
+                pokemon.getNome(),
+                pokemon.getNick(),
+                pokemon.getDescricao(),
+                pokemon.getTipo(),
+                pokemon.getAtaque(),
+                pokemon.getDefesa(),
+                pokemon.getVida(),
+                pokemon.getVelocidade()
+            });
+        }
+        
+        table.setModel(tableModel);
+        this.repaint();
+        
+    }
+
+    public TelaPokemon() {
+        super("Pokemon");
+        JPanel panel = new JPanel(new GridBagLayout());
+        this.getContentPane().setLayout(new GridBagLayout());
+        this.getContentPane().add(panel);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JPanel tableButtonPanel = new JPanel();
+
+        cadastrarBtn = new JButton();
+        editarBtn = new JButton();
+        removerBtn = new JButton();
+        cancelarBtn = new JButton();
+
+        cadastrarBtn.setText("Cadastrar Pokemon");
+        editarBtn.setText("Editar Pokemon");
+        removerBtn.setText("Remover");
+        cancelarBtn.setText("Cancelar");
+
+        GerenciadorBotao btManager = new GerenciadorBotao();
+        cadastrarBtn.addActionListener(btManager);
+        cadastrarBtn.setActionCommand("1");
+
+        editarBtn.addActionListener(btManager);
+        editarBtn.setActionCommand("2");
+
+        tableButtonPanel.add(cadastrarBtn);
+        tableButtonPanel.add(editarBtn);
+        tableButtonPanel.add(removerBtn);
+
+        JPanel buttonPanel = new JPanel();
+
+        buttonPanel.add(cancelarBtn);
+        JPanel detalhesPanel = this.pokemonDetalhes();
+        detalhesPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
         JScrollPane tableScrollPane = new JScrollPane(table);
+        this.initTable();
+        this.table = new JTable(tableModel) {
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+        };
+
         Dimension dimension = new Dimension(200, 50);
         tableScrollPane.setPreferredSize(dimension);
-        rowSelectionManager rowClickSelection = new rowSelectionManager(table, this);
-        table.getSelectionModel().addListSelectionListener(rowClickSelection);
-        
-        
-        
+//        rowSelectionManager rowClickSelection = new rowSelectionManager(table, this);
 
+//        table.getSelectionModel().addListSelectionListener(rowClickSelection);
         JLabel label = new JLabel("Pokemons cadastrados ");
 
         gbc.gridx = 0;
@@ -170,6 +193,7 @@ public class TelaPokemon extends JFrame {
         this.pack();
 
         setLocationRelativeTo(null);
+
         this.setVisible(true);
     }
 
@@ -177,23 +201,23 @@ public class TelaPokemon extends JFrame {
 
         JPanel panel = new JPanel();
 
-        JLabel velocidadeLabel = new JLabel("Velocidade");
-        JLabel descricaoLabel = new JLabel("Descricao");
-        JLabel ataqueLabel = new JLabel("Ataque");
-        JLabel defesaLabel = new JLabel("Defesa");
-        JLabel nomeLabel = new JLabel("Nome");
-        JLabel nickLabel = new JLabel("Nick");
-        JLabel tipoLabel = new JLabel("Tipo");
-        JLabel vidaLabel = new JLabel("Vida");
+        velocidadeLabel = new JLabel("Velocidade");
+        descricaoLabel = new JLabel("Descricao");
+        ataqueLabel = new JLabel("Ataque");
+        defesaLabel = new JLabel("Defesa");
+        nomeLabel = new JLabel("Nome");
+        nickLabel = new JLabel("Nick");
+        tipoLabel = new JLabel("Tipo");
+        vidaLabel = new JLabel("Vida");
 
-        JTextField velocidadeField = new JTextField("");
-        JTextField vidaField = new JTextField("");
-        JTextField ataqueField = new JTextField("");
-        JTextField defesaField = new JTextField("");
-        JTextField nomeField = new JTextField("");
-        JTextField nickField = new JTextField("");
-        JTextArea descricaoField = new JTextArea(5, 10);
-        JComboBox tipoField = new JComboBox();
+        velocidadeField = new JTextField("");
+        vidaField = new JTextField("");
+        ataqueField = new JTextField("");
+        defesaField = new JTextField("");
+        nomeField = new JTextField("");
+        nickField = new JTextField("");
+        descricaoField = new JTextArea(5, 10);
+        tipoField = new JComboBox(ETipo.values());
 
         panel.setLayout(new GridBagLayout());
 
@@ -291,6 +315,7 @@ public class TelaPokemon extends JFrame {
         panel.add(defesaField, gbc);
 
         i++;
+        
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = i;
@@ -302,11 +327,28 @@ public class TelaPokemon extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = i;
 
+        panel.add(velocidadeField, gbc);
+
+        i++;
+        
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = i;
+
+        panel.add(velocidadeLabel, gbc);
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridx = 1;
+        gbc.gridy = i;
+
         panel.add(vidaField, gbc);
 
+        
+        
         return panel;
-    }
 
+    }
 
 //    private PokemonController pokemonControll;
 //    private Scanner teclado = new Scanner(System.in);
@@ -463,36 +505,42 @@ public class TelaPokemon extends JFrame {
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //        }
+    private class GerenciadorBotao implements ActionListener {
 
-    private static class rowSelectionManager implements ListSelectionListener {
-        
-        JTable table;
-        TelaPokemon context;
-        Object record;
-        Pokemon pokemon;
-        public rowSelectionManager(JTable table, TelaPokemon context){
-            this.table = table;
-            this.context = context;
-        }
-        
         @Override
-        public void valueChanged(ListSelectionEvent e) {
-            Object record  = this.table.getValueAt(table.getSelectedRow(), 0);     
-            this.setRecord(record);
-            Pokemon pokemon = PokemonDAO.getInstancia().getPokemon(record.toString());
-            
-        }
-        
-        public void setRecord(Object record){
-            this.record = record;
-        }
-        
-        public Object getRecord(){
-            return record;
-        }
-        
-        
+        public void actionPerformed(ActionEvent e) {
+            switch (e.getActionCommand()) {
+                case "1": {
+                    PokemonController.getInstancia().addPokemon(
+                            nomeField.getText(),
+                            nickField.getText(),
+                            descricaoField.getText(),
+                            Integer.parseInt(velocidadeField.getText()),
+                            Integer.parseInt(ataqueField.getText()),
+                            Integer.parseInt(defesaField.getText()),
+                            Integer.parseInt(vidaField.getText()),
+                            tipoField.getSelectedIndex()
+                    );
+                    initTable();
+                    
+                }
+                case "2": {
+                    nomeField.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+                    nickField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+                    descricaoField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+                    tipoField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
+                    ataqueField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+                    defesaField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+                    vidaField.setText(table.getValueAt(table.getSelectedRow(), 6).toString());
 
-        
+                    break;
+                }
+                case "3": {
+
+                    break;
+                }
+            }
+        }
     }
+
 }
