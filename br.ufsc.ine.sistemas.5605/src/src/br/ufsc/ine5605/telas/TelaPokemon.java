@@ -13,12 +13,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import org.w3c.dom.events.MouseEvent;
 import src.br.ufsc.ine5605.controllers.PokemonController;
 import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
@@ -69,6 +72,8 @@ public class TelaPokemon extends JFrame {
     private JButton removerBtn;
     private JButton editarBtn;
 
+    private String record;
+
     private void initTable() {
 
         String[] columnNames = {
@@ -96,10 +101,10 @@ public class TelaPokemon extends JFrame {
                 pokemon.getVelocidade()
             });
         }
-        
+
         table.setModel(tableModel);
         this.repaint();
-        
+
     }
 
     public TelaPokemon() {
@@ -122,6 +127,8 @@ public class TelaPokemon extends JFrame {
         cancelarBtn.setText("Cancelar");
 
         GerenciadorBotao btManager = new GerenciadorBotao();
+        GerenciadorMouse mouseManager = new GerenciadorMouse();
+
         cadastrarBtn.addActionListener(btManager);
         cadastrarBtn.setActionCommand("1");
 
@@ -144,6 +151,8 @@ public class TelaPokemon extends JFrame {
                 return false;
             }
         };
+
+        table.addMouseListener(mouseManager);
 
         this.initTable();
 
@@ -316,7 +325,7 @@ public class TelaPokemon extends JFrame {
         panel.add(defesaField, gbc);
 
         i++;
-        
+
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = i;
@@ -331,7 +340,7 @@ public class TelaPokemon extends JFrame {
         panel.add(vidaField, gbc);
 
         i++;
-        
+
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = i;
@@ -345,11 +354,99 @@ public class TelaPokemon extends JFrame {
 
         panel.add(velocidadeField, gbc);
 
-        
-        
         return panel;
 
     }
+
+    private class GerenciadorMouse implements MouseListener {
+
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e) {
+            nomeField.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+            record = table.getValueAt(table.getSelectedRow(), 0).toString();
+            nickField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+            descricaoField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+            tipoField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
+            ataqueField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+            defesaField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+            vidaField.setText(table.getValueAt(table.getSelectedRow(), 6).toString());
+            velocidadeField.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
+            
+            nomeField.setEnabled(false);
+            tipoField.setEnabled(false);
+        }
+
+        @Override
+        public void mousePressed(java.awt.event.MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(java.awt.event.MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent e) {
+
+        }
+
+    }
+
+    private class GerenciadorBotao implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            switch (e.getActionCommand()) {
+                case "1": {
+                    try {
+                        PokemonController.getInstancia().addPokemon(
+                                nomeField.getText(),
+                                nickField.getText(),
+                                descricaoField.getText(),
+                                Integer.parseInt(velocidadeField.getText()),
+                                Integer.parseInt(ataqueField.getText()),
+                                Integer.parseInt(defesaField.getText()),
+                                Integer.parseInt(vidaField.getText()),
+                                tipoField.getSelectedIndex()
+                        );
+                        initTable();
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, exception.getMessage());
+                    }
+                }
+                case "2": {
+                    try {
+
+                        Pokemon pokemonChanged = PokemonDAO.getInstancia().getPokemon(table.getValueAt(table.getSelectedRow(), 0).toString());
+                        pokemonChanged.setNome(table.getValueAt(table.getSelectedRow(), 0).toString());
+                        pokemonChanged.setNick(table.getValueAt(table.getSelectedRow(), 1).toString());
+                        pokemonChanged.setDescricao(table.getValueAt(table.getSelectedRow(), 2).toString());
+                        pokemonChanged.setAtaque(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 4).toString()));
+                        pokemonChanged.setDefesa(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 5).toString()));
+                        pokemonChanged.setVida(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 6).toString()));
+                        pokemonChanged.setVelocidade(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 7).toString()));
+                        initTable();
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, exception.getMessage());
+                    }
+
+                    break;
+                }
+                case "3": {
+
+                    break;
+                }
+            }
+        }
+    }
+
+}
 
 //    private PokemonController pokemonControll;
 //    private Scanner teclado = new Scanner(System.in);
@@ -506,43 +603,3 @@ public class TelaPokemon extends JFrame {
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //        }
-    private class GerenciadorBotao implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            switch (e.getActionCommand()) {
-                case "1": {
-                    PokemonController.getInstancia().addPokemon(
-                            nomeField.getText(),
-                            nickField.getText(),
-                            descricaoField.getText(),
-                            Integer.parseInt(velocidadeField.getText()),
-                            Integer.parseInt(ataqueField.getText()),
-                            Integer.parseInt(defesaField.getText()),
-                            Integer.parseInt(vidaField.getText()),
-                            tipoField.getSelectedIndex()
-                    );
-                    initTable();
-                    
-                }
-                case "2": {
-                    nomeField.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-                    nickField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-                    descricaoField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-                    tipoField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
-                    ataqueField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-                    defesaField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
-                    vidaField.setText(table.getValueAt(table.getSelectedRow(), 6).toString());
-                    velocidadeField.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
-
-                    break;
-                }
-                case "3": {
-
-                    break;
-                }
-            }
-        }
-    }
-
-}
