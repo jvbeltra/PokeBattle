@@ -20,10 +20,11 @@ public class Batalha {
     private Pokemon vitorioso;
     private Pokemon derrotado;
 
-    public Batalha(Pokemon myPokemon, Pokemon wildPokemon) {
+    public Batalha(Pokemon myPokemon, Pokemon wildPokemon, String titulo) {
 
         this.myPokemon = myPokemon;
         this.wildPokemon = wildPokemon;
+        this.titulo = titulo;
     }
 
     public Batalha() {

@@ -14,6 +14,7 @@ import java.awt.Insets;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
 import java.util.Date;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -53,8 +54,8 @@ public class TelaBatalha extends JFrame {
 
         String[] columnNames = {"Titulo", "Pokemon Vencedor", "Pokemon Derrotado"};
         Object[][] data = {
-            {"Batalha 01", "Pikacu", "bulbassalto"},
-            {"Batalha 02", "Crackzard", "lsdevee"}
+            {"Batalha 01", "Pikachu", "bulbassalro"},
+            {"Batalha 02", "Charizard", "evee"}
         };
         tabela = new JTable(data, columnNames);
         tabela.setPreferredScrollableViewportSize(new Dimension(500, 50));
@@ -80,10 +81,10 @@ public class TelaBatalha extends JFrame {
         //Panel 1 Botoes Panel
         JPanel tableButtonPanel = new JPanel();
 
-        selecionarLutadoresBtn = new JButton();
-        selecionarLutadoresBtn.setText("Selecione os Lutadores");
-        selecionarLutadoresBtn.setToolTipText("Selecione os Pokemons para a batalha");
-        tableButtonPanel.add(selecionarLutadoresBtn);
+        batalharBtn = new JButton();
+        batalharBtn.setText("Batlhar!!");
+        batalharBtn.setToolTipText("Faça uma batalha Pokemon");
+        tableButtonPanel.add(batalharBtn);
         //------------------------------------------------------------------------------------------------//
         apagarBatalhaBtn = new JButton();
         apagarBatalhaBtn.setText("Apagar Batalha");
@@ -100,13 +101,13 @@ public class TelaBatalha extends JFrame {
         aleatorioBtn.setToolTipText("Selecione um inimigo aleatorio");
         tableButtonPanel.add(aleatorioBtn);
 
-        //-------------------------------------------------------------------------------------------------------//
-        panelPrincipal.add(tableButtonPanel, gbc);
+        //------------------------------------------------------------------------------------------------//
+        this.getContentPane().add(tableButtonPanel, gbc);
 
         gbc.fill = GridBagConstraints.NONE;
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weightx = 0;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 2;
         gbc.weighty = 0;
         this.pack();
 
@@ -133,8 +134,8 @@ public class TelaBatalha extends JFrame {
         adversarioField = new JTextField();
         adversarioField.setText("Pokemon Adversario");
         selecionarPanel.add(adversarioField);
-
-        selecionarPanel.add(selecionarPanel, gbc);
+        selecionarPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+         this.getContentPane().add(selecionarPanel, gbc);
 
     }
 

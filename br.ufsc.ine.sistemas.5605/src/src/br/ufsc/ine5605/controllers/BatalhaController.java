@@ -17,6 +17,7 @@ import static src.br.ufsc.ine5605.objects.ETipo.GRAMA;
 import java.util.Random;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
 import src.br.ufsc.ine5605.exceptions.ValorEhZeroException;
+import src.br.ufsc.ine5605.persistencia.BatalhaDAO;
 
 /**
  *
@@ -30,9 +31,9 @@ public class BatalhaController {
     private Pokemon pokemonVencedor;
     private Pokemon pokemonDerrotado;
     private TelaBatalha tela;
-    private ArrayList<Batalha> batalhas = new ArrayList<>();
+   
     private static BatalhaController instancia;
-    
+    private String tituloBatalha;
     public BatalhaController() {
         this.pokemonControll = pokemonControll;
     }
@@ -239,32 +240,26 @@ public class BatalhaController {
 
             this.lutar(myPokemon, wildPokemon);
 
-            resultadoBatalha = new Batalha(pokemonVencedor, pokemonDerrotado);
+            resultadoBatalha = new Batalha(pokemonVencedor, pokemonDerrotado, tituloBatalha);
             resultadoBatalha.setVitorioso(pokemonVencedor);
             resultadoBatalha.setDerrotado(pokemonDerrotado);
-            System.out.println("Pokemon vencedor: " + pokemonVencedor.getNome());
-            System.out.println("Pokemon derrotado: " + pokemonDerrotado.getNome() + "\n");
+            resultadoBatalha.setTitulo("Batalha" + "Random number"); //ARRUMA ISSAE FDP
+            System.out.println("Pokemon vencedor: " + pokemonVencedor.getNome());// ARRUMA ISSAE FDP
+            System.out.println("Pokemon derrotado: " + pokemonDerrotado.getNome() + "\n"); //ARRUMA ISSAE FDP
             
             
             
             myPokemon.setVida(myPokemonResetaVida);
             wildPokemon.setVida(wildPokemonResetaVida);
 
-            batalhas.add(resultadoBatalha);
+           BatalhaDAO.getInstancia().put(resultadoBatalha);
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return resultadoBatalha;
     }
 
-    public void listarBatalhas() {
-        int i = 1;
-        for (Batalha batalha : batalhas) {
-            System.out.println(
-                    "\n --- Batalha: " + i + " ---"
-                    + "\n Vencedor: " + batalha.getVitorioso().getNome()
-                    + "\n Derrotado: " + batalha.getDerrotado().getNome());
-            i++;
-        }
+
     }
-}
+
