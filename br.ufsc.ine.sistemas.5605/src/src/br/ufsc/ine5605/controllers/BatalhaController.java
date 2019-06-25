@@ -48,7 +48,9 @@ public class BatalhaController {
         }
         return instancia;
     }
-
+        public ArrayList<Integer> getTurnosList(){
+        return turnos;
+        }
 //    public void listarTarefas() {
 //        tela = new TelaBatalha(this);
 //        tela.listarTarefas();
