@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
 import javax.swing.BorderFactory;
@@ -20,6 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import src.br.ufsc.ine5605.objects.Batalha;
+import src.br.ufsc.ine5605.persistencia.BatalhaDAO;
 
 /**
  *
@@ -40,8 +45,33 @@ public class TelaBatalha extends JFrame {
     private JTextField adversarioField;
 
     private JTable tabela;
-
+    private DefaultTableModel tableModel;
     private Scanner teclado = new Scanner(System.in);
+
+    private void initTable() {
+        tabela = new JTable();
+        String[] columnNames = {
+            "Titulo",
+            "Vitorioso",
+            "Derrotado"
+
+        };
+
+        tableModel = new DefaultTableModel(columnNames, 0);
+
+        for (Batalha batalha : BatalhaDAO.getInstancia().getList()) {
+            tableModel.addRow(new Object[]{
+                batalha.getTitulo(),
+                batalha.getVitorioso(),
+                batalha.getDerrotado()
+
+            });
+        }
+
+        tabela.setModel(tableModel);
+        this.repaint();
+
+    }
 
     public TelaBatalha() {
         super("Batalha");
@@ -50,15 +80,15 @@ public class TelaBatalha extends JFrame {
         this.getContentPane().add(panelPrincipal);
         GridBagConstraints gbc = new GridBagConstraints();
 
-        String[] columnNames = {"Titulo", "Pokemon Vencedor", "Pokemon Derrotado"};
-        Object[][] data = {
-            {"Batalha 01", "Pikachu", "bulbassalro"},
-            {"Batalha 02", "Charizard", "evee"}
+        JScrollPane tableScrollPane = new JScrollPane(tabela);
+        this.initTable();
+        this.tabela = new JTable(tableModel) {
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
         };
-        tabela = new JTable(data, columnNames);
-        tabela.setPreferredScrollableViewportSize(new Dimension(500, 50));
-        tabela.setFillsViewportHeight(true);
-        //Panel 0 Tabela Panel
+
+//Panel 0 Tabela Panel
         JLabel label = new JLabel("Batalhas Anteriores ");
 
         gbc.gridx = 0;
@@ -83,6 +113,7 @@ public class TelaBatalha extends JFrame {
         batalharBtn.setText("Batlhar!!");
         batalharBtn.setToolTipText("Faça uma batalha Pokemon");
         gbc.gridx = 1;
+        gbc.gridy = 1;
         tableButtonPanel.add(batalharBtn);
         //------------------------------------------------------------------------------------------------//
         apagarBatalhaBtn = new JButton();
@@ -94,7 +125,7 @@ public class TelaBatalha extends JFrame {
         aleatorioBtn.setText("Aleatorio");
         aleatorioBtn.setToolTipText("Selecione um inimigo aleatorio");
         tableButtonPanel.add(aleatorioBtn);
-        
+
         //-----------------------------------------------------------------------------------------------//
         cancelarBtn = new JButton();
         cancelarBtn.setText("Cancelar");
@@ -102,6 +133,12 @@ public class TelaBatalha extends JFrame {
         tableButtonPanel.add(cancelarBtn);
 
         //------------------------------------------------------------------------------------------------//
+        GerenciadorBotao btManager = new GerenciadorBotao();
+        batalharBtn.addActionListener(btManager);
+        batalharBtn.setActionCommand("1");
+        cancelarBtn.addActionListener(btManager);
+        cancelarBtn.setActionCommand("4");
+
         this.getContentPane().add(tableButtonPanel, gbc);
 
         gbc.fill = GridBagConstraints.NONE;
@@ -109,7 +146,7 @@ public class TelaBatalha extends JFrame {
         gbc.gridy = 0;
         gbc.weightx = 1;
         gbc.weighty = 1;
-        
+
         this.pack();
 
         setLocationRelativeTo(null);
@@ -121,6 +158,7 @@ public class TelaBatalha extends JFrame {
         aliadoLabel = new JLabel();
         aliadoLabel.setText("Aliado:");
         aliadoLabel.setToolTipText("Selecione o seu Pokemon para a batalha");
+
         selecionarPanel.add(aliadoLabel);
         //-------------------------------------------------------------------------------------------------------//
         adversarioLabel = new JLabel();
@@ -136,9 +174,36 @@ public class TelaBatalha extends JFrame {
         adversarioField.setText("Pokemon Adversario");
         selecionarPanel.add(adversarioField);
         selecionarPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-         this.getContentPane().add(selecionarPanel, gbc);
+        this.getContentPane().add(selecionarPanel, gbc);
 
     }
+
+    private class GerenciadorBotao implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            switch (e.getActionCommand()) {
+                case "1": {
+                String nomeMyPokemon = aliadoField.getText();
+                String nomeSelvagem = adversarioField.getText();
+                BatalhaController.getInstancia().batalhar(nomeMyPokemon, nomeSelvagem);
+                break;
+                }
+                case "2": {
+
+                }
+                case "3": {
+                }
+                case "4": {
+                    aliadoField.setText("");
+                    adversarioField.setText("");
+                break;
+                }
+            }
+        }
+
+    }
+}
 
 //    public void selecionarLutadores() {
 //        Scanner s = new Scanner(System.in);
@@ -149,7 +214,6 @@ public class TelaBatalha extends JFrame {
 //
 //        BatalhaController.getInstancia().batalhar(nomeMyPokemon, nomeSelvagem);
 //    }
-}
 // public void listarTarefas() {
 //
 //        try {

@@ -25,18 +25,23 @@ import src.br.ufsc.ine5605.persistencia.BatalhaDAO;
  */
 public class BatalhaController {
 
-    private PokemonController pokemonControll;
     private Pokemon wildPokemon;
     private Pokemon myPokemon;
     private Pokemon pokemonVencedor;
     private Pokemon pokemonDerrotado;
     private TelaBatalha tela;
-   
+    private ArrayList<Integer> turnos = new ArrayList<Integer>();
+    private ArrayList<Integer> vidaMomentoAliado = new ArrayList<Integer>();
+    private ArrayList<Integer> vidaMomentoAdversario = new ArrayList<Integer>();
+    private ArrayList<String> vencedores = new ArrayList<String>();
+    private ArrayList<String> perdedores = new ArrayList<String>();
     private static BatalhaController instancia;
     private String tituloBatalha;
+
     public BatalhaController() {
-        this.pokemonControll = pokemonControll;
+
     }
+
     public static BatalhaController getInstancia() {
         if (instancia == null) {
             instancia = new BatalhaController();
@@ -48,13 +53,12 @@ public class BatalhaController {
 //        tela = new TelaBatalha(this);
 //        tela.listarTarefas();
 //    }
-
     public void selecionarLutadores() {
         Scanner s = new Scanner(System.in);
 
         System.out.println("Insira o nome do Pokemon que você utilizará: ");
         String nomeMyPokemon = s.nextLine();
-        myPokemon = pokemonControll.getPokemonByName(nomeMyPokemon);
+        myPokemon = PokemonController.getInstancia().getPokemonByName(nomeMyPokemon);
 
         System.out.println("Insira o nome do Pokemon selvagem: ");
         String nomeSelvagem = s.nextLine();
@@ -115,6 +119,10 @@ public class BatalhaController {
 
     }
 
+    public void excluirBatalha(Batalha batalha) {
+        BatalhaDAO.getInstancia().remove(batalha);
+    }
+
     public int ataqueInimigo() {
         int newVida = myPokemon.getVida();
         int danoCausado = 0;
@@ -170,7 +178,13 @@ public class BatalhaController {
         return wildPokemon.getAtaque();
     }
 
+//    public Pokemon pokemonAleatorio(){
+//    
+//    }
     public String lutar(Pokemon myPokemon, Pokemon wildPokemon) {
+        Integer turno;
+        Integer vidaAtualAliado;
+        Integer vidaAtualAdversario;
         int i = 0;
         int ordem = 0;
 
@@ -193,9 +207,12 @@ public class BatalhaController {
                 this.ataqueAliado();
             }
 
-            System.out.println("\n --- Turno --- : " + (i + 1));
-            System.out.println(" Vida do meu Pokemon: " + myPokemon.getVida());
-            System.out.println(" Vida do Pokemon inimigo: " + wildPokemon.getVida());
+            turno = (i + 1);
+            turnos.add(turno);
+            vidaAtualAliado = (myPokemon.getVida());
+            vidaMomentoAliado.add(vidaAtualAliado);
+            vidaAtualAdversario = (wildPokemon.getVida());
+            vidaMomentoAdversario.add(vidaAtualAdversario);
             i++;
 
         } while ((myPokemon.getVida() > 0 && wildPokemon.getVida() > 0));
@@ -220,13 +237,11 @@ public class BatalhaController {
     public Batalha batalhar(String myPokemonName, String wildPokemonName) {
         Batalha resultadoBatalha = null;
         try {
-            myPokemon = pokemonControll.getPokemonByName(myPokemonName);
-            wildPokemon = pokemonControll.getPokemonByName(wildPokemonName);
+            myPokemon = PokemonController.getInstancia().getPokemonByName(myPokemonName);
+            wildPokemon = PokemonController.getInstancia().getPokemonByName(wildPokemonName);
             if (myPokemon == null || wildPokemon == null) {
                 throw new PokemonNaoExisteException();
             }
-            
-            
 
             if (myPokemon.getVida() <= 0 || wildPokemon.getVida() <= 0) {
                 throw new ValorEhZeroException();
@@ -244,22 +259,18 @@ public class BatalhaController {
             resultadoBatalha.setVitorioso(pokemonVencedor);
             resultadoBatalha.setDerrotado(pokemonDerrotado);
             resultadoBatalha.setTitulo("Batalha" + "Random number"); //ARRUMA ISSAE FDP
-            System.out.println("Pokemon vencedor: " + pokemonVencedor.getNome());// ARRUMA ISSAE FDP
-            System.out.println("Pokemon derrotado: " + pokemonDerrotado.getNome() + "\n"); //ARRUMA ISSAE FDP
-            
-            
-            
+            vencedores.add(pokemonVencedor.getNome());// ARRUMA ISSAE FDP
+            perdedores.add(pokemonDerrotado.getNome()); //ARRUMA ISSAE FDP
+
             myPokemon.setVida(myPokemonResetaVida);
             wildPokemon.setVida(wildPokemonResetaVida);
 
-           BatalhaDAO.getInstancia().put(resultadoBatalha);
-            
+            BatalhaDAO.getInstancia().put(resultadoBatalha);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return resultadoBatalha;
     }
 
-
-    }
-
+}
