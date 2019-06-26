@@ -6,7 +6,6 @@
 package src.br.ufsc.ine5605.telas;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,8 +13,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,19 +24,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import org.w3c.dom.events.MouseEvent;
-import src.br.ufsc.ine5605.controllers.PocketController;
-import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
-import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
-import src.br.ufsc.ine5605.exceptions.TipoNaoExisteException;
-import src.br.ufsc.ine5605.exceptions.ValorEhZeroException;
 import src.br.ufsc.ine5605.objects.ETipo;
 import src.br.ufsc.ine5605.objects.Pokemon;
 import src.br.ufsc.ine5605.persistencia.PokemonDAO;
 import src.br.ufsc.ine5605.controllers.PokemonController;
+import src.br.ufsc.ine5605.controllers.PrincipalController;
 
 /**
  *
@@ -111,7 +101,7 @@ public class TelaPokemon extends JFrame {
     }
 
     public TelaPokemon() {
-        super("Pokemon");
+        super("Pokémon");
 
         JPanel panel = new JPanel(new GridBagLayout());
         this.getContentPane().setLayout(new GridBagLayout());
@@ -127,11 +117,11 @@ public class TelaPokemon extends JFrame {
         capturarBtn = new JButton();
         limparBtn = new JButton();
 
-        cadastrarBtn.setText("Cadastrar Pokemon");
-        editarBtn.setText("Editar Pokemon");
+        cadastrarBtn.setText("Cadastrar Pokémon");
+        editarBtn.setText("Editar Pokémon");
         removerBtn.setText("Remover");
         limparBtn.setText("Limpar campos");
-        capturarBtn.setText("Capturar Pokemon");
+        capturarBtn.setText("Capturar Pokémon");
 
         GerenciadorBotao btManager = new GerenciadorBotao();
         GerenciadorMouse mouseManager = new GerenciadorMouse();
@@ -147,15 +137,15 @@ public class TelaPokemon extends JFrame {
 
         limparBtn.addActionListener(btManager);
         limparBtn.setActionCommand("4");
-        
+
         capturarBtn.addActionListener(btManager);
         capturarBtn.setActionCommand("5");
 
         tableButtonPanel.add(cadastrarBtn);
         tableButtonPanel.add(editarBtn);
         tableButtonPanel.add(removerBtn);
-        tableButtonPanel.add(limparBtn);
         tableButtonPanel.add(capturarBtn);
+        tableButtonPanel.add(limparBtn);
 
         JPanel buttonPanel = new JPanel();
 
@@ -168,6 +158,7 @@ public class TelaPokemon extends JFrame {
                 return false;
             }
         };
+
         table.getTableHeader().setReorderingAllowed(false);
         table.addMouseListener(mouseManager);
 
@@ -443,6 +434,8 @@ public class TelaPokemon extends JFrame {
                         );
                         limparCampos();
                         initTable();
+                        JOptionPane.showMessageDialog(null, "Pokémon criado com sucesso!");
+
                     } catch (Exception exception) {
                         System.out.println(exception.toString());
                         if (exception.toString().contains("java.lang.NumberFormatException")) {
@@ -457,7 +450,6 @@ public class TelaPokemon extends JFrame {
                 case "2": {
                     try {
 
-                        Pokemon pokemonChanged = PokemonDAO.getInstancia().getPokemon(table.getValueAt(table.getSelectedRow(), 0).toString());
                         PokemonController.getInstancia().delPokemon(PokemonController.getInstancia().getPokemonByName(table.getValueAt(table.getSelectedRow(), 0).toString()));
 
                         PokemonController.getInstancia().addPokemon(
@@ -472,6 +464,8 @@ public class TelaPokemon extends JFrame {
                         );
                         limparCampos();
                         initTable();
+                        JOptionPane.showMessageDialog(null, "Pokémon editado com sucesso!");
+
                     } catch (Exception exception) {
                         if (!exception.getMessage().equals("-1")) {
                             JOptionPane.showMessageDialog(null, exception.getMessage());
@@ -484,6 +478,8 @@ public class TelaPokemon extends JFrame {
                     try {
                         PokemonController.getInstancia().delPokemon(PokemonController.getInstancia().getPokemonByName(table.getValueAt(table.getSelectedRow(), 0).toString()));
                         initTable();
+                        limparCampos();
+                        JOptionPane.showMessageDialog(null, "Pokémon excluído com sucesso!");
                     } catch (Exception exc) {
                         if (!exc.getMessage().equals("-1")) {
                             JOptionPane.showMessageDialog(null, exc.getMessage());
@@ -495,14 +491,15 @@ public class TelaPokemon extends JFrame {
                     limparCampos();
                     break;
                 }
-                case "5":{
+                case "5": {
                     try {
-                        PocketController.getInstancia().capturaPokemon(table.getValueAt(table.getSelectedRow(), 0).toString());
-                    } catch (Exception exc1) { 
-                         if (!exc1.getMessage().equals("-1")) {
+                        PrincipalController.getInstancia().acessaPocket().capturaPokemon(table.getValueAt(table.getSelectedRow(), 0).toString());
+                    } catch (Exception exc1) {
+                        if (!exc1.getMessage().equals("-1")) {
                             JOptionPane.showMessageDialog(null, exc1.getMessage());
                         }
                     }
+                    break;
                 }
             }
         }

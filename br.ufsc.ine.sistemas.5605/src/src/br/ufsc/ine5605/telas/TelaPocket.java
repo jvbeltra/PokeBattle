@@ -115,6 +115,7 @@ public class TelaPocket extends JFrame {
         super("Pocket");
 
         JPanel panel = new JPanel(new GridBagLayout());
+
         this.getContentPane().setLayout(new GridBagLayout());
         this.getContentPane().add(panel);
 
@@ -122,36 +123,16 @@ public class TelaPocket extends JFrame {
 
         JPanel tableButtonPanel = new JPanel();
 
-        cadastrarBtn = new JButton();
-        editarBtn = new JButton();
         removerBtn = new JButton();
-
-        limparBtn = new JButton();
-
-        cadastrarBtn.setText("Cadastrar Pokemon");
-        editarBtn.setText("Editar Pokemon");
-        removerBtn.setText("Libertar Pokemon");
-        limparBtn.setText("Limpar campos");
+        removerBtn.setText("Libertar Pokémon");
 
         GerenciadorBotao btManager = new GerenciadorBotao();
         GerenciadorMouse mouseManager = new GerenciadorMouse();
 
-        cadastrarBtn.addActionListener(btManager);
-        cadastrarBtn.setActionCommand("1");
-
-        editarBtn.addActionListener(btManager);
-        editarBtn.setActionCommand("2");
-
         removerBtn.addActionListener(btManager);
-        removerBtn.setActionCommand("3");
+        removerBtn.setActionCommand("1");
 
-        limparBtn.addActionListener(btManager);
-        limparBtn.setActionCommand("4");
-
-        tableButtonPanel.add(cadastrarBtn);
-        tableButtonPanel.add(editarBtn);
         tableButtonPanel.add(removerBtn);
-        tableButtonPanel.add(limparBtn);
 
         JPanel buttonPanel = new JPanel();
 
@@ -426,60 +407,12 @@ public class TelaPocket extends JFrame {
 
             switch (e.getActionCommand()) {
                 case "1": {
-//                    try {
-//                        PokemonController.getInstancia().addPokemon(
-//                                nomeField.getText(),
-//                                nickField.getText(),
-//                                descricaoField.getText(),
-//                                Integer.parseInt(velocidadeField.getText()),
-//                                Integer.parseInt(ataqueField.getText()),
-//                                Integer.parseInt(defesaField.getText()),
-//                                Integer.parseInt(vidaField.getText()),
-//                                tipoField.getSelectedIndex()
-//                        );
-//                        limparCampos();
-//                        initTable();
-//                    } catch (Exception exception) {
-//                        System.out.println(exception.toString());
-//                        if (exception.toString().contains("java.lang.NumberFormatException")) {
-//                            JOptionPane.showMessageDialog(null, "Insira os valores com seus tipos corretos");
-//                        } else {
-//                            System.out.println(exception);
-//                            JOptionPane.showMessageDialog(null, exception.getMessage());
-//                        }
-//                    }
-                    break;
-                }
-                case "2": {
-                    try {
-
-                        Pokemon pokemonChanged = PokemonDAO.getInstancia().getPokemon(table.getValueAt(table.getSelectedRow(), 0).toString());
-                        PokemonController.getInstancia().delPokemon(PokemonController.getInstancia().getPokemonByName(table.getValueAt(table.getSelectedRow(), 0).toString()));
-
-                        PokemonController.getInstancia().addPokemon(
-                                nomeField.getText(),
-                                nickField.getText(),
-                                descricaoField.getText(),
-                                Integer.parseInt(velocidadeField.getText()),
-                                Integer.parseInt(ataqueField.getText()),
-                                Integer.parseInt(defesaField.getText()),
-                                Integer.parseInt(vidaField.getText()),
-                                tipoField.getSelectedIndex()
-                        );
-                        limparCampos();
-                        initTable();
-                    } catch (Exception exception) {
-                        if (!exception.getMessage().equals("-1")) {
-                            JOptionPane.showMessageDialog(null, exception.getMessage());
-                        }
-                    }
-
-                    break;
-                }
-                case "3": {
                     try {
                         PocketController.getInstancia().soltarPokemon(table.getValueAt(table.getSelectedRow(), 0).toString());
                         initTable();
+                        limparCampos();
+                        JOptionPane.showMessageDialog(null, "Pokémon libertado com sucesso!");
+
                     } catch (Exception exc) {
                         if (!exc.getMessage().equals("-1")) {
                             JOptionPane.showMessageDialog(null, exc.getMessage());
@@ -487,9 +420,7 @@ public class TelaPocket extends JFrame {
                     }
                     break;
                 }
-                case "4": {
-                    limparCampos();
-                }
+
             }
         }
     }

@@ -77,7 +77,10 @@ public class PokemonController {
             if (pokemon == null) {
                 throw new PokemonNaoExisteException();
             } else {
+                
+                PocketController.getInstancia().soltarPokemon(pokemon.getNome());
                 PokemonDAO.getInstancia().remove(pokemon);
+                
             }
 
         } catch (Exception e) {
