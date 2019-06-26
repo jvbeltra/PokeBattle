@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
+import src.br.ufsc.ine5605.objects.Luta;
 
 /**
  *
@@ -24,11 +25,7 @@ public class TelaLuta extends JFrame {
     private JTable tabela;
     private DefaultTableModel tableModel;
 
-    private ArrayList<Integer> turnos = new ArrayList<Integer>();
-    private ArrayList<Integer> vidaMomentoAliado = new ArrayList<Integer>();
-    private ArrayList<Integer> vidaMomentoAdversario = new ArrayList<Integer>();
-    private ArrayList<String> vencedores = new ArrayList<String>();
-    private ArrayList<String> perdedores = new ArrayList<String>();
+    private ArrayList<Luta> lutas = new ArrayList<Luta>();
 
     private void initTable() {
         tabela = new JTable();
@@ -36,20 +33,24 @@ public class TelaLuta extends JFrame {
             "Turno",
             "Vida Aliado",
             "Vida Adversario",
-            "Dano causado",
-            "Dano Recebido",
-            "Pokemon Vencedor",
-            "Pokemon Derrotado"
+            "Dano Causado",
+            "Dano Recebido"
 
         };
 
         tableModel = new DefaultTableModel(columnNames, 0);
 
-        ArrayList<Integer> turnos = BatalhaController.getInstancia().getTurnosList();
-        for (Integer turno : turnos) {
+        ArrayList<Luta> lutas = BatalhaController.getInstancia().getLutas();
+        for (Luta luta : lutas) {
+
             tableModel.addRow(new Object[]{
-                turno
+                luta.getTurno(),
+                luta.getVidaAliada(),
+                luta.getVidaAdversaria(),
+                luta.getDanoCausado(),
+                luta.getDanoRecebido()
             });
+
         }
     }
 
@@ -66,7 +67,7 @@ public class TelaLuta extends JFrame {
                 return false;
             }
         };
-    
-    panelPrincipal.add(new JScrollPane(tabela), gbc);
+
+        panelPrincipal.add(new JScrollPane(tabela), gbc);
     }
 }
