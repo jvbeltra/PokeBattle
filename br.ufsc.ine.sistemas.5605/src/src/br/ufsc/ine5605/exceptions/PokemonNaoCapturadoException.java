@@ -12,7 +12,7 @@ package src.br.ufsc.ine5605.exceptions;
 public class PokemonNaoCapturadoException extends RuntimeException {
 
     public PokemonNaoCapturadoException() {
-        this("Este pokemon não existe na pocket.");
+        this("Este pokemon não foi capturado.");
     }
     
     public PokemonNaoCapturadoException(String message) {

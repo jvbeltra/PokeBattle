@@ -12,7 +12,7 @@ package src.br.ufsc.ine5605.exceptions;
     public class PokemonJahExisteException extends RuntimeException {
 
         public PokemonJahExisteException() {
-            this("Já existe um pokemon com este nome");
+            this("Já existe um pokemon com este nome.");
         }
 
         public PokemonJahExisteException(String message) {

@@ -6,10 +6,12 @@
 package src.br.ufsc.ine5605.controllers;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
 import src.br.ufsc.ine5605.exceptions.ValorEhZeroException;
+import src.br.ufsc.ine5605.exceptions.ValorInvalidoException;
 import src.br.ufsc.ine5605.objects.ETipo;
 import src.br.ufsc.ine5605.objects.Pokemon;
 import src.br.ufsc.ine5605.persistencia.PokemonDAO;
@@ -67,6 +69,7 @@ public class PokemonController {
         if (velocidade <= 0 || ataque <= 0 || defesa <= 0 || vida <= 0) {
             throw new ValorEhZeroException();
         }
+        
         pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida, tipo);
         PokemonDAO.getInstancia().put(pokemon);
 
@@ -91,6 +94,11 @@ public class PokemonController {
     public Pokemon getPokemonByName(String name) {
         return PokemonDAO.getInstancia().getPokemon(name);
     }
+    
+    public Pokemon getAleatorio(){
+        Random pokemonAleatorio = new Random(); 
+        return PokemonDAO.getInstancia().getList().get(pokemonAleatorio.nextInt(PokemonDAO.getInstancia().getList().size()));
+    }
 
     public void listarTarefas() {
         tela = new TelaPokemon();
@@ -98,61 +106,41 @@ public class PokemonController {
 
     }
 
-    public void editarPokemon(int toEdit, String pokemonName) throws PokemonJahExisteException {
-
-        Scanner s = new Scanner(System.in);
-        Pokemon myPokemon = this.getPokemonByName(pokemonName);
-        try {
-            switch (toEdit) {
-                case 1: {
-                    System.out.println("Insira um novo nome: ");
-                    String newNome = s.nextLine();
-                    if (this.getPokemonByName(newNome) != null) {
-                        throw new PokemonJahExisteException();
-                    }
-                    myPokemon.setNome(newNome);
-                    break;
-                }
-                case 2: {
-                    System.out.println("Insira um novo nick: ");
-                    String newNick = s.nextLine();
-                    myPokemon.setNick(newNick);
-                    break;
-                }
-                case 3: {
-                    System.out.println("Insira uma nova descrição: ");
-                    String newDescricao = s.nextLine();
-                    myPokemon.setDescricao(newDescricao);
-                    break;
-                }
-                case 4: {
-                    System.out.println("Insira um novo valor de ataque: ");
-                    int newAtaque = s.nextInt();
-                    myPokemon.setAtaque(newAtaque);
-                    break;
-                }
-                case 5: {
-                    System.out.println("Insira um novo valor de defesa: ");
-                    int newDefesa = s.nextInt();
-                    myPokemon.setDefesa(newDefesa);
-                    break;
-                }
-                case 6: {
-                    System.out.println("Insira uma nova vida: ");
-                    int newVida = s.nextInt();
-                    myPokemon.setVida(newVida);
-                    break;
-                }
-                case 7: {
-                    System.out.println("Insira uma nova velocidade: ");
-                    int newVelocidade = s.nextInt();
-                    myPokemon.setVelocidade(newVelocidade);
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-
+    public void editarPokemon(String editado, String newNome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida, int tipoIndex) throws PokemonJahExisteException {
+        
+        if (this.getPokemonByName(newNome) != null && !editado.equalsIgnoreCase(newNome)) {
+                    throw new PokemonJahExisteException();
         }
+        PokemonDAO.getInstancia().remove(this.getPokemonByName(editado));
+        this.addPokemon(newNome, nick, descricao, velocidade, ataque, defesa, vida, tipoIndex);
+//                case 4: {
+//                    System.out.println("Insira um novo valor de ataque: ");
+//                    int newAtaque = s.nextInt();
+//                    myPokemon.setAtaque(newAtaque);
+//                    break;
+//                }
+//                case 5: {
+//                    System.out.println("Insira um novo valor de defesa: ");
+//                    int newDefesa = s.nextInt();
+//                    myPokemon.setDefesa(newDefesa);
+//                    break;
+//                }
+//                case 6: {
+//                    System.out.println("Insira uma nova vida: ");
+//                    int newVida = s.nextInt();
+//                    myPokemon.setVida(newVida);
+//                    break;
+//                }
+//                case 7: {
+//                    System.out.println("Insira uma nova velocidade: ");
+//                    int newVelocidade = s.nextInt();
+//                    myPokemon.setVelocidade(newVelocidade);
+//                    break;
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//
+//        }
     }
 }

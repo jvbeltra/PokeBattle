@@ -30,6 +30,7 @@ import src.br.ufsc.ine5605.objects.Pokemon;
 import src.br.ufsc.ine5605.persistencia.PokemonDAO;
 import src.br.ufsc.ine5605.controllers.PokemonController;
 import src.br.ufsc.ine5605.controllers.PrincipalController;
+import src.br.ufsc.ine5605.exceptions.ValorInvalidoException;
 
 /**
  *
@@ -418,7 +419,9 @@ public class TelaPokemon extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            
+            
+            
             switch (e.getActionCommand()) {
                 case "1": {
                     try {
@@ -432,27 +435,25 @@ public class TelaPokemon extends JFrame {
                                 Integer.parseInt(vidaField.getText()),
                                 tipoField.getSelectedIndex()
                         );
+                     if (velocidadeField.getText().matches("-?\\d+")){
+                         System.out.println("É NUMERO");
+                     } else {
+                         System.out.println("Num é");
+                     }    
+
                         limparCampos();
                         initTable();
                         JOptionPane.showMessageDialog(null, "Pokémon criado com sucesso!");
 
                     } catch (Exception exception) {
-                        System.out.println(exception.toString());
-                        if (exception.toString().contains("java.lang.NumberFormatException")) {
-                            JOptionPane.showMessageDialog(null, "Insira os valores com seus tipos corretos");
-                        } else {
-                            System.out.println(exception);
                             JOptionPane.showMessageDialog(null, exception.getMessage());
-                        }
                     }
                     break;
                 }
                 case "2": {
                     try {
-
-                        PokemonController.getInstancia().delPokemon(PokemonController.getInstancia().getPokemonByName(table.getValueAt(table.getSelectedRow(), 0).toString()));
-
-                        PokemonController.getInstancia().addPokemon(
+                        PokemonController.getInstancia().editarPokemon(
+                                table.getValueAt(table.getSelectedRow(), 0).toString(),
                                 nomeField.getText(),
                                 nickField.getText(),
                                 descricaoField.getText(),
@@ -467,9 +468,7 @@ public class TelaPokemon extends JFrame {
                         JOptionPane.showMessageDialog(null, "Pokémon editado com sucesso!");
 
                     } catch (Exception exception) {
-                        if (!exception.getMessage().equals("-1")) {
                             JOptionPane.showMessageDialog(null, exception.getMessage());
-                        }
                     }
 
                     break;

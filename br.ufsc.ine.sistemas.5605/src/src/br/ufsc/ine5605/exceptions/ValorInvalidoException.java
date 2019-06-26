@@ -9,13 +9,14 @@ package src.br.ufsc.ine5605.exceptions;
  *
  * @author Joao
  */
-public class PokemonJahCapturadoException extends RuntimeException {
+public class ValorInvalidoException extends NumberFormatException {
 
-    public PokemonJahCapturadoException() {
-        this("Este pokemon já foi capturado.");
+    public ValorInvalidoException() {
+        this("Insira os campos com seus tipos corretos.");
     }
     
-    public PokemonJahCapturadoException(String message) {
+    public ValorInvalidoException(String message) {
         super(message);
     }
+    
 }

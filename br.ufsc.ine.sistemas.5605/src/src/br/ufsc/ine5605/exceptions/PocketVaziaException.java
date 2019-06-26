@@ -12,7 +12,7 @@ package src.br.ufsc.ine5605.exceptions;
 public class PocketVaziaException extends RuntimeException {
 
     public PocketVaziaException() {
-        this("Não há nenhum Pokemon inserido na pocket");
+        this("Não há nenhum Pokemon inserido na pocket.");
     }
     
     public PocketVaziaException(String message) {

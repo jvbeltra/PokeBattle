@@ -12,7 +12,7 @@ package src.br.ufsc.ine5605.exceptions;
 public class PocketCheiaException extends RuntimeException {
 
     public PocketCheiaException() {
-        this("Não há mais espaço na pocket");
+        this("Não há mais espaço na pocket.");
     }
     
     public PocketCheiaException(String message) {
