@@ -66,6 +66,7 @@ public class PokemonController {
         if (this.getPokemonByName(nome) != null) {
             throw new PokemonJahExisteException();
         }
+        
         if (velocidade <= 0 || ataque <= 0 || defesa <= 0 || vida <= 0) {
             throw new ValorEhZeroException();
         }

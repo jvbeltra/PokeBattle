@@ -419,34 +419,41 @@ public class TelaPokemon extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            
-            
-            
+
             switch (e.getActionCommand()) {
                 case "1": {
                     try {
+                        int velParsed;
+                        int atqParsed;
+                        int defParsed;
+                        int vidaParsed;
+                        
+                        try {
+                            
+                            velParsed = Integer.parseInt(velocidadeField.getText());
+                            atqParsed = Integer.parseInt(ataqueField.getText());
+                            defParsed = Integer.parseInt(defesaField.getText());
+                            vidaParsed = Integer.parseInt(vidaField.getText());
+                            
+                        } catch (NumberFormatException excNumber) {
+                            throw new ValorInvalidoException();
+                        }
                         PokemonController.getInstancia().addPokemon(
                                 nomeField.getText(),
                                 nickField.getText(),
                                 descricaoField.getText(),
-                                Integer.parseInt(velocidadeField.getText()),
-                                Integer.parseInt(ataqueField.getText()),
-                                Integer.parseInt(defesaField.getText()),
-                                Integer.parseInt(vidaField.getText()),
+                                velParsed,
+                                atqParsed,
+                                defParsed,
+                                vidaParsed,
                                 tipoField.getSelectedIndex()
                         );
-                     if (velocidadeField.getText().matches("-?\\d+")){
-                         System.out.println("É NUMERO");
-                     } else {
-                         System.out.println("Num é");
-                     }    
-
                         limparCampos();
                         initTable();
                         JOptionPane.showMessageDialog(null, "Pokémon criado com sucesso!");
 
                     } catch (Exception exception) {
-                            JOptionPane.showMessageDialog(null, exception.getMessage());
+                        JOptionPane.showMessageDialog(null, exception.getMessage());
                     }
                     break;
                 }
@@ -468,7 +475,7 @@ public class TelaPokemon extends JFrame {
                         JOptionPane.showMessageDialog(null, "Pokémon editado com sucesso!");
 
                     } catch (Exception exception) {
-                            JOptionPane.showMessageDialog(null, exception.getMessage());
+                        JOptionPane.showMessageDialog(null, exception.getMessage());
                     }
 
                     break;
