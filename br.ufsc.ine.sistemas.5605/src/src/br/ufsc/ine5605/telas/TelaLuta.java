@@ -41,6 +41,7 @@ public class TelaLuta extends JFrame {
 
         tableModel = new DefaultTableModel(columnNames, 0);
         this.repaint();
+        
         ArrayList<Luta> lutas = BatalhaController.getInstancia().getLutas();
         for (Luta luta : lutas) {
 
@@ -69,6 +70,9 @@ public class TelaLuta extends JFrame {
             }
         };
         Dimension dimension = new Dimension(300, 200);
+        setSize(800,500);
+        setResizable(false);
+        repaint();
         tableScrollPane.setPreferredSize(dimension);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;

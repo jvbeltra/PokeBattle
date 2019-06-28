@@ -89,6 +89,7 @@ public class TelaBatalha extends JFrame {
 
         this.pack();
         setLocationRelativeTo(null);
+    
     }
 
     public JPanel batalhaDetalhes() {
@@ -296,22 +297,27 @@ public class TelaBatalha extends JFrame {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()) {
                 case "1": {
+
                     try {
-                        String nomeMyPokemon = aliadoField.getText();
-                        String nomeSelvagem = adversarioField.getText();
+
+                        String nomeMyPokemon = PokemonController.getInstancia().getPokemonByName(aliadoField.getText()).getNome();
+                        String nomeSelvagem = PokemonController.getInstancia().getPokemonByName(adversarioField.getText()).getNome();
                         String tituloBatalha = tituloField.getText();
                         BatalhaController.getInstancia().batalhar(aliadoField.getText(), adversarioField.getText(), tituloField.getText());
+                        initTable();
+
+                        new TelaLuta().setVisible(true);
+
                     } catch (Exception e1) {
+
                         JOptionPane.showMessageDialog(null, e1.getMessage());
                     }
-                    initTable();
 
-                    new TelaLuta().setVisible(true);
                     break;
                 }
                 case "2": {
                     try {
-                        BatalhaController.getInstancia().delBatalha(BatalhaController.getInstancia().getBatalhaByTitulo(table.getValueAt(table.getSelectedRow(), 2).toString()));
+                        BatalhaController.getInstancia().delBatalha(BatalhaController.getInstancia().getBatalhaByTitulo(table.getValueAt(table.getSelectedRow(), 0).toString()));
                         aliadoField.setText("");
                         adversarioField.setText("");
                         tituloField.setText("");
