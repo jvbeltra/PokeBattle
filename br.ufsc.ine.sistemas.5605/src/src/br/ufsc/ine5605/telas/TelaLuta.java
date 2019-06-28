@@ -8,6 +8,8 @@ package src.br.ufsc.ine5605.telas;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -26,10 +28,9 @@ public class TelaLuta extends JFrame {
     private JTable tabela;
     private DefaultTableModel tableModel;
 
-    private ArrayList<Luta> lutas = new ArrayList<Luta>();
+    private ArrayList<Luta> lutas;
 
     private void initTable() {
-        tabela = new JTable();
         String[] columnNames = {
             "Turno",
             "Vida Aliado",
@@ -41,10 +42,9 @@ public class TelaLuta extends JFrame {
 
         tableModel = new DefaultTableModel(columnNames, 0);
         this.repaint();
-        
-        ArrayList<Luta> lutas = BatalhaController.getInstancia().getLutas();
-        for (Luta luta : lutas) {
 
+        lutas = BatalhaController.getInstancia().getLutas();
+        for (Luta luta : lutas) {
             tableModel.addRow(new Object[]{
                 luta.getTurno(),
                 luta.getVidaAliada(),
@@ -52,7 +52,6 @@ public class TelaLuta extends JFrame {
                 luta.getDanoCausado(),
                 luta.getDanoRecebido()
             });
-
         }
     }
 
@@ -64,13 +63,22 @@ public class TelaLuta extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         JScrollPane tableScrollPane = new JScrollPane(tabela);
         this.initTable();
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                tableModel.setRowCount(0);
+                BatalhaController.getInstancia().removeAllLutas();
+            }
+        });
+        
         this.tabela = new JTable(tableModel) {
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
         };
+
         Dimension dimension = new Dimension(300, 200);
-        setSize(800,500);
+        setSize(800, 500);
         setResizable(false);
         repaint();
         tableScrollPane.setPreferredSize(dimension);

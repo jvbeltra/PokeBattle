@@ -34,7 +34,7 @@ public class PokemonController {
         PokemonDAO.getInstancia().put(new Pokemon("Pikachu", "Principal", "Elétrico!", 8, 10, 8, 50, ETipo.GRAMA));
         PokemonDAO.getInstancia().put(new Pokemon("Bulbassauro", "Secundario", "Folhoso!", 5, 8, 8, 50, ETipo.GRAMA));
         PokemonDAO.getInstancia().put(new Pokemon("Charizard", "Terciario", "Fogoso!", 7, 9, 8, 50, ETipo.FOGO));
-        PokemonDAO.getInstancia().put(new Pokemon("Squirtle", "Quarto", "Aguoso!!", 6, 11, 8, 50, ETipo.AGUA));
+        PokemonDAO.getInstancia().put(new Pokemon("Squirtle", "Quarto", "Aguoso!", 6, 11, 8, 50, ETipo.AGUA));
     }
 
     public static PokemonController getInstancia() {

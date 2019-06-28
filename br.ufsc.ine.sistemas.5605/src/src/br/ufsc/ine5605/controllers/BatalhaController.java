@@ -180,6 +180,10 @@ public class BatalhaController {
 //    public Pokemon pokemonAleatorio(){
 //    
 //    }
+    
+    public void removeAllLutas(){
+        lutas.clear();
+    }
     public String lutar(Pokemon myPokemon, Pokemon wildPokemon) {
 
         Integer turno = 0;

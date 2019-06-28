@@ -80,7 +80,6 @@ public class TelaBatalha extends JFrame {
 
         this.pack();
         setLocationRelativeTo(null);
-
     }
 
     public JPanel batalhaDetalhes() {
@@ -93,7 +92,6 @@ public class TelaBatalha extends JFrame {
         this.layoutDetalhesManager(panel);
 
         return panel;
-
     }
 
     private void limparCampos() {
@@ -132,7 +130,7 @@ public class TelaBatalha extends JFrame {
     }
 
     private void initTable() {
-        table = new JTable();
+        
         String[] columnNames = {
             "Titulo",
             "Vitorioso",
@@ -146,7 +144,6 @@ public class TelaBatalha extends JFrame {
                 batalha.getTitulo(),
                 batalha.getVitorioso().getNome(),
                 batalha.getDerrotado().getNome()
-
             });
         });
 
@@ -271,7 +268,6 @@ public class TelaBatalha extends JFrame {
     }
 
     private void createDetalhesLabels() {
-
         aliadoLabel = new JLabel("Aliado");
         adversarioLabel = new JLabel("Adversário");
         tituloLabel = new JLabel("Título");
@@ -279,7 +275,6 @@ public class TelaBatalha extends JFrame {
         aliadoField = new JTextField("", 10);
         adversarioField = new JTextField("", 10);
         tituloField = new JTextField("", 10);
-
     }
 
     private class GerenciadorBotao implements ActionListener {
@@ -288,7 +283,6 @@ public class TelaBatalha extends JFrame {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()) {
                 case "1": {
-
                     try {
                         BatalhaController.getInstancia().batalhar(aliadoField.getText(), adversarioField.getText(), tituloField.getText());
                         initTable();
@@ -302,13 +296,14 @@ public class TelaBatalha extends JFrame {
                     try {
                         System.out.println(BatalhaController.getInstancia().getBatalhaByTitulo(table.getValueAt(table.getSelectedRow(), 0).toString()));
                         BatalhaController.getInstancia().delBatalha(BatalhaController.getInstancia().getBatalhaByTitulo(table.getValueAt(table.getSelectedRow(), 0).toString()));
+                        initTable();
                         aliadoField.setText("");
                         adversarioField.setText("");
                         tituloField.setText("");
                     } catch (Exception e2) {
                         JOptionPane.showMessageDialog(null, e2.getMessage());
                     }
-                    initTable();
+                    
                     break;
                 }
                 case "3": {
