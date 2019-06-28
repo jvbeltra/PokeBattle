@@ -120,18 +120,12 @@ public class PokemonController {
         }
 
         Pokemon editedPokemon = new Pokemon(newNome, nick, descricao, velocidade, ataque, defesa, vida, tipoVerificado);
-//        this.getPokemonByName(editado).setNome(newNome);
-//        this.getPokemonByName(editado).setNick(nick);
-//        this.getPokemonByName(editado).setDescricao(descricao);
-//        this.getPokemonByName(editado).setVelocidade(velocidade);
-//        this.getPokemonByName(editado).setAtaque(ataque);
-//        this.getPokemonByName(editado).setDefesa(defesa);
-//        this.getPokemonByName(editado).setVida(vida);
-//        this.getPokemonByName(editado).setNome(newNome);
+
         PokemonDAO.getInstancia().remove(this.getPokemonByName(editado));
-        System.out.println("removeu");
         PokemonDAO.getInstancia().put(editedPokemon);
-        System.out.println("editou");
+        if (PocketController.getInstancia().getPokemonByName(editado) != null) {
+            PocketController.getInstancia().editar(editedPokemon, editado);
+        }
 
     }
 

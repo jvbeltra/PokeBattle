@@ -12,25 +12,17 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
-import src.br.ufsc.ine5605.objects.ETipo;
-import src.br.ufsc.ine5605.persistencia.PokemonDAO;
-import src.br.ufsc.ine5605.controllers.PokemonController;
-import src.br.ufsc.ine5605.controllers.PrincipalController;
-import src.br.ufsc.ine5605.exceptions.ValorInvalidoException;
 import src.br.ufsc.ine5605.persistencia.BatalhaDAO;
 
 /**
@@ -48,7 +40,6 @@ public class TelaBatalha extends JFrame {
     private JLabel aliadoLabel;
     private JLabel adversarioLabel;
     private JLabel tituloLabel;
-    private JLabel descricaoLabel;
 
     private JTextField tituloField;
     private JTextField aliadoField;
@@ -89,7 +80,7 @@ public class TelaBatalha extends JFrame {
 
         this.pack();
         setLocationRelativeTo(null);
-    
+
     }
 
     public JPanel batalhaDetalhes() {
@@ -299,24 +290,17 @@ public class TelaBatalha extends JFrame {
                 case "1": {
 
                     try {
-
-                        String nomeMyPokemon = PokemonController.getInstancia().getPokemonByName(aliadoField.getText()).getNome();
-                        String nomeSelvagem = PokemonController.getInstancia().getPokemonByName(adversarioField.getText()).getNome();
-                        String tituloBatalha = tituloField.getText();
                         BatalhaController.getInstancia().batalhar(aliadoField.getText(), adversarioField.getText(), tituloField.getText());
                         initTable();
-
                         new TelaLuta().setVisible(true);
-
                     } catch (Exception e1) {
-
                         JOptionPane.showMessageDialog(null, e1.getMessage());
                     }
-
                     break;
                 }
                 case "2": {
                     try {
+                        System.out.println(BatalhaController.getInstancia().getBatalhaByTitulo(table.getValueAt(table.getSelectedRow(), 0).toString()));
                         BatalhaController.getInstancia().delBatalha(BatalhaController.getInstancia().getBatalhaByTitulo(table.getValueAt(table.getSelectedRow(), 0).toString()));
                         aliadoField.setText("");
                         adversarioField.setText("");

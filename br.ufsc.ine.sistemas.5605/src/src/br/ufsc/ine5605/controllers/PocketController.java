@@ -5,12 +5,10 @@
  */
 package src.br.ufsc.ine5605.controllers;
 
-import java.util.List;
-import java.util.Scanner;
 import src.br.ufsc.ine5605.objects.Pocket;
 import src.br.ufsc.ine5605.telas.TelaPocket;
-import src.br.ufsc.ine5605.controllers.PrincipalController;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
+import src.br.ufsc.ine5605.objects.Pokemon;
 import src.br.ufsc.ine5605.persistencia.PocketDAO;
 
 /**
@@ -26,19 +24,16 @@ public class PocketController {
     private Pocket pocket;
     private static PocketController instancia;
 
-    
     public PocketController() {;
-        this.pocket = new Pocket();
         PocketDAO.getInstancia().put(PokemonController.getInstancia().getPokemonByName("Pikachu"));
     }
-    
-    public static PocketController getInstancia(){
-        if (instancia == null){
+
+    public static PocketController getInstancia() {
+        if (instancia == null) {
             instancia = new PocketController();
         }
         return instancia;
     }
-    
 
     public void capturaPokemon(String nome) throws PokemonNaoExisteException {
         try {
@@ -52,12 +47,16 @@ public class PocketController {
             System.out.println(e.getMessage());
         }
     }
-    
+
+    public Pokemon getPokemonByName(String name) {
+        return PocketDAO.getInstancia().getPokemon(name);
+    }
+
     public void soltarPokemon(String nome) throws PokemonNaoExisteException {
         try {
             if (PrincipalController.getInstancia().acessaPokemon().getPokemonByName(nome) != null) {
                 PocketDAO.getInstancia().remove(PrincipalController.getInstancia().acessaPokemon().getPokemonByName(nome));
-               
+
             } else {
                 throw new PokemonNaoExisteException();
             }
@@ -65,6 +64,11 @@ public class PocketController {
         } catch (PokemonNaoExisteException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void editar(Pokemon pokemon, String alterado) {
+        PocketDAO.getInstancia().remove((Pokemon) this.getPokemonByName(alterado));
+        PocketDAO.getInstancia().put(pokemon);
     }
 
     public void listarPokemons() {

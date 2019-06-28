@@ -6,8 +6,6 @@
 package src.br.ufsc.ine5605.objects;
 
 import java.io.Serializable;
-import java.util.Date;
-import src.br.ufsc.ine5605.controllers.BatalhaController;
 
 /**
  *

@@ -297,6 +297,8 @@ public class TelaPokemon extends JFrame {
 
         gbc.gridwidth = 1;
         gbc.gridx = 0;
+                gbc.gridy = i;
+
         panel.add(descricaoLabel, gbc);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;

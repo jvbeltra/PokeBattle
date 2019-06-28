@@ -13,6 +13,7 @@ import static src.br.ufsc.ine5605.objects.ETipo.AGUA;
 import static src.br.ufsc.ine5605.objects.ETipo.FOGO;
 import static src.br.ufsc.ine5605.objects.ETipo.GRAMA;
 import java.util.Random;
+import src.br.ufsc.ine5605.exceptions.PokemonNaoCapturadoException;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
 import src.br.ufsc.ine5605.exceptions.ValorEhZeroException;
 import src.br.ufsc.ine5605.objects.Luta;
@@ -61,21 +62,7 @@ public class BatalhaController {
     public Batalha getBatalhaByTitulo(String titulo) {
         return BatalhaDAO.getInstancia().getBatalha(titulo);
     }
-//    public void listarTarefas() {
-//        tela = new TelaBatalha(this);
-//        tela.listarTarefas();
-//    }
-//    public void selecionarLutadores() {
-//        Scanner s = new Scanner(System.in);
-//
-//        System.out.println("Insira o nome do Pokemon que você utilizará: ");
-//        String nomeMyPokemon = s.nextLine();
-//        myPokemon = PokemonController.getInstancia().getPokemonByName(nomeMyPokemon);
-//
-//        System.out.println("Insira o nome do Pokemon selvagem: ");
-//        String nomeSelvagem = s.nextLine();
-//    }
-
+    
     public int calculaVantagemAliada() {
         if (myPokemon.getTipo() == AGUA && wildPokemon.getTipo() == FOGO) {
             myPokemon.setAtaque(myPokemon.getAtaque() * 2);
@@ -255,13 +242,17 @@ public class BatalhaController {
 
     public Batalha batalhar(String myPokemonName, String wildPokemonName, String tituloBatalha) {
         Batalha resultadoBatalha = null;
-        try {
-            myPokemon = PokemonController.getInstancia().getPokemonByName(myPokemonName);
+            myPokemon = (Pokemon) PocketController.getInstancia().getPokemonByName(myPokemonName);
             wildPokemon = PokemonController.getInstancia().getPokemonByName(wildPokemonName);
-            if (myPokemon == null || wildPokemon == null) {
+            
+            if (wildPokemon == null || myPokemon == null) {
                 throw new PokemonNaoExisteException();
             }
 
+            if (myPokemon == null){
+                throw new PokemonNaoCapturadoException();
+            }
+            
             if (myPokemon.getVida() <= 0 || wildPokemon.getVida() <= 0) {
                 throw new ValorEhZeroException();
             }
@@ -284,9 +275,6 @@ public class BatalhaController {
 
             BatalhaDAO.getInstancia().put(resultadoBatalha);
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
         return resultadoBatalha;
     }
 
