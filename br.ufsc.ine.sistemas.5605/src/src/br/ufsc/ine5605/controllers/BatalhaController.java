@@ -51,6 +51,10 @@ public class BatalhaController {
         return lutas;
     }
 
+    public Pokemon getAleatorio() {
+
+        return PokemonController.getInstancia().getAleatorio();
+    }
 //    public void listarTarefas() {
 //        tela = new TelaBatalha(this);
 //        tela.listarTarefas();
@@ -65,6 +69,7 @@ public class BatalhaController {
 //        System.out.println("Insira o nome do Pokemon selvagem: ");
 //        String nomeSelvagem = s.nextLine();
 //    }
+
     public int calculaVantagemAliada() {
         if (myPokemon.getTipo() == AGUA && wildPokemon.getTipo() == FOGO) {
             myPokemon.setAtaque(myPokemon.getAtaque() * 2);
@@ -182,12 +187,8 @@ public class BatalhaController {
 //    public Pokemon pokemonAleatorio(){
 //    
 //    }
-    
-        
-        
-    
     public String lutar(Pokemon myPokemon, Pokemon wildPokemon) {
-        
+
         Integer turno = 0;
         Integer vidaAtualAliado = 0;
         Integer vidaAtualAdversario = 0;
@@ -195,8 +196,7 @@ public class BatalhaController {
         Integer danoCausado = 0;
         Integer ataque = wildPokemon.getVida();
         Integer defesa = myPokemon.getVida();
-        
-        
+
         int i = 0;
         int ordem = 0;
 

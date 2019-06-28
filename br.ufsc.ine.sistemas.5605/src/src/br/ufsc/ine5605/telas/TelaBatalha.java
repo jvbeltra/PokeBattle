@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import src.br.ufsc.ine5605.objects.Batalha;
+import src.br.ufsc.ine5605.objects.Pokemon;
 import src.br.ufsc.ine5605.persistencia.BatalhaDAO;
 
 /**
@@ -82,6 +83,10 @@ public class TelaBatalha extends JFrame {
         this.getContentPane().add(panelPrincipal);
         GridBagConstraints gbc = new GridBagConstraints();
 
+        JPanel selecionarPanel = this.batalhaDetalhes();
+        this.getContentPane().add(selecionarPanel, gbc);
+        selecionarPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        
         JScrollPane tableScrollPane = new JScrollPane(tabela);
         this.initTable();
         this.tabela = new JTable(tableModel) {
@@ -142,6 +147,8 @@ public class TelaBatalha extends JFrame {
         cancelarBtn.setActionCommand("4");
         apagarBatalhaBtn.addActionListener(btManager);
         apagarBatalhaBtn.setActionCommand("2");
+        aleatorioBtn.addActionListener(btManager);
+        aleatorioBtn.setActionCommand("3");
 
         this.getContentPane().add(tableButtonPanel, gbc);
 
@@ -157,38 +164,87 @@ public class TelaBatalha extends JFrame {
         this.setVisible(true);
         //-------------------------------------------------------------------------------------------------------//
         //Panel 2: selecionar Panel
-        JPanel selecionarPanel = new JPanel();
+    }
+
+    public JPanel batalhaDetalhes() {
+
+        JPanel panel = new JPanel();
 
         aliadoLabel = new JLabel();
         aliadoLabel.setText("Aliado:");
         aliadoLabel.setToolTipText("Selecione o seu Pokemon para a batalha");
 
-        selecionarPanel.add(aliadoLabel);
         //-------------------------------------------------------------------------------------------------------//
         adversarioLabel = new JLabel();
         adversarioLabel.setText("Adversario:");
         adversarioLabel.setToolTipText("Selecione o Pokemon adversario para a batalha, ou clique em aleatorio");
-        selecionarPanel.add(adversarioLabel);
+       
         //-------------------------------------------------------------------------------------------------------//
         aliadoField = new JTextField();
-        aliadoField.setText("Aliado");
-        selecionarPanel.add(aliadoField);
+        aliadoField.setText("      ");
+    
         //-------------------------------------------------------------------------------------------------------//
         adversarioField = new JTextField();
-        adversarioField.setText("Adversario");
-        selecionarPanel.add(adversarioField);
+        adversarioField.setText("      ");
+     
         //--------------------------------------------------------------------------------------------------------//
         tituloLabel = new JLabel();
-        tituloLabel.setText("Titulo:");
+        tituloLabel.setText("Titulo");
         tituloLabel.setToolTipText("De um titulo para a batalha");
-        selecionarPanel.add(tituloLabel);
+        
         //--------------------------------------------------------------------------------------------------------//
         tituloField = new JTextField();
-        tituloField.setText("Titulo");
-        selecionarPanel.add(tituloField);
+        tituloField.setText("      ");
         
-        selecionarPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        this.getContentPane().add(selecionarPanel, gbc);
+        //--------------------------------------------------------------------------------------------------------//
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(2, 2, 2, 2);
+        gbc.anchor = GridBagConstraints.NORTHEAST;
+        int i = 0;
+        
+        
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = i;
+        panel.add(aliadoLabel, gbc);
+        
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 2;
+        gbc.gridx = 1;
+        gbc.gridy = i;
+        panel.add(aliadoField, gbc);
+        
+        i++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+         gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = i;
+        panel.add(adversarioLabel, gbc);
+        
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 2;
+        gbc.gridx = 1;
+        gbc.gridy = i;
+        panel.add(adversarioField, gbc);
+        
+        i++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+         gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = i;
+        panel.add(tituloLabel, gbc);
+        
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 2;
+        gbc.gridx = 1;
+        gbc.gridy = i;
+        panel.add(tituloField, gbc);
+        
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        this.getContentPane().add(panel, gbc);
+        return panel;
     }
 
     private class GerenciadorBotao implements ActionListener {
@@ -205,10 +261,12 @@ public class TelaBatalha extends JFrame {
                     break;
                 }
                 case "2": {
-                    
+
                     break;
                 }
                 case "3": {
+              adversarioField.setText(BatalhaController.getInstancia().getAleatorio().getNome()); 
+               break;
                 }
                 case "4": {
                     aliadoField.setText("");

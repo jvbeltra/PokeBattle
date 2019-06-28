@@ -5,6 +5,7 @@
  */
 package src.br.ufsc.ine5605.telas;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class TelaLuta extends JFrame {
         };
 
         tableModel = new DefaultTableModel(columnNames, 0);
-
+        this.repaint();
         ArrayList<Luta> lutas = BatalhaController.getInstancia().getLutas();
         for (Luta luta : lutas) {
 
@@ -67,7 +68,17 @@ public class TelaLuta extends JFrame {
                 return false;
             }
         };
+        Dimension dimension = new Dimension(300, 200);
+        tableScrollPane.setPreferredSize(dimension);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
 
         panelPrincipal.add(new JScrollPane(tabela), gbc);
+
     }
 }
