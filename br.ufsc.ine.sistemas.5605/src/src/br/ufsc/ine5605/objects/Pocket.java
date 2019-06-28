@@ -7,9 +7,7 @@ package src.br.ufsc.ine5605.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import src.br.ufsc.ine5605.controllers.PocketController;
 import src.br.ufsc.ine5605.exceptions.PokemonJahCapturadoException;
-import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoCapturadoException;
 
 /**
