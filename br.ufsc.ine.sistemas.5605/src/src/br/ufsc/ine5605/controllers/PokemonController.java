@@ -7,9 +7,9 @@ package src.br.ufsc.ine5605.controllers;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
 import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
+import src.br.ufsc.ine5605.exceptions.TipoNaoExisteException;
 import src.br.ufsc.ine5605.exceptions.ValorEhZeroException;
 import src.br.ufsc.ine5605.exceptions.ValorInvalidoException;
 import src.br.ufsc.ine5605.objects.ETipo;
@@ -31,12 +31,10 @@ public class PokemonController {
     private static PokemonController instancia;
 
     public PokemonController() {
-        Pokemon pokemon1 = new Pokemon("Pikachu", "Principal", "Gosta de eletricidade", 8, 10, 8, 50, ETipo.GRAMA);
-        Pokemon pokemon2 = new Pokemon("Bulbassauro", "Secundario", "Gosta de agua", 5, 8, 8, 50, ETipo.AGUA);
-        Pokemon pokemon3 = new Pokemon("Charizard", "Terciario", "Gosta de fogo", 7, 9, 8, 50, ETipo.FOGO);
-        PokemonDAO.getInstancia().put(pokemon1);
-        PokemonDAO.getInstancia().put(pokemon2);
-        PokemonDAO.getInstancia().put(pokemon3);
+        PokemonDAO.getInstancia().put(new Pokemon("Pikachu", "Principal", "Elétrico!", 8, 10, 8, 50, ETipo.GRAMA));
+        PokemonDAO.getInstancia().put(new Pokemon("Bulbassauro", "Secundario", "Folhoso!", 5, 8, 8, 50, ETipo.GRAMA));
+        PokemonDAO.getInstancia().put(new Pokemon("Charizard", "Terciario", "Fogoso!", 7, 9, 8, 50, ETipo.FOGO));
+        PokemonDAO.getInstancia().put(new Pokemon("Squirtle", "Quarto", "Aguoso!!", 6, 11, 8, 50, ETipo.AGUA));
     }
 
     public static PokemonController getInstancia() {
@@ -47,57 +45,37 @@ public class PokemonController {
     }
 
     public void addPokemon(String nome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida, int escolhaTipo) throws PokemonJahExisteException {
-        Scanner s = new Scanner(System.in);
-        ETipo tipo = null;
-
+        ETipo tipo = this.verificaTipo(escolhaTipo);
         System.out.println(escolhaTipo);
-        switch (escolhaTipo) {
-            case 0:
-                tipo = ETipo.AGUA;
-                break;
-            case 1:
-                tipo = ETipo.GRAMA;
-                break;
-            case 2:
-                tipo = ETipo.FOGO;
-                break;
-
-        }
         if (this.getPokemonByName(nome) != null) {
             throw new PokemonJahExisteException();
         }
-        
+
         if (velocidade <= 0 || ataque <= 0 || defesa <= 0 || vida <= 0) {
             throw new ValorEhZeroException();
         }
-        
+
         pokemon = new Pokemon(nome, nick, descricao, velocidade, ataque, defesa, vida, tipo);
         PokemonDAO.getInstancia().put(pokemon);
 
     }
 
     public void delPokemon(Pokemon pokemon) {
-        try {
-            if (pokemon == null) {
-                throw new PokemonNaoExisteException();
-            } else {
-                
-                PocketController.getInstancia().soltarPokemon(pokemon.getNome());
-                PokemonDAO.getInstancia().remove(pokemon);
-                
-            }
+        if (pokemon == null) {
+            throw new PokemonNaoExisteException();
+        } else {
+            PocketController.getInstancia().soltarPokemon(pokemon.getNome());
+            PokemonDAO.getInstancia().remove(pokemon);
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
     }
 
     public Pokemon getPokemonByName(String name) {
         return PokemonDAO.getInstancia().getPokemon(name);
     }
-    
-    public Pokemon getAleatorio(){
-        Random pokemonAleatorio = new Random(); 
+
+    public Pokemon getAleatorio() {
+        Random pokemonAleatorio = new Random();
         return PokemonDAO.getInstancia().getList().get(pokemonAleatorio.nextInt(PokemonDAO.getInstancia().getList().size()));
     }
 
@@ -107,41 +85,54 @@ public class PokemonController {
 
     }
 
-    public void editarPokemon(String editado, String newNome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida, int tipoIndex) throws PokemonJahExisteException {
-        
-        if (this.getPokemonByName(newNome) != null && !editado.equalsIgnoreCase(newNome)) {
-                    throw new PokemonJahExisteException();
+    private ETipo verificaTipo(int escolhaTipo) {
+        if (escolhaTipo > 2 || escolhaTipo < 0) {
+            throw new TipoNaoExisteException();
         }
-        PokemonDAO.getInstancia().remove(this.getPokemonByName(editado));
-        this.addPokemon(newNome, nick, descricao, velocidade, ataque, defesa, vida, tipoIndex);
-//                case 4: {
-//                    System.out.println("Insira um novo valor de ataque: ");
-//                    int newAtaque = s.nextInt();
-//                    myPokemon.setAtaque(newAtaque);
-//                    break;
-//                }
-//                case 5: {
-//                    System.out.println("Insira um novo valor de defesa: ");
-//                    int newDefesa = s.nextInt();
-//                    myPokemon.setDefesa(newDefesa);
-//                    break;
-//                }
-//                case 6: {
-//                    System.out.println("Insira uma nova vida: ");
-//                    int newVida = s.nextInt();
-//                    myPokemon.setVida(newVida);
-//                    break;
-//                }
-//                case 7: {
-//                    System.out.println("Insira uma nova velocidade: ");
-//                    int newVelocidade = s.nextInt();
-//                    myPokemon.setVelocidade(newVelocidade);
-//                    break;
-//                }
-//            }
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//
-//        }
+
+        ETipo tipoVerificado = null;
+        switch (escolhaTipo) {
+            case 0:
+                tipoVerificado = ETipo.AGUA;
+                break;
+            case 1:
+                tipoVerificado = ETipo.GRAMA;
+                break;
+            case 2:
+                tipoVerificado = ETipo.FOGO;
+                break;
+        }
+        return tipoVerificado;
     }
+
+    public void editarPokemon(String editado, String newNome, String nick, String descricao, int velocidade, int ataque, int defesa, int vida, int tipoIndex) throws PokemonJahExisteException {
+
+        newNome = newNome.trim();
+        nick = nick.trim();
+        descricao = descricao.trim();
+        if (newNome.equals("") || nick.equals("") || descricao.equals("")) {
+            throw new ValorInvalidoException();
+        }
+
+        ETipo tipoVerificado = this.verificaTipo(tipoIndex);
+        if (velocidade <= 0 || ataque <= 0 || defesa <= 0 || vida <= 0) {
+            throw new ValorEhZeroException();
+        }
+
+        Pokemon editedPokemon = new Pokemon(newNome, nick, descricao, velocidade, ataque, defesa, vida, tipoVerificado);
+//        this.getPokemonByName(editado).setNome(newNome);
+//        this.getPokemonByName(editado).setNick(nick);
+//        this.getPokemonByName(editado).setDescricao(descricao);
+//        this.getPokemonByName(editado).setVelocidade(velocidade);
+//        this.getPokemonByName(editado).setAtaque(ataque);
+//        this.getPokemonByName(editado).setDefesa(defesa);
+//        this.getPokemonByName(editado).setVida(vida);
+//        this.getPokemonByName(editado).setNome(newNome);
+        PokemonDAO.getInstancia().remove(this.getPokemonByName(editado));
+        System.out.println("removeu");
+        PokemonDAO.getInstancia().put(editedPokemon);
+        System.out.println("editou");
+
+    }
+
 }

@@ -6,7 +6,6 @@
 package src.br.ufsc.ine5605.telas;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,8 +13,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,20 +25,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import org.w3c.dom.events.MouseEvent;
 import src.br.ufsc.ine5605.controllers.PocketController;
-import src.br.ufsc.ine5605.exceptions.PokemonJahExisteException;
-import src.br.ufsc.ine5605.exceptions.PokemonNaoExisteException;
-import src.br.ufsc.ine5605.exceptions.TipoNaoExisteException;
-import src.br.ufsc.ine5605.exceptions.ValorEhZeroException;
 import src.br.ufsc.ine5605.objects.ETipo;
 import src.br.ufsc.ine5605.objects.Pokemon;
-import src.br.ufsc.ine5605.persistencia.PokemonDAO;
-import src.br.ufsc.ine5605.controllers.PokemonController;
-import src.br.ufsc.ine5605.objects.Pocket;
 import src.br.ufsc.ine5605.persistencia.PocketDAO;
 
 /**
@@ -221,6 +209,14 @@ public class TelaPocket extends JFrame {
         nickField = new JTextField("");
         descricaoField = new JTextArea("");
         tipoField = new JComboBox(ETipo.values());
+        velocidadeField.setEnabled(false);
+        vidaField.setEnabled(false);
+        ataqueField.setEnabled(false);
+        defesaField.setEnabled(false);
+        nomeField.setEnabled(false);
+        nickField.setEnabled(false);
+        descricaoField.setEnabled(false);
+        tipoField.setEnabled(false);
 
         panel.setLayout(new GridBagLayout());
         descricaoField.setWrapStyleWord(true);
@@ -411,8 +407,6 @@ public class TelaPocket extends JFrame {
                         PocketController.getInstancia().soltarPokemon(table.getValueAt(table.getSelectedRow(), 0).toString());
                         initTable();
                         limparCampos();
-                        JOptionPane.showMessageDialog(null, "Pokémon libertado com sucesso!");
-
                     } catch (Exception exc) {
                         if (!exc.getMessage().equals("-1")) {
                             JOptionPane.showMessageDialog(null, exc.getMessage());

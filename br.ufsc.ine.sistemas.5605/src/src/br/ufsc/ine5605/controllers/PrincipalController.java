@@ -44,7 +44,7 @@ public class PrincipalController {
     }
 
     public void listarTarefas() {
-        telaPrincipal = new TelaPrincipal(this);
+        telaPrincipal = new TelaPrincipal();
         telaPrincipal.setVisible(true);
     }
     

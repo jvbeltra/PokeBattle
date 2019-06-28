@@ -6,15 +6,10 @@
 package src.br.ufsc.ine5605.telas;
 
 import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,8 +27,9 @@ public class TelaPrincipal extends JFrame {
     private JButton batalhaBtn;
     private JButton sair;
 
-    public TelaPrincipal(PrincipalController principalControll) {
+    public TelaPrincipal() {
         super("PokeBattle");
+      
         Container container = getContentPane();
         container.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();

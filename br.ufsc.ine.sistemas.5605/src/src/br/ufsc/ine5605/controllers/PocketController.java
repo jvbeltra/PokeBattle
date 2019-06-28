@@ -68,7 +68,7 @@ public class PocketController {
     }
 
     public void listarPokemons() {
-        pocket.getPokemonsCapturados();
+        PocketDAO.getInstancia().getList();
     }
 
 }

@@ -26,7 +26,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import src.br.ufsc.ine5605.objects.ETipo;
-import src.br.ufsc.ine5605.objects.Pokemon;
 import src.br.ufsc.ine5605.persistencia.PokemonDAO;
 import src.br.ufsc.ine5605.controllers.PokemonController;
 import src.br.ufsc.ine5605.controllers.PrincipalController;
@@ -66,52 +65,66 @@ public class TelaPokemon extends JFrame {
     private JButton editarBtn;
     private JButton capturarBtn;
 
-    private String record;
+    private JPanel tableButtonPanel;
+    private JPanel buttonPanel;
+    private JPanel detalhesPanel;
 
-    private void initTable() {
-
-        String[] columnNames = {
-            "Nome",
-            "Nick",
-            "Descricao",
-            "Tipo",
-            "Ataque",
-            "Defesa",
-            "Vida",
-            "Velocidade"
-        };
-
-        tableModel = new DefaultTableModel(columnNames, 0);
-
-        for (Pokemon pokemon : PokemonDAO.getInstancia().getList()) {
-            tableModel.addRow(new Object[]{
-                pokemon.getNome(),
-                pokemon.getNick(),
-                pokemon.getDescricao(),
-                pokemon.getTipo(),
-                pokemon.getAtaque(),
-                pokemon.getDefesa(),
-                pokemon.getVida(),
-                pokemon.getVelocidade()
-            });
-        }
-
-        table.setModel(tableModel);
-        this.repaint();
-
-    }
+    private JScrollPane tableScrollPane;
 
     public TelaPokemon() {
         super("Pokémon");
+        this.initTelaPokemon();
+    }
 
+    private void initTelaPokemon() {
         JPanel panel = new JPanel(new GridBagLayout());
         this.getContentPane().setLayout(new GridBagLayout());
         this.getContentPane().add(panel);
 
-        GridBagConstraints gbc = new GridBagConstraints();
+        tableButtonPanel = new JPanel();
 
-        JPanel tableButtonPanel = new JPanel();
+        this.createButtons(tableButtonPanel);
 
+        buttonPanel = new JPanel();
+        detalhesPanel = this.pokemonDetalhes();
+        detalhesPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        this.manageTable();
+        this.initTable();
+
+        this.layoutManager(panel);
+
+        this.pack();
+        setSize(860, 380);
+        setResizable(false);
+        setLocationRelativeTo(null);
+    }
+
+    public JPanel pokemonDetalhes() {
+
+        JPanel panel = new JPanel();
+        this.createDetalhesLabels();
+
+        panel.setLayout(new GridBagLayout());
+
+        this.layoutDetalhesManager(panel);
+        return panel;
+
+    }
+
+    private void limparCampos() {
+        nomeField.setText("");
+        nickField.setText("");
+        descricaoField.setText("");
+        tipoField.setSelectedIndex(0);
+        ataqueField.setText("");
+        defesaField.setText("");
+        vidaField.setText("");
+        velocidadeField.setText("");
+        initTable();
+    }
+
+    private void createButtons(JPanel tableButtonPanel) {
         cadastrarBtn = new JButton();
         editarBtn = new JButton();
         removerBtn = new JButton();
@@ -125,7 +138,6 @@ public class TelaPokemon extends JFrame {
         capturarBtn.setText("Capturar Pokémon");
 
         GerenciadorBotao btManager = new GerenciadorBotao();
-        GerenciadorMouse mouseManager = new GerenciadorMouse();
 
         cadastrarBtn.addActionListener(btManager);
         cadastrarBtn.setActionCommand("1");
@@ -147,14 +159,47 @@ public class TelaPokemon extends JFrame {
         tableButtonPanel.add(removerBtn);
         tableButtonPanel.add(capturarBtn);
         tableButtonPanel.add(limparBtn);
+    }
 
-        JPanel buttonPanel = new JPanel();
+    private void initTable() {
 
-        JPanel detalhesPanel = this.pokemonDetalhes();
-        detalhesPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        String[] columnNames = {
+            "Nome",
+            "Nick",
+            "Descricao",
+            "Tipo",
+            "Ataque",
+            "Defesa",
+            "Vida",
+            "Velocidade"
+        };
 
-        JScrollPane tableScrollPane = new JScrollPane(table);
+        tableModel = new DefaultTableModel(columnNames, 0);
+
+        PokemonDAO.getInstancia().getList().stream().forEach((pokemon) -> {
+            tableModel.addRow(new Object[]{
+                pokemon.getNome(),
+                pokemon.getNick(),
+                pokemon.getDescricao(),
+                pokemon.getTipo(),
+                pokemon.getAtaque(),
+                pokemon.getDefesa(),
+                pokemon.getVida(),
+                pokemon.getVelocidade()
+            });
+        });
+
+        table.setModel(tableModel);
+        this.repaint();
+
+    }
+
+    private void manageTable() {
+
+        GerenciadorMouse mouseManager = new GerenciadorMouse();
+        tableScrollPane = new JScrollPane(table);
         table = new JTable() {
+            @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
@@ -163,12 +208,13 @@ public class TelaPokemon extends JFrame {
         table.getTableHeader().setReorderingAllowed(false);
         table.addMouseListener(mouseManager);
 
-        this.initTable();
-
         Dimension dimension = new Dimension(300, 200);
         tableScrollPane.setPreferredSize(dimension);
+    }
 
-        JLabel label = new JLabel("Pokemons cadastrados");
+    private void layoutManager(JPanel panel) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        JLabel label = new JLabel("Pokémons cadastrados");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -208,38 +254,9 @@ public class TelaPokemon extends JFrame {
 
         panel.add(detalhesPanel, gbc);
 
-        this.pack();
-
-        setLocationRelativeTo(null);
-
-        this.setVisible(true);
     }
 
-    public JPanel pokemonDetalhes() {
-
-        JPanel panel = new JPanel();
-
-        velocidadeLabel = new JLabel("Velocidade");
-        descricaoLabel = new JLabel("Descricao");
-        ataqueLabel = new JLabel("Ataque");
-        defesaLabel = new JLabel("Defesa");
-        nomeLabel = new JLabel("Nome");
-        nickLabel = new JLabel("Nick");
-        tipoLabel = new JLabel("Tipo");
-        vidaLabel = new JLabel("Vida");
-
-        velocidadeField = new JTextField("");
-        vidaField = new JTextField("");
-        ataqueField = new JTextField("");
-        defesaField = new JTextField("");
-        nomeField = new JTextField("");
-        nickField = new JTextField("");
-        descricaoField = new JTextArea("");
-        tipoField = new JComboBox(ETipo.values());
-
-        panel.setLayout(new GridBagLayout());
-        descricaoField.setWrapStyleWord(true);
-        descricaoField.setLineWrap(true);
+    private void layoutDetalhesManager(JPanel panel) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(2, 2, 2, 2);
         gbc.anchor = GridBagConstraints.NORTHEAST;
@@ -362,21 +379,30 @@ public class TelaPokemon extends JFrame {
         gbc.gridy = i;
 
         panel.add(velocidadeField, gbc);
-
-        return panel;
-
     }
 
-    private void limparCampos() {
-        nomeField.setText("");
-        nickField.setText("");
-        descricaoField.setText("");
-        tipoField.setSelectedIndex(0);
-        ataqueField.setText("");
-        defesaField.setText("");
-        vidaField.setText("");
-        velocidadeField.setText("");
-        initTable();
+    private void createDetalhesLabels() {
+        velocidadeLabel = new JLabel("Velocidade");
+        descricaoLabel = new JLabel("Descricao");
+        ataqueLabel = new JLabel("Ataque");
+        defesaLabel = new JLabel("Defesa");
+        nomeLabel = new JLabel("Nome");
+        nickLabel = new JLabel("Nick");
+        tipoLabel = new JLabel("Tipo");
+        vidaLabel = new JLabel("Vida");
+
+        velocidadeField = new JTextField("");
+        vidaField = new JTextField("");
+        ataqueField = new JTextField("");
+        defesaField = new JTextField("");
+        nomeField = new JTextField("");
+        nickField = new JTextField("");
+        descricaoField = new JTextArea("");
+        tipoField = new JComboBox(ETipo.values());
+
+        descricaoField.setWrapStyleWord(true);
+        descricaoField.setLineWrap(true);
+
     }
 
     private class GerenciadorMouse implements MouseListener {
@@ -384,7 +410,6 @@ public class TelaPokemon extends JFrame {
         @Override
         public void mouseClicked(java.awt.event.MouseEvent e) {
             nomeField.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-            record = table.getValueAt(table.getSelectedRow(), 0).toString();
             nickField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
             descricaoField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
             tipoField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
@@ -427,14 +452,14 @@ public class TelaPokemon extends JFrame {
                         int atqParsed;
                         int defParsed;
                         int vidaParsed;
-                        
+
                         try {
-                            
+
                             velParsed = Integer.parseInt(velocidadeField.getText());
                             atqParsed = Integer.parseInt(ataqueField.getText());
                             defParsed = Integer.parseInt(defesaField.getText());
                             vidaParsed = Integer.parseInt(vidaField.getText());
-                            
+
                         } catch (NumberFormatException excNumber) {
                             throw new ValorInvalidoException();
                         }
@@ -450,33 +475,51 @@ public class TelaPokemon extends JFrame {
                         );
                         limparCampos();
                         initTable();
-                        JOptionPane.showMessageDialog(null, "Pokémon criado com sucesso!");
-
                     } catch (Exception exception) {
                         JOptionPane.showMessageDialog(null, exception.getMessage());
                     }
                     break;
                 }
                 case "2": {
-                    try {
-                        PokemonController.getInstancia().editarPokemon(
-                                table.getValueAt(table.getSelectedRow(), 0).toString(),
-                                nomeField.getText(),
-                                nickField.getText(),
-                                descricaoField.getText(),
-                                Integer.parseInt(velocidadeField.getText()),
-                                Integer.parseInt(ataqueField.getText()),
-                                Integer.parseInt(defesaField.getText()),
-                                Integer.parseInt(vidaField.getText()),
-                                tipoField.getSelectedIndex()
-                        );
-                        limparCampos();
-                        initTable();
-                        JOptionPane.showMessageDialog(null, "Pokémon editado com sucesso!");
+                        try {
+                            try {
+                            int velParsed;
+                            int atqParsed;
+                            int defParsed;
+                            int vidaParsed;
 
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage());
-                    }
+                            try {
+
+                                velParsed = Integer.parseInt(velocidadeField.getText());
+                                atqParsed = Integer.parseInt(ataqueField.getText());
+                                defParsed = Integer.parseInt(defesaField.getText());
+                                vidaParsed = Integer.parseInt(vidaField.getText());
+
+                            } catch (NumberFormatException excNumber) {
+                                throw new ValorInvalidoException();
+                            }
+
+                            PokemonController.getInstancia().editarPokemon(
+                                    table.getValueAt(table.getSelectedRow(), 0).toString(),
+                                    nomeField.getText(),
+                                    nickField.getText(),
+                                    descricaoField.getText(),
+                                    velParsed,
+                                    atqParsed,
+                                    defParsed,
+                                    vidaParsed,
+                                    tipoField.getSelectedIndex()
+                            );
+                            limparCampos();
+                            initTable();
+                            } catch (ArrayIndexOutOfBoundsException exout){
+                                JOptionPane.showMessageDialog(null, "Selecione um valor da lista");
+                            }
+                        } catch (Exception exception) {
+                            JOptionPane.showMessageDialog(null, exception.getMessage());
+                        }
+
+                    
 
                     break;
                 }
@@ -485,7 +528,6 @@ public class TelaPokemon extends JFrame {
                         PokemonController.getInstancia().delPokemon(PokemonController.getInstancia().getPokemonByName(table.getValueAt(table.getSelectedRow(), 0).toString()));
                         initTable();
                         limparCampos();
-                        JOptionPane.showMessageDialog(null, "Pokémon excluído com sucesso!");
                     } catch (Exception exc) {
                         if (!exc.getMessage().equals("-1")) {
                             JOptionPane.showMessageDialog(null, exc.getMessage());
