@@ -28,7 +28,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import src.br.ufsc.ine5605.controllers.PocketController;
 import src.br.ufsc.ine5605.objects.ETipo;
-import src.br.ufsc.ine5605.objects.Pokemon;
 import src.br.ufsc.ine5605.persistencia.PocketDAO;
 
 /**
@@ -81,7 +80,7 @@ public class TelaPocket extends JFrame {
 
         tableModel = new DefaultTableModel(columnNames, 0);
 
-        for (Pokemon pokemon : PocketDAO.getInstancia().getList()) {
+        PocketDAO.getInstancia().getList().stream().forEach((pokemon) -> {
             tableModel.addRow(new Object[]{
                 pokemon.getNome(),
                 pokemon.getNick(),
@@ -92,7 +91,7 @@ public class TelaPocket extends JFrame {
                 pokemon.getVida(),
                 pokemon.getVelocidade()
             });
-        }
+        });
 
         table.setModel(tableModel);
         this.repaint();

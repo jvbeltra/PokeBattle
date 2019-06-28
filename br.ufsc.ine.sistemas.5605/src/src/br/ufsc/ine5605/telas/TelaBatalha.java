@@ -13,19 +13,24 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.util.Scanner;
-import src.br.ufsc.ine5605.controllers.BatalhaController;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import src.br.ufsc.ine5605.objects.Batalha;
-import src.br.ufsc.ine5605.objects.Pokemon;
+import src.br.ufsc.ine5605.controllers.BatalhaController;
+import src.br.ufsc.ine5605.objects.ETipo;
+import src.br.ufsc.ine5605.persistencia.PokemonDAO;
+import src.br.ufsc.ine5605.controllers.PokemonController;
+import src.br.ufsc.ine5605.controllers.PrincipalController;
+import src.br.ufsc.ine5605.exceptions.ValorInvalidoException;
 import src.br.ufsc.ine5605.persistencia.BatalhaDAO;
 
 /**
@@ -43,211 +48,246 @@ public class TelaBatalha extends JFrame {
     private JLabel aliadoLabel;
     private JLabel adversarioLabel;
     private JLabel tituloLabel;
+    private JLabel descricaoLabel;
 
     private JTextField tituloField;
     private JTextField aliadoField;
     private JTextField adversarioField;
 
-    private JTable tabela;
+    private JPanel tableButtonPanel;
+    private JPanel buttonPanel;
+    private JPanel detalhesPanel;
+
+    private JScrollPane tableScrollPane;
+
+    private JTable table;
     private DefaultTableModel tableModel;
-    private Scanner teclado = new Scanner(System.in);
+
+    public TelaBatalha() {
+        super("Batalha");
+        this.initTelaBatalha();
+
+    }
+
+    private void initTelaBatalha() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        this.getContentPane().setLayout(new GridBagLayout());
+        this.getContentPane().add(panel);
+
+        tableButtonPanel = new JPanel();
+
+        this.createButtons(tableButtonPanel);
+
+        buttonPanel = new JPanel();
+        detalhesPanel = this.batalhaDetalhes();
+        detalhesPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        this.manageTable();
+        this.initTable();
+
+        this.layoutManager(panel);
+
+        this.pack();
+        setLocationRelativeTo(null);
+    }
+
+    public JPanel batalhaDetalhes() {
+
+        JPanel panel = new JPanel();
+        this.createDetalhesLabels();
+
+        panel.setLayout(new GridBagLayout());
+
+        this.layoutDetalhesManager(panel);
+
+        return panel;
+
+    }
+
+    private void limparCampos() {
+        tituloField.setText("");
+        aliadoField.setText("");
+        adversarioField.setText("");
+        initTable();
+    }
+
+    private void createButtons(JPanel tableButtonPanel) {
+        selecionarLutadoresBtn = new JButton();
+        batalharBtn = new JButton();
+        apagarBatalhaBtn = new JButton();
+        cancelarBtn = new JButton();
+        aleatorioBtn = new JButton();
+
+        batalharBtn.setText("Batalhar!");
+        apagarBatalhaBtn.setText("Apagar Batalha");
+        aleatorioBtn.setText("Inimigo aleatório");
+
+        GerenciadorBotao btManager = new GerenciadorBotao();
+
+        batalharBtn.addActionListener(btManager);
+        batalharBtn.setActionCommand("1");
+
+        apagarBatalhaBtn.addActionListener(btManager);
+        apagarBatalhaBtn.setActionCommand("2");
+
+        aleatorioBtn.addActionListener(btManager);
+        aleatorioBtn.setActionCommand("3");
+
+        tableButtonPanel.add(batalharBtn);
+        tableButtonPanel.add(aleatorioBtn);
+        tableButtonPanel.add(apagarBatalhaBtn);
+
+    }
 
     private void initTable() {
-        tabela = new JTable();
+        table = new JTable();
         String[] columnNames = {
             "Titulo",
             "Vitorioso",
             "Derrotado"
-
         };
 
         tableModel = new DefaultTableModel(columnNames, 0);
 
-        for (Batalha batalha : BatalhaDAO.getInstancia().getList()) {
+        BatalhaDAO.getInstancia().getList().stream().forEach((batalha) -> {
             tableModel.addRow(new Object[]{
                 batalha.getTitulo(),
                 batalha.getVitorioso().getNome(),
                 batalha.getDerrotado().getNome()
 
             });
-        }
+        });
 
-        tabela.setModel(tableModel);
+        table.setModel(tableModel);
         this.repaint();
 
     }
 
-    public TelaBatalha() {
-        super("Batalha");
-        JPanel panelPrincipal = new JPanel(new GridBagLayout());
-        this.getContentPane().setLayout(new GridBagLayout());
-        this.getContentPane().add(panelPrincipal);
-        GridBagConstraints gbc = new GridBagConstraints();
+    private void manageTable() {
 
-        JPanel selecionarPanel = this.batalhaDetalhes();
-        this.getContentPane().add(selecionarPanel, gbc);
-        selecionarPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        JScrollPane tableScrollPane = new JScrollPane(tabela);
-        this.initTable();
-        this.tabela = new JTable(tableModel) {
+        tableScrollPane = new JScrollPane(table);
+        table = new JTable() {
+            @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
-
         };
-        TelaBatalha.GerenciadorMouse mouseManager = new TelaBatalha.GerenciadorMouse();
-        tabela.getTableHeader().setReorderingAllowed(false);
-        tabela.addMouseListener(mouseManager);
-//Panel 0 Tabela Panel
-        JLabel label = new JLabel("Batalhas Anteriores ");
+
+        table.getTableHeader().setReorderingAllowed(false);
+
+        Dimension dimension = new Dimension(300, 200);
+        tableScrollPane.setPreferredSize(dimension);
+    }
+
+    private void layoutManager(JPanel panel) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        JLabel label = new JLabel("Batalhas registradas");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
 
-        panelPrincipal.add(label, gbc);
+        panel.add(label, gbc);
 
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
         gbc.gridy = 1;
+        gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
 
-        panelPrincipal.add(new JScrollPane(tabela), gbc);
-
-        //Panel 1 Botoes Panel
-        JPanel tableButtonPanel = new JPanel();
-
-        batalharBtn = new JButton();
-        batalharBtn.setText("Batlhar!!");
-        batalharBtn.setToolTipText("Faça uma batalha Pokemon");
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        tableButtonPanel.add(batalharBtn);
-        //------------------------------------------------------------------------------------------------//
-        apagarBatalhaBtn = new JButton();
-        apagarBatalhaBtn.setText("Apagar Batalha");
-        apagarBatalhaBtn.setToolTipText("Apague uma Batalha Selecionada");
-        tableButtonPanel.add(apagarBatalhaBtn);
-        //-----------------------------------------------------------------------------------------------//
-        aleatorioBtn = new JButton();
-        aleatorioBtn.setText("Aleatorio");
-        aleatorioBtn.setToolTipText("Selecione um inimigo aleatorio");
-        tableButtonPanel.add(aleatorioBtn);
-
-        //-----------------------------------------------------------------------------------------------//
-        cancelarBtn = new JButton();
-        cancelarBtn.setText("Cancelar");
-        cancelarBtn.setToolTipText("Cancelar ação em andamento");
-        tableButtonPanel.add(cancelarBtn);
-
-        //------------------------------------------------------------------------------------------------//
-        GerenciadorBotao btManager = new GerenciadorBotao();
-        batalharBtn.addActionListener(btManager);
-        batalharBtn.setActionCommand("1");
-        cancelarBtn.addActionListener(btManager);
-        cancelarBtn.setActionCommand("4");
-        apagarBatalhaBtn.addActionListener(btManager);
-        apagarBatalhaBtn.setActionCommand("2");
-        aleatorioBtn.addActionListener(btManager);
-        aleatorioBtn.setActionCommand("3");
-
-        this.getContentPane().add(tableButtonPanel, gbc);
+        panel.add(new JScrollPane(table), gbc);
 
         gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 0;
+        gbc.weighty = 0;
+
+        panel.add(tableButtonPanel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+
+        panel.add(buttonPanel, gbc);
+
         gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3;
+        gbc.gridheight = 1;
 
-        this.pack();
+        gbc.anchor = GridBagConstraints.NORTH;
 
-        setLocationRelativeTo(null);
-        this.setVisible(true);
-        //-------------------------------------------------------------------------------------------------------//
-        //Panel 2: selecionar Panel
+        panel.add(detalhesPanel, gbc);
+
     }
 
-    public JPanel batalhaDetalhes() {
-
-        JPanel panel = new JPanel();
-
-        aliadoLabel = new JLabel();
-        aliadoLabel.setText("Aliado:");
-        aliadoLabel.setToolTipText("Selecione o seu Pokemon para a batalha");
-
-        //-------------------------------------------------------------------------------------------------------//
-        adversarioLabel = new JLabel();
-        adversarioLabel.setText("Adversario:");
-        adversarioLabel.setToolTipText("Selecione o Pokemon adversario para a batalha, ou clique em aleatorio");
-
-        //-------------------------------------------------------------------------------------------------------//
-        aliadoField = new JTextField();
-        aliadoField.setText("      ");
-
-        //-------------------------------------------------------------------------------------------------------//
-        adversarioField = new JTextField();
-        adversarioField.setText("      ");
-
-        //--------------------------------------------------------------------------------------------------------//
-        tituloLabel = new JLabel();
-        tituloLabel.setText("Titulo");
-        tituloLabel.setToolTipText("De um titulo para a batalha");
-
-        //--------------------------------------------------------------------------------------------------------//
-        tituloField = new JTextField();
-        tituloField.setText("      ");
-
-        //--------------------------------------------------------------------------------------------------------//
-        panel.setLayout(new GridBagLayout());
+    private void layoutDetalhesManager(JPanel panel) {
         GridBagConstraints gbc = new GridBagConstraints();
+
         gbc.insets = new Insets(2, 2, 2, 2);
         gbc.anchor = GridBagConstraints.NORTHEAST;
+
         int i = 0;
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = i;
+
         panel.add(aliadoLabel, gbc);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 2;
         gbc.gridx = 1;
         gbc.gridy = i;
+
         panel.add(aliadoField, gbc);
 
         i++;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = i;
+
         panel.add(adversarioLabel, gbc);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 3;
         gbc.gridx = 1;
         gbc.gridy = i;
+
         panel.add(adversarioField, gbc);
 
         i++;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = i;
+
         panel.add(tituloLabel, gbc);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 2;
         gbc.gridx = 1;
         gbc.gridy = i;
+
         panel.add(tituloField, gbc);
 
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        this.getContentPane().add(panel, gbc);
-        return panel;
+    }
+
+    private void createDetalhesLabels() {
+
+        aliadoLabel = new JLabel("Aliado");
+        adversarioLabel = new JLabel("Adversário");
+        tituloLabel = new JLabel("Título");
+
+        aliadoField = new JTextField("", 10);
+        adversarioField = new JTextField("", 10);
+        tituloField = new JTextField("", 10);
+
     }
 
     private class GerenciadorBotao implements ActionListener {
@@ -256,20 +296,29 @@ public class TelaBatalha extends JFrame {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()) {
                 case "1": {
-                    String nomeMyPokemon = aliadoField.getText();
-                    String nomeSelvagem = adversarioField.getText();
-                    String tituloBatalha = tituloField.getText();
-                    BatalhaController.getInstancia().batalhar(nomeMyPokemon, nomeSelvagem, tituloBatalha);
-                    new TelaLuta().setVisible(true);
+                    try {
+                        String nomeMyPokemon = aliadoField.getText();
+                        String nomeSelvagem = adversarioField.getText();
+                        String tituloBatalha = tituloField.getText();
+                        BatalhaController.getInstancia().batalhar(aliadoField.getText(), adversarioField.getText(), tituloField.getText());
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(null, e1.getMessage());
+                    }
                     initTable();
+
+                    new TelaLuta().setVisible(true);
                     break;
                 }
                 case "2": {
-                    BatalhaController.getInstancia().delBatalha(BatalhaController.getInstancia().getBatalhaByTitulo(tabela.getValueAt(tabela.getSelectedRow(), 2).toString()));
+                    try {
+                        BatalhaController.getInstancia().delBatalha(BatalhaController.getInstancia().getBatalhaByTitulo(table.getValueAt(table.getSelectedRow(), 2).toString()));
+                        aliadoField.setText("");
+                        adversarioField.setText("");
+                        tituloField.setText("");
+                    } catch (Exception e2) {
+                        JOptionPane.showMessageDialog(null, e2.getMessage());
+                    }
                     initTable();
-                    aliadoField.setText("");
-                    adversarioField.setText("");
-                    tituloField.setText("");
                     break;
                 }
                 case "3": {
@@ -287,75 +336,4 @@ public class TelaBatalha extends JFrame {
 
     }
 
-    private class GerenciadorMouse implements MouseListener {
-
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e) {
-            aliadoField.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
-            adversarioField.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
-            tituloField.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString());
-
-        }
-
-        @Override
-        public void mousePressed(java.awt.event.MouseEvent e) {
-        }
-
-        @Override
-        public void mouseReleased(java.awt.event.MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(java.awt.event.MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(java.awt.event.MouseEvent e) {
-
-        }
-
-    }
 }
-
-//    public void selecionarLutadores() {
-//        Scanner s = new Scanner(System.in);
-//        System.out.println("Insira o nome do Pokemon que você utilizará: ");
-//        String nomeMyPokemon = s.nextLine();
-//        System.out.println("Insira o nome do Pokemon selvagem: ");
-//        String nomeSelvagem = s.nextLine();
-//
-//        BatalhaController.getInstancia().batalhar(nomeMyPokemon, nomeSelvagem);
-//    }
-// public void listarTarefas() {
-//
-//        try {
-//            int input = 0;
-//            do {
-//                System.out.println(
-//                        "\n --- Selecione uma tarefa --- \n"
-//                        + " 1: Batalhar \n"
-//                        + " 2: Mostrar histórico de batalhas \n"
-//                        + " 0: Sair"
-//                );
-//
-//                input = teclado.nextInt();
-//
-//                switch (input) {
-//                    case 1: {
-//                        this.selecionarLutadores();
-//                        break;
-//                    }
-//                    case 2: {
-//                        batalhaControll.listarBatalhas();
-//                        break;
-//                    }
-//                }
-//            } while (input > 0);
-//
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
-

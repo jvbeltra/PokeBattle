@@ -6,10 +6,8 @@
 package src.br.ufsc.ine5605.controllers;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import src.br.ufsc.ine5605.telas.TelaBatalha;
 import src.br.ufsc.ine5605.objects.Batalha;
-import src.br.ufsc.ine5605.controllers.PokemonController;
 import src.br.ufsc.ine5605.objects.Pokemon;
 import static src.br.ufsc.ine5605.objects.ETipo.AGUA;
 import static src.br.ufsc.ine5605.objects.ETipo.FOGO;

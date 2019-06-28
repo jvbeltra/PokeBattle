@@ -77,6 +77,7 @@ public class TelaLuta extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
+        setLocationRelativeTo(null);
 
         panelPrincipal.add(new JScrollPane(tabela), gbc);
 

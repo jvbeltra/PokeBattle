@@ -74,6 +74,7 @@ public class TelaPokemon extends JFrame {
     public TelaPokemon() {
         super("Pokémon");
         this.initTelaPokemon();
+        
     }
 
     private void initTelaPokemon() {
