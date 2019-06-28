@@ -12,8 +12,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -114,7 +115,6 @@ public class TelaPocket extends JFrame {
         removerBtn.setText("Libertar Pokémon");
 
         GerenciadorBotao btManager = new GerenciadorBotao();
-        GerenciadorMouse mouseManager = new GerenciadorMouse();
 
         removerBtn.addActionListener(btManager);
         removerBtn.setActionCommand("1");
@@ -133,7 +133,13 @@ public class TelaPocket extends JFrame {
             }
         };
         table.getTableHeader().setReorderingAllowed(false);
-        table.addMouseListener(mouseManager);
+//        table.addMouseListener(mouseManager);
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                selecionaRow(evt);
+            }
+        });
 
         this.initTable();
 
@@ -347,6 +353,18 @@ public class TelaPocket extends JFrame {
 
     }
 
+    private void selecionaRow(MouseEvent ev) {
+        nomeField.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+        record = table.getValueAt(table.getSelectedRow(), 0).toString();
+        nickField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+        descricaoField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+        tipoField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
+        ataqueField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+        defesaField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+        vidaField.setText(table.getValueAt(table.getSelectedRow(), 6).toString());
+        velocidadeField.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
+    }
+
     private void limparCampos() {
         nomeField.setText("");
         nickField.setText("");
@@ -357,42 +375,6 @@ public class TelaPocket extends JFrame {
         vidaField.setText("");
         velocidadeField.setText("");
         initTable();
-    }
-
-    private class GerenciadorMouse implements MouseListener {
-
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e) {
-            nomeField.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-            record = table.getValueAt(table.getSelectedRow(), 0).toString();
-            nickField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-            descricaoField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-            tipoField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
-            ataqueField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-            defesaField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
-            vidaField.setText(table.getValueAt(table.getSelectedRow(), 6).toString());
-            velocidadeField.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
-        }
-
-        @Override
-        public void mousePressed(java.awt.event.MouseEvent e) {
-        }
-
-        @Override
-        public void mouseReleased(java.awt.event.MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(java.awt.event.MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(java.awt.event.MouseEvent e) {
-
-        }
-
     }
 
     private class GerenciadorBotao implements ActionListener {

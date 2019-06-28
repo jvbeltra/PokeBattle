@@ -41,9 +41,9 @@ public class TelaPrincipal extends JFrame {
         pocketBtn = new JButton();
         batalhaBtn = new JButton();
 
-        bemvindo.setText("Seja bem-vindo ao pokebattle!");
-        pokemonBtn.setText("Gerenciar Pokemons");
-        pocketBtn.setText("Gerenciar pocket");
+        bemvindo.setText("Seja bem-vindo ao PokeBattle!");
+        pokemonBtn.setText("Gerenciar Pokémons");
+        pocketBtn.setText("Gerenciar Pocket");
         batalhaBtn.setText("Batalhar");
 
         gbc.fill = GridBagConstraints.HORIZONTAL;

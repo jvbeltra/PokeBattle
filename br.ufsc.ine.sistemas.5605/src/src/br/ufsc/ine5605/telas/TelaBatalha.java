@@ -34,7 +34,6 @@ public class TelaBatalha extends JFrame {
     private JButton selecionarLutadoresBtn;
     private JButton batalharBtn;
     private JButton apagarBatalhaBtn;
-    private JButton cancelarBtn;
     private JButton aleatorioBtn;
 
     private JLabel aliadoLabel;
@@ -105,7 +104,6 @@ public class TelaBatalha extends JFrame {
         selecionarLutadoresBtn = new JButton();
         batalharBtn = new JButton();
         apagarBatalhaBtn = new JButton();
-        cancelarBtn = new JButton();
         aleatorioBtn = new JButton();
 
         batalharBtn.setText("Batalhar!");

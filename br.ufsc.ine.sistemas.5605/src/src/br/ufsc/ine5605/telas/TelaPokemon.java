@@ -12,6 +12,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -74,7 +76,7 @@ public class TelaPokemon extends JFrame {
     public TelaPokemon() {
         super("Pokémon");
         this.initTelaPokemon();
-        
+
     }
 
     private void initTelaPokemon() {
@@ -196,8 +198,6 @@ public class TelaPokemon extends JFrame {
     }
 
     private void manageTable() {
-
-        GerenciadorMouse mouseManager = new GerenciadorMouse();
         tableScrollPane = new JScrollPane(table);
         table = new JTable() {
             @Override
@@ -207,8 +207,11 @@ public class TelaPokemon extends JFrame {
         };
 
         table.getTableHeader().setReorderingAllowed(false);
-        table.addMouseListener(mouseManager);
-
+        table.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                selecionaRow(evt);
+            }
+        });
         Dimension dimension = new Dimension(300, 200);
         tableScrollPane.setPreferredSize(dimension);
     }
@@ -297,7 +300,7 @@ public class TelaPokemon extends JFrame {
 
         gbc.gridwidth = 1;
         gbc.gridx = 0;
-                gbc.gridy = i;
+        gbc.gridy = i;
 
         panel.add(descricaoLabel, gbc);
 
@@ -406,41 +409,18 @@ public class TelaPokemon extends JFrame {
 
     }
 
-    private class GerenciadorMouse implements MouseListener {
-
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e) {
-            nomeField.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-            nickField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-            descricaoField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-            tipoField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
-            ataqueField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-            defesaField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
-            vidaField.setText(table.getValueAt(table.getSelectedRow(), 6).toString());
-            velocidadeField.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
-        }
-
-        @Override
-        public void mousePressed(java.awt.event.MouseEvent e) {
-        }
-
-        @Override
-        public void mouseReleased(java.awt.event.MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(java.awt.event.MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(java.awt.event.MouseEvent e) {
-
-        }
-
+    private void selecionaRow(MouseEvent evt) {
+        nomeField.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+        nickField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+        descricaoField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+        tipoField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
+        ataqueField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+        defesaField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+        vidaField.setText(table.getValueAt(table.getSelectedRow(), 6).toString());
+        velocidadeField.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
     }
 
+  
     private class GerenciadorBotao implements ActionListener {
 
         @Override
@@ -482,8 +462,8 @@ public class TelaPokemon extends JFrame {
                     break;
                 }
                 case "2": {
+                    try {
                         try {
-                            try {
                             int velParsed;
                             int atqParsed;
                             int defParsed;
@@ -513,14 +493,12 @@ public class TelaPokemon extends JFrame {
                             );
                             limparCampos();
                             initTable();
-                            } catch (ArrayIndexOutOfBoundsException exout){
-                                JOptionPane.showMessageDialog(null, "Selecione um valor da lista");
-                            }
-                        } catch (Exception exception) {
-                            JOptionPane.showMessageDialog(null, exception.getMessage());
+                        } catch (ArrayIndexOutOfBoundsException exout) {
+                            JOptionPane.showMessageDialog(null, "Selecione um valor da lista");
                         }
-
-                    
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, exception.getMessage());
+                    }
 
                     break;
                 }
