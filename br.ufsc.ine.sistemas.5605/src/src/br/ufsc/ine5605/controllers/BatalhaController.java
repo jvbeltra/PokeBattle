@@ -47,6 +47,10 @@ public class BatalhaController {
         return instancia;
     }
 
+    public void delBatalha(Batalha batalha) {
+        BatalhaDAO.getInstancia().remove(batalha);
+    }
+
     public ArrayList getLutas() {
         return lutas;
     }
@@ -54,6 +58,10 @@ public class BatalhaController {
     public Pokemon getAleatorio() {
 
         return PokemonController.getInstancia().getAleatorio();
+    }
+
+    public Batalha getBatalhaByTitulo(String titulo) {
+        return BatalhaDAO.getInstancia().getBatalha(titulo);
     }
 //    public void listarTarefas() {
 //        tela = new TelaBatalha(this);

@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.Scanner;
 import src.br.ufsc.ine5605.controllers.BatalhaController;
 import javax.swing.BorderFactory;
@@ -86,15 +87,18 @@ public class TelaBatalha extends JFrame {
         JPanel selecionarPanel = this.batalhaDetalhes();
         this.getContentPane().add(selecionarPanel, gbc);
         selecionarPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        
+
         JScrollPane tableScrollPane = new JScrollPane(tabela);
         this.initTable();
         this.tabela = new JTable(tableModel) {
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
-        };
 
+        };
+        TelaBatalha.GerenciadorMouse mouseManager = new TelaBatalha.GerenciadorMouse();
+        tabela.getTableHeader().setReorderingAllowed(false);
+        tabela.addMouseListener(mouseManager);
 //Panel 0 Tabela Panel
         JLabel label = new JLabel("Batalhas Anteriores ");
 
@@ -178,70 +182,69 @@ public class TelaBatalha extends JFrame {
         adversarioLabel = new JLabel();
         adversarioLabel.setText("Adversario:");
         adversarioLabel.setToolTipText("Selecione o Pokemon adversario para a batalha, ou clique em aleatorio");
-       
+
         //-------------------------------------------------------------------------------------------------------//
         aliadoField = new JTextField();
         aliadoField.setText("      ");
-    
+
         //-------------------------------------------------------------------------------------------------------//
         adversarioField = new JTextField();
         adversarioField.setText("      ");
-     
+
         //--------------------------------------------------------------------------------------------------------//
         tituloLabel = new JLabel();
         tituloLabel.setText("Titulo");
         tituloLabel.setToolTipText("De um titulo para a batalha");
-        
+
         //--------------------------------------------------------------------------------------------------------//
         tituloField = new JTextField();
         tituloField.setText("      ");
-        
+
         //--------------------------------------------------------------------------------------------------------//
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(2, 2, 2, 2);
         gbc.anchor = GridBagConstraints.NORTHEAST;
         int i = 0;
-        
-        
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = i;
         panel.add(aliadoLabel, gbc);
-        
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 2;
         gbc.gridx = 1;
         gbc.gridy = i;
         panel.add(aliadoField, gbc);
-        
+
         i++;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-         gbc.gridwidth = 1;
+        gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = i;
         panel.add(adversarioLabel, gbc);
-        
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 2;
         gbc.gridx = 1;
         gbc.gridy = i;
         panel.add(adversarioField, gbc);
-        
+
         i++;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-         gbc.gridwidth = 1;
+        gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = i;
         panel.add(tituloLabel, gbc);
-        
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 2;
         gbc.gridx = 1;
         gbc.gridy = i;
         panel.add(tituloField, gbc);
-        
+
         panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         this.getContentPane().add(panel, gbc);
         return panel;
@@ -258,15 +261,20 @@ public class TelaBatalha extends JFrame {
                     String tituloBatalha = tituloField.getText();
                     BatalhaController.getInstancia().batalhar(nomeMyPokemon, nomeSelvagem, tituloBatalha);
                     new TelaLuta().setVisible(true);
+                    initTable();
                     break;
                 }
                 case "2": {
-
+                    BatalhaController.getInstancia().delBatalha(BatalhaController.getInstancia().getBatalhaByTitulo(tabela.getValueAt(tabela.getSelectedRow(), 2).toString()));
+                    initTable();
+                    aliadoField.setText("");
+                    adversarioField.setText("");
+                    tituloField.setText("");
                     break;
                 }
                 case "3": {
-              adversarioField.setText(BatalhaController.getInstancia().getAleatorio().getNome()); 
-               break;
+                    adversarioField.setText(BatalhaController.getInstancia().getAleatorio().getNome());
+                    break;
                 }
                 case "4": {
                     aliadoField.setText("");
@@ -275,6 +283,37 @@ public class TelaBatalha extends JFrame {
                     break;
                 }
             }
+        }
+
+    }
+
+    private class GerenciadorMouse implements MouseListener {
+
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e) {
+            aliadoField.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
+            adversarioField.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
+            tituloField.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString());
+
+        }
+
+        @Override
+        public void mousePressed(java.awt.event.MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(java.awt.event.MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent e) {
+
         }
 
     }
